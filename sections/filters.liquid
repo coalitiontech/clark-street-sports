@@ -1,0 +1,68 @@
+{%- assign _blocks = section.blocks -%}
+
+{%- assign all_tags = '' -%}
+{%- for tag in current_tags -%}
+  {% capture all_tags %}{{all_tags}}@{{ tag }}@{% endcapture %}
+{%- endfor -%}
+
+{%- for _block in _blocks -%}
+  {%- assign field = _block.settings -%}
+
+  {%- if field.filter_type == 'links' -%}
+    {%- assign filter_class = 'filters__widget--menu' -%}
+  {%- else -%}
+    {%- assign filter_class = 'filters__widget--boxes' -%}
+  {%- endif -%}
+
+  <div class="filters__widget {{ filter_class }}">
+    <h4>{{ field.filter_title }}</h4>
+
+    <ul>
+      {%- for menu_item in linklists[field.menu_filter].links -%}
+        {%- assign menu_url = menu_item.url | replace: '#', '' -%}
+        {%- assign menu_url_escaped = menu_url | append: "@" | prepend: "@" -%}
+        <li>
+          <span>
+            <input type="radio" name="field-menu-{{ _block.id }}" value="{{ menu_url }}"{% if all_tags contains menu_url_escaped %} checked="checked"{% endif %} />
+
+            <label>{{ menu_item.title }}</label>
+          </span>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div><!-- /.filters__widget -->
+{%- endfor -%}
+
+{% schema %}
+{
+  "name": "Filters",
+  "blocks": [
+    {
+      "type": "filter",
+      "name": "Filter",
+      "settings": [
+        {
+          "type": "text",
+          "id": "filter_title",
+          "label": "Filter Title"
+        },
+        {
+          "type": "radio",
+          "id": "filter_type",
+          "label": "Filter type",
+          "options": [
+              { "value": "links", "label": "Links" },
+              { "value": "boxes", "label": "Boxes" }
+            ],
+            "default":   "links"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_filter",
+          "label": "Choose Menu Filter"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

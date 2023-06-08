@@ -1,0 +1,13 @@
+{%- capture button_label -%}
+  {% include 'shortcode' get: 'label' %}
+{%- endcapture -%}
+
+{%- capture button_link -%}
+  {% include 'shortcode' get: 'link' %}
+{%- endcapture -%}
+
+{%- if button_link != blank and button_label != blank -%}
+  <div class="cta-holder">
+    <a href="{{ button_link }}" class="btn btn--black">{{ button_label }}</a>
+  </div><!-- /.cta-holder -->
+{%- endif -%}

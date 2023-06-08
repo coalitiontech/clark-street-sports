@@ -1,0 +1,21 @@
+<script type="text/javascript" src="{{ 'bms.account.bundle.js' | asset_url }}" defer></script>
+<script id="tagsObj" type="application/json">
+  {
+    "tags": [
+    {% for tag in customer.tags %}
+      {{ tag | json }}
+      {% unless forloop.last %}
+        ,
+      {% endunless %}
+    {% endfor %}
+    ]
+  }
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+  
+    const tagArray = JSON.parse(document.querySelector('#tagsObj').innerHTML);
+    if(!BOLD || !BOLD.BMS || !BOLD.BMS.BUILDS || !BOLD.BMS.BUILDS.UnlockTheDropAccount) return;
+    BOLD.BMS.BUILDS.UnlockTheDropAccount.init(tagArray.tags); 
+  });
+</script>

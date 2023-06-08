@@ -1,0 +1,86 @@
+{% layout none %}
+<div class="main">
+    <div class="cart-holder">
+      <div class="container">
+        <div class="ajax-cart" data-count="{{ cart.item_count }}">
+          <span class="close-icon"></span>
+
+          {% if cart.items.size > 0 %}
+            <div class="ajax-cart__cart-items">
+              <div class="title-holder">
+                <h3>{{ 'cart.title' | t }}</h3>
+              </div><!-- /.title-holder -->
+
+              <form action="/cart" class="ajax-cart__form" method="post"> 
+                <div class="cart-items-holder">
+                  {% for line_item in cart.items %}
+                    {%- include 'bold-cart-item' with line_item -%}
+                    <div class="ajax-cart__cart-item"
+                      data-product-id="{{ line_item.product_id }}"
+                      data-variant-id="{{ line_item.variant_id }}"
+                      data-quantity="{{ line_item.variant.inventory_quantity }}"
+                      data-inventory-management="{{ line_item.variant.inventory_management }}"
+                      data-inventory-policy="{{ line_item.variant.inventory_policy }}" >
+                      <div class="ajax-cart__image">
+                        {% include "cart-item.image", line_item: line_item %}
+                      </div><!-- /.ajax-cart__image -->
+
+                      <div class="ajax-cart__info">
+                        <h5>{{line_item.product.title}}<span class="tdf-cart-item-t"></span></h5>
+						
+                        <!-- Products available inventory is being hidden from display in ajax cart
+						<div class="ajax-cart__stock">
+                          {% comment %} {% include "cart-item.stock", variant: line_item.variant %} {% endcomment %}
+                        </div> available invetory hidden -->
+
+                        <div class="ajax-cart__price">
+                          {% include "cart-item.price", line_item: line_item %}
+                        </div><!-- /.ajax-cart__price -->
+
+                        <div class="ajax-cart__option">
+                          {% include "cart-item.options", line_item: line_item %}
+                        </div>
+
+                        <div class="ajax-cart__qty">
+                          {% include "cart-item.quantity", line_item: line_item %}
+                        </div><!-- /.ajax-cart__qty -->
+
+                        {% include "cart-item.remove", cart: cart, index: forloop.index %}
+                      </div><!-- /.ajax-cart__info -->
+                    </div><!-- /.ajax-cart__cart-item -->
+                  {% endfor %}
+                </div><!-- /.cart-items-holder -->
+
+                <div class="ajax-cart__total">
+                  {% include "cart.total", cart: cart %}
+                  {% include "cart.actions", cart: cart %}
+                  <div class="ajax-cart__add-note-button">Add a note/gift message to your order</div>
+                </div><!-- /.ajax-cart__total -->
+                <div class="ajax-cart__cart-note reveal-cart-note">
+                  <textarea name="note" class="ajax-cart__cart-note-text"></textarea>
+                  <div class="cart-note-controls">
+                    <span class="cancel-cart-note">Cancel</span>
+                    <span class="save-cart-note">Save</span>
+                  </div>
+                </div>
+              </form>
+            </div><!-- /.ajax-cart__cart-items -->
+          <!-- ECI Start: Implementation of AddToCart event, hardcoded DO NOT DELETE -->
+          <script>
+            var eci_content_id=[];
+            eci_content_id.push(eci_items.ProductID);
+            fbq('track', 'AddToCart', {
+              content_type: 'product',
+              content_ids: eci_content_id,
+              value: eci_items.Price,
+              currency: 'USD',
+            });
+          </script>
+          <!-- ECI End: Implementation of AddToCart event, hardcoded DO NOT DELETE -->
+          {% else %}
+            {% include "cart.empty" %}
+          {% endif %}
+        </div><!-- /.ajax-cart -->
+      </div><!-- /.container -->
+    </div><!-- /.cart-holder -->
+</div><!-- /.main -->

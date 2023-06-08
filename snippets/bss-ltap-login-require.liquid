@@ -1,0 +1,89 @@
+
+        {%- capture contentForQuerystring -%}{{ content_for_header }}{%- endcapture -%}
+        {%- assign page_url = contentForQuerystring | split:'"pageurl":"' | last | split:'"' | first | split:'.myshopify.com' | last |   replace:'\/','/' |    replace:'%20',' ' |    replace:'&','&'  -%}
+        {% assign page_url =  "https://" | append: page_url  %}
+        {% assign pageUrlWithParams = page_url | remove: shop.url %}
+        {% assign isApplyForceLogin = false %}
+        {% assign bssLtapCurrentPage = canonical_url | remove: shop.url %}
+        {% unless content_for_header contains "Shopify.preview_host" %}
+            {% assign old_content_for_layout = content_for_layout %}
+            {% if  template != "customers/reset_password" and template != "customers/register" and template != "customers/activate_account" and request.path != "/challenge" %}
+                {% assign bss_login_to_day_date = 'now' | date: '%s' %}
+                {% assign bsscommerce-password = "" %}
+                
+                {% assign product_collection_15002 = "" | split: ',' %}
+                {% if request.path != '/' %}
+                    {% for collection in product.collections %}
+                        {% assign collection_id = collection.id | split:',' %}
+                        {% assign delimeter = "|" | split:',' %}
+                        {% assign product_collection_15002 = product_collection_15002 | concat:delimeter %}
+                        {% assign product_collection_15002 = product_collection_15002 | concat:collection_id %}
+                    {% endfor %}
+                {% endif %}
+                
+                {% if product.id == 759492935800 %}
+                     {% unless customer.tags contains "TEST_CUST_TAG" %}
+                        {% assign originalPasscodeString = "test-facebook-group" %}
+            {% assign correctToken = false %}
+            {% if originalPasscodeString != "" %}
+                {% assign originalPasscodeArray = originalPasscodeString | split: "," %}
+                {% for pc in originalPasscodeArray %}
+                    {% if correctToken == false %}
+                        {% assign tokenString = "?token=" | append: pc %}
+                        {% if content_for_header contains tokenString %}
+                            {% assign correctToken = true %}
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+            {% unless correctToken %}
+                            {% assign isApplyForceLogin = true %}
+                            {% capture content_for_layout %}
+                                
+                            {% endcapture %}
+                        {% else %}
+                            {% assign isApplyForceLogin = false %}
+                            {% assign content_for_layout = old_content_for_layout %}
+                        {% endunless %}
+                     {% endunless %}
+                     {% unless customer.tags contains "TEST_CUST_TAG" %}
+                        {% assign originalPasscodeString = "test-facebook-group" %}
+            {% assign correctToken = false %}
+            {% if originalPasscodeString != "" %}
+                {% assign originalPasscodeArray = originalPasscodeString | split: "," %}
+                {% for pc in originalPasscodeArray %}
+                    {% if correctToken == false %}
+                        {% assign tokenString = "?token=" | append: pc %}
+                        {% if content_for_header contains tokenString %}
+                            {% assign correctToken = true %}
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+            {% unless correctToken %}
+                            {% assign isApplyForceLogin = true %}
+                            {% capture content_for_layout %}
+                                
+                            {% endcapture %}
+                        {% else %}
+                            {% assign isApplyForceLogin = false %}
+                            {% assign content_for_layout = old_content_for_layout %}
+                        {% endunless %}
+                     {% endunless %}
+                {% endif %}
+        
+            {% else %}
+                {% capture content_for_layout %}
+                    {% assign isApplyForceLogin = false %}
+                    {{old_content_for_layout}}
+                    {% capture login_require_custom_style %}
+                        {% render 'login_require_custom_style' %}
+                    {% endcapture %}
+                    {% unless login_require_custom_style contains "Liquid error" %}
+                        {{ login_require_custom_style }}
+                    {% endunless %}
+                {% endcapture %}
+            {% endif %}
+        {% endunless %}
+        {{ isApplyForceLogin }}
+        

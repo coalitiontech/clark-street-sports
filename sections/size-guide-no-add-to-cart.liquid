@@ -1,0 +1,44 @@
+{% for block in section.blocks %}
+  {% unless block.type == 'size_guide' %}{% continue %}{% endunless %}
+  {% assign guideTitle = block.settings.title | handleize %}
+  {% unless product.tags contains guideTitle %}{% continue %}{% endunless %}
+  {% assign size_guide = block.settings.size_guide_img %}
+  {% break %}
+{% endfor %}
+
+{% if size_guide != blank %} 
+  <div class="size-row">
+    <a href="#size-chart" class="view-size">
+      {{ 'general.product.size' | t }}
+    </a>
+  </div>
+
+  <div id="size-chart">
+    <img src="{{ size_guide | img_url: 'master' }}" style="max-width: 100%" />
+  </div>
+{% endif %}
+
+
+
+{% schema %}
+  {
+    "name": "Size Guide",
+    "blocks": [
+    {
+      "type": "size_guide",
+      "name": "Size Guide",
+      "settings": [
+        {
+          "id": "title",
+          "label": "Product Type",
+          "type": "text"
+        },
+        {
+          "id": "size_guide_img",
+          "label": "Size Guide Image",
+          "type": "image_picker"
+        }
+      ]
+    }]
+  }
+{% endschema %}

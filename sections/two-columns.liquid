@@ -1,0 +1,45 @@
+{%- assign _settings = section.settings -%}
+
+<div class="text-columns">
+  <div class="container">
+    {%- if _settings.section_title != blank -%}
+      <h3>{{ _settings.section_title }}</h3>
+    {%- endif -%}
+
+    <div class="cols">
+      <div class="col">
+        <p>
+          {{ _settings.column_1_text }}
+        </p>
+      </div><!-- /.col -->
+      <div class="col">
+        <p>
+          {{ _settings.column_2_text }}
+        </p>
+      </div><!-- /.col -->
+    </div><!-- /.cols -->
+  </div><!-- /.container -->
+</div><!-- /.text-columns -->
+
+{% schema %}
+{
+  "name": "Two Columns",
+  "settings": [
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section Title"
+    },
+    {
+      "type": "textarea",
+      "id": "column_1_text",
+      "label": "Column 1 Text"
+    },
+    {
+      "type": "textarea",
+      "id": "column_2_text",
+      "label": "Column 2 Text"
+    }
+  ]
+}
+{% endschema %}

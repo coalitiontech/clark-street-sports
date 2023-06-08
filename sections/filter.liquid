@@ -1,0 +1,92 @@
+<div class="filters">
+	<div class="filters__widget filters__widget--menu">
+		<ul>
+			<li>
+				<a href="#">
+					<input type="radio" name="field-{{ block.id }}" value="{{ link.title }}" />
+					
+					<label></label>
+				</a>
+			</li>
+
+			<li>
+				<a href="#">
+					<input type="radio" name="field-{{ block.id }}" value="{{ link.title }}" />
+					
+					<label></label>
+				</a>
+			</li>
+
+			<li>
+				<a href="#">
+					<input type="radio" name="field-{{ block.id }}" value="{{ link.title }}" />
+					
+					<label></label>
+				</a>
+			</li>
+
+			<li>
+				<a href="#">
+					<input type="radio" name="field-{{ block.id }}" value="{{ link.title }}" />
+					
+					<label></label>
+				</a>
+			</li>
+		</ul>
+	</div><!-- /.filters__widget -->
+
+	<div class="filters__widget filters__widget--boxes">
+		<ul>
+			<li>
+				<a href="#">
+					<input type="radio" name="field-{{ block.id }}" value="{{ link.title }}" />
+					
+					<label></label>
+				</a>
+			</li>
+
+			<li>
+				<a href="#">
+					<input type="radio" name="field-{{ block.id }}" value="{{ link.title }}" />
+					
+					<label></label>
+				</a>
+			</li>
+
+			<li>
+				<a href="#">
+					<input type="radio" name="field-{{ block.id }}" value="{{ link.title }}" />
+					
+					<label></label>
+				</a>
+			</li>
+
+			<li>
+				<a href="#">
+					<input type="radio" name="field-{{ block.id }}" value="{{ link.title }}" />
+					
+					<label></label>
+				</a>
+			</li>
+		</ul>
+	</div><!-- /.filters__widget -->
+</div><!-- /.filters -->
+
+{% schema %}
+{
+	"name": "Filter",
+	"blocks": [
+		{
+			"type": "filter",
+			"name": "Filter",
+			"settings": [
+				{
+					"type": "text",
+					"id": "filter_name",
+					"label": "Filter Name"
+				}
+			]
+		}
+	]
+}
+{% endschema %}

@@ -1,0 +1,6 @@
+{% assign productTags = product | map: 'tags' | join: '~~~~' | downcase | split: '~~~~' | uniq %}
+{% assign tagName = 'ships-free' | downcase %}
+
+{% if productTags contains tagName %}
+  {% assign shipsFreeText = '<span>Ships Free with code: SHIPFREE</span>' %}
+{% endif %}

@@ -1,0 +1,37 @@
+<div class="main">
+  <div class="container">
+    <h2 class="page-title">{{ blog.title }}</h2><!-- /.page-title -->
+
+    {%- assign setting_per_page = settings.posts_per_page | plus: 0 -%}
+
+    {%- if setting_per_page > 0 -%}
+      {%- assign per_page = settings.posts_per_page -%}
+    {%- else -%}
+      {%- assign per_page = 6 -%}
+    {%- endif -%}
+
+    {%- paginate blog.articles by per_page -%}
+      <div class="blog-listing">
+        {%- for article in blog.articles -%}
+          <div class="article">
+            <a href="{{ article.url }}"  class="article__image">
+              <span style="background-image: url({{ article.image | img_url: '2048x' }})"></span>
+            </a>
+
+            <h4>
+              <a href="{{ article.url }}">
+                {{ article.title }}
+              </a>
+            </h4>
+
+            <p>
+              {{ article.excerpt }}
+            </p>
+          </div><!-- /.article -->
+        {%- endfor -%}
+      </div><!-- /.blog-listing -->
+      
+      {%- include 'pagination' -%}
+    {%- endpaginate -%}
+  </div><!-- /.container -->
+</div><!-- /.main -->

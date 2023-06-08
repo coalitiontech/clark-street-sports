@@ -1,0 +1,53 @@
+{%- assign collection_paginate = cart.attributes['paginate'] -%}
+{%- unless collection_paginate -%}
+  {% assign collection_paginate = '36' %}
+{%- endunless -%}
+<div class="top-line">
+    {%- include 'breadcrumbs' -%}
+
+  {% comment %} <div class="view-size">
+    <span>{{ 'collection.view' | t }}</span>
+    <a href="#"{% if collection_paginate == '36' %} class="active"{% endif %}>36</a>
+    <a href="#"{% if collection_paginate == '48' %} class="active"{% endif %}>48</a>
+  </div><!-- /.view-size --> {% endcomment %}
+
+  {% comment %} <div class="mobile-line">
+    <a href="#" class="filter-toggle">Filter</a>
+    <a href="#" class="sort-price">
+      Sort
+      <select class="sort-by filters-toolbar__input filters-toolbar__input--sort"></select>
+    </a>
+  </div><!-- /.mobile-line --> {% endcomment %}
+
+  <div class="mobile-collection-menu">
+    <div class="mobile-sort-by">
+      <select class="sort-by"></select>
+    </div>
+    <div class="mobile-filter">
+      <a href="#" class="toggle-filters">Filter</a>
+    </div>
+  </div>
+
+  <div class="product-count">
+    {{ collection.products_count }} {{ 'general.product.found' | t }}
+  </div><!-- /.product-count -->
+
+  {% unless template contains 'no-filters' %}
+    <div class="right-side">
+      <div class="select-wrapper">
+        <div class="filters-toolbar__item text-right">
+          <select class="sort-by filters-toolbar__input filters-toolbar__input--sort"></select>
+        </div>
+      </div><!-- /.select-wrapper -->
+
+      <div class="collection-pagination paginate"></div>
+
+      {% comment %} {% paginate collection.products by collection_paginate %}
+        {%- include 'pagination' -%}
+      {% endpaginate %} {% endcomment %}
+  {% endunless %}
+  </div><!-- /.right-side -->
+</div><!-- /.top-line -->
+
+
+

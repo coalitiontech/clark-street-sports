@@ -1,0 +1,69 @@
+{%- assign _settings = section.settings -%}
+{%- assign _blocks = section.blocks -%}
+
+<div class="products-row">
+
+  {%- if _settings.title != '' -%}
+    <h3>{{ _settings.title }}</h3>
+  {%- endif -%}
+
+  <ul class="products-list">
+    {%- for _block in _blocks -%}
+      {%- assign product_item = all_products[_block.settings.product] -%}
+      {% include "product-item", with product_item %}
+    {%- endfor -%}
+  </ul><!-- /.products-list -->
+
+  {%- if _settings.bottom_button_label != blank and _settings.bottom_button_link != blank -%}
+    <div class="cta-holder">
+      <a href="{{ _settings.bottom_button_link }}" class="btn">
+        {{ _settings.bottom_button_label }}
+      </a>
+    </div><!-- /.cta-holder -->
+  {%- endif -%}
+</div><!-- /.products-row -->
+
+{% schema %}
+{
+  "name": "Featured Products",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section title",
+      "default": "Shop by collection"
+    },
+    {
+      "type": "url",
+      "id": "shop_link",
+      "label": "Shop button link"
+    },
+    {
+      "type": "text",
+      "id": "shop_link_title",
+      "label": "Title for the link",
+      "default": "Shop all products"
+    }
+  ],
+  "max_blocks": 8,
+  "blocks": [
+    {
+      "type": "Collection",
+      "name": "Collection",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Shop by collection",
+      "category": "Misc"
+    }
+  ]
+}
+{% endschema %}

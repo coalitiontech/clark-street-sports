@@ -1,0 +1,6 @@
+{% assign productTags = product | map: 'tags' | join: '~~~~' | downcase | split: '~~~~' | uniq %}
+{% assign tagName = 'sale' | downcase %}
+
+{% if productTags contains tagName %}
+  {% assign saleText = '<span>Sale Item</span>' %}
+{% endif %}

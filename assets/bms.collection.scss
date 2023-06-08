@@ -1,0 +1,115 @@
+$vp-xx-lg: 1450px; // ~ 1449px
+$vp-x-lg: 1200px; // ~ 1199px
+$vp-lg: 1024px; // ~ 1023px
+$vp-md: 960px; // ~ 959px
+$vp-md-sm: 798px; //797px
+$vp-sm: 768px; // ~ 767px
+$vp-x-sm: 480px; // ~ 479px
+
+$color-transparent: rgba(255,255,255,0);
+$color-white: #ffffff;
+$color-gray: #dedede;
+$color-blue: #1b59b2;
+$color-dark-gray: #bab8b8;
+
+/*
+    Variable Height
+*/
+
+.variable-height {
+  position: relative;
+  overflow: hidden;
+  transition: height 0.25s;
+
+  &.content-hidden {
+    .toggle-container {
+      background-image: linear-gradient($color-transparent, $color-white);
+      .content-toggle {
+        &:before {
+          content: attr(data-more);
+        }
+      }
+    }
+  }
+
+  .toggle-container {
+    display: flex;
+    justify-content: flex-end;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: right;
+    .content-toggle {
+      cursor: pointer;
+      font-size: 12px;
+      color: $color-blue;
+      background-color: $color-white;
+      padding: 5px;
+      &:before {
+        content: attr(data-less);
+      }
+    }
+  }
+}
+
+.collection-description {
+  margin: 0 20px 20px;
+
+  h2 {
+    margin-bottom: 15px;
+  }
+
+  p {
+    margin: 10px 0;
+  }
+}
+
+.collection-products {
+  .products-row {
+    .products-list {
+      .product-item {
+        width: 300px;
+        max-width: 300px;
+        margin: 0 1% 55px;
+
+        .price {
+          .original-price {
+            color: $color-dark-gray;
+            text-decoration: line-through;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: $vp-x-sm + 20) {
+  .main {
+    padding-top: 40px;
+  }
+}
+
+@media screen and (max-width: $vp-sm - 1) {
+  .collection-products {
+    .products-row {
+      .products-list {
+        .product-item {
+          width: auto;
+        }
+      }
+    }
+  }
+}
+
+.collection-row {
+  &.centered-grid {
+    justify-content: center;
+  }
+}
+
+@media screen and (max-width: $vp-lg) {
+  .collection-products .collection-pagination {
+    margin: 0 auto 20px;
+  }
+}

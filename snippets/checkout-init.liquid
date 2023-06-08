@@ -1,0 +1,51 @@
+{{ 'checkout.scss.css' | asset_url | stylesheet_tag }}
+<script type="text/javascript" src="{{ 'bms.checkout.js' | asset_url }}" defer></script>
+<script type="text/javascript" src="{{ 'bms.checkoutLimiting.bundle.js' | asset_url }}" defer></script>
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function() {
+        BOLD.BMS.BUILDS.Checkout.init("{{ checkout.total_price }}");
+    });
+</script>
+<script type="text/javascript">
+    window.Plus = window.Plus || {} ;
+    Plus.func = function(name, section, callback) {
+    switch (section) {
+        case 'main': section = '[data-step]';
+        break;
+        case 'discount_form': section = '[data-reduction-form]';
+        break;
+        case 'payment_lines': section = '[data-order-summary-section="payment-lines"]';
+        break;
+        case 'payment_due': section = '[data-order-summary-section="payment-due"]';
+        break;
+        default: section = section;
+    }
+
+    // checking for a specific class-attribute, else it's been erased by page:change
+        if (!Checkout.$(section).hasClass(name)) {
+            if (typeof(callback) === 'function') {
+            Checkout.$(section).addClass(name); callback();
+            }
+            else {
+            console.warn( 'Plus.func requires a function for the callback parameter' );
+            }
+        }
+    }
+
+    $(document).on('page:load page:change', function() {
+        
+        Plus.func('customer-note-added', 'payment_lines', function() {
+            var cartNoteSection = $('.order-summary__section.order-summary__section--customer-note');
+            var cartNotes = {{ checkout.note | json }};
+            if (!cartNoteSection.length && cartNotes && cartNotes.length > 0) {
+                var template = `
+                <div class='order-summary__section order-summary__section--customer-note'>
+                    <h3>Note / Gift Message</h3>
+                    <p>${cartNotes}</p>
+                </div>`;
+                $(template).insertBefore($(`[data-order-summary-section="payment-lines"]`));
+            }
+        });
+    });
+
+</script>

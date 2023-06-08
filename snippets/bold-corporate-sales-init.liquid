@@ -1,0 +1,17 @@
+<script defer src="{{ 'CorporateFlow.bundle.js' | asset_url }}"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var BOLD = window.BOLD || {};
+    BOLD.BMS = BOLD.BMS || {};
+    BOLD.BMS.BUILDS = BOLD.BMS.BUILDS || {};
+
+    {% if template contains 'collection' %}
+      BOLD.BMS.BUILDS.CorporateFlow.initCollectionPage();
+    {% endif %}
+
+    {% if template contains 'product' %}
+      BOLD.BMS.BUILDS.CorporateFlow.initProductPage();
+    {% endif %}
+  });
+</script>

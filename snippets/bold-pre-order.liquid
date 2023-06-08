@@ -1,0 +1,6 @@
+{% assign productTags = product | map: 'tags' | join: '~~~~' | downcase | split: '~~~~' | uniq %}
+{% assign tagName = 'pre-order' | downcase %}
+
+{% if productTags contains tagName %}
+  {% assign preOrderText = '<span>*Pre-Order Item - No Cancelations</span>' %}
+{% endif %}

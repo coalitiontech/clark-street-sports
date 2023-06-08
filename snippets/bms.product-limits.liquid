@@ -1,0 +1,48 @@
+{%- comment -%}
+Constructing an object that loosely describes the cart and 
+the limits on the products/items that are currently in cart
+
+tag limits will look like this limit_{productGroup}_{limitQuantity}
+{%- endcomment -%}
+
+{%- capture product_limit_data -%}
+  {%- for item in cart.items -%}
+      {
+        {%- assign current_product = item.product -%}
+        {%- assign current_variant = item.variant %}
+        "product_id": {{ current_product.id | json }},
+        "variant_id": {{ item.variant_id | json }},
+        "product_title": {{current_product.title | json }},
+        "variant_title": {{current_variant.title | json }},
+        "quantity": {{ item.quantity | json }},
+        {%- for field in current_product.metafields.product_limits %}
+        "{{ field | first }}" : {{ field | last }},
+        {%- endfor -%}
+        {%- for field in current_variant.metafields.product_limits %}
+        "{{ field | first }}" : {{ field | last }},
+        {%- endfor %}
+        "tag_limits": [
+        {%- for tag in current_product.tags -%}
+        {%- assign tag_limit_count = 0 -%}
+        {%- if tag contains "limit_" -%}
+        {%- if tag_limit_count > 0 -%},{%- endif %}
+          "{{ tag }}"
+        {%- assign tag_limit_count = tag_limit_count | plus: 1 -%}
+        {%- endif -%}
+        {%- endfor %} 
+        ]
+      }{%- unless forloop.last -%},{%- endunless -%}
+  {%- endfor -%}
+{%- endcapture -%}
+
+{% if output %}
+<script id="ProductLimitsData" type="application/json">
+{% endif %}
+  {
+    "productLimitRules": [
+      {{ product_limit_data }}
+    ]
+  }
+{% if output %}
+</script>
+{% endif %}

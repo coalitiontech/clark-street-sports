@@ -1,0 +1,26 @@
+<div class="selector-wrapper">
+  <div id="variant-selector" class="down-arrow" data-sizes>
+    {{first_variant_available.option1}}
+   
+  </div>
+
+  <div id="variants-wrapper">
+    {% for variantUnit in product.variants %}
+      <div 
+        id="{{variantUnit.id}}" 
+        data-price="{{variantUnit.price | money}}" 
+        data-option-name="{{variantUnit.option1}}"
+        data-available="{{variantUnit.available}}"
+        data-quantity="{{variantUnit.inventory_quantity}}"
+        class="variantItem
+        {% if variantUnit.available == false %} sold-out{% endif %}
+        {% if variantUnit.id == first_variant_available.id %} selectedItem{% endif %} 
+        ">
+        <a>
+          {{variantUnit.option1}}
+          {% if variantUnit.available == false %} - Sold Out{%- endif -%}
+        </a>
+      </div>
+    {% endfor %}
+  </div>
+</div>

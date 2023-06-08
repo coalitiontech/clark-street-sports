@@ -1,0 +1,170 @@
+{%- assign field = section.settings -%}
+
+<header class="header">
+  {%- if field.promo_text != blank -%}
+    <div class="promo" style="background-color:{{ section.settings.promo_background }}; color:{{ section.settings.promo_text_color }}">
+      <div class="container">
+        {{ field.promo_text }}
+      </div>
+      <!-- /.container -->
+    </div>
+    <!-- /.promo -->
+  {%- endif -%}
+
+  <div class="header__inner--wrapper">
+
+    <div class="header__inner">
+  
+      <a href="/" class="logo"></a>
+      
+  
+  <div class="header__item search">
+    <form action="/search" method="get" class="search-header search-form" role="search">
+        <button  name="search_submit" class="header__icon-link">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M8 16C3.58172 16 0 12.4183 0 8C0 3.58173 3.58172 0 8 0C12.4183 0 16 3.58173 16 8C16 9.84871 15.3729 11.551 14.3199 12.9056L19.7071 18.2929L18.2929 19.7071L12.9056 14.3199C11.551 15.3729 9.84871 16 8 16ZM14.0001 8C14.0001 11.3137 11.3138 14 8.00012 14C4.68641 14 2.00012 11.3137 2.00012 8C2.00012 4.68629 4.68641 2 8.00012 2C11.3138 2 14.0001 4.68629 14.0001 8Z" fill="#0F2C51"/>
+            </svg>
+        </button>
+        <input class="search-header__input search__input" type="search" name="q" placeholder="Search">
+    </form>
+  </div>
+      <div class="header__inner-right">
+        {%- include 'static-menu' -%}
+      </div><!-- /.right-nav -->
+    </div><!-- /.header__inner -->
+  </div>
+
+  <div class="ajax-cart-holder"></div><!-- /.ajax-cart-holder -->
+  <div class="mobile-menu" style="background-color: {{ section.settings.mobile_background_color }}; {% if section.settings.mobile_background_image != blank %}background-image: url({{ section.settings.mobile_background_image | img_url: '600x' }});{% endif %} color:{{ section.settings.mobile_text_color }};">
+
+    {%- unless section.blocks == blank -%}
+      {%- assign btns = section.blocks | where: 'type', 'menu_swatch' -%}
+      {%- include 'menu-buttons', menu_title: section.settings.menu_button_title, buttons: btns -%}
+    {%- endunless -%}
+
+    {%- unless field.mobile_menu_2 == blank -%}
+      {%- include 'menu', menu_handle: field.mobile_menu_2 -%}
+    {%- endunless-%}
+
+    {%- unless field.mobile_menu == blank -%}
+      {%- include 'menu', menu_handle: field.mobile_menu -%}
+    {%- endunless -%}
+  </div>
+  <!-- /.mobile-menu -->
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "richtext",
+      "id": "promo_text",
+      "label": "Promo Text"
+    },
+    {
+      "type": "color",
+      "id": "promo_background",
+      "label": "Background colour",
+      "default": "#1b59b2"
+    },
+    {
+      "type": "color",
+      "id": "promo_text_color",
+      "label": "Promo text colour",
+      "default": "#ffffff"
+    },
+    {
+      "type": "link_list",
+      "id": "main_menu",
+      "label": "Main Menu"
+    },
+    {
+      "type": "link_list",
+      "id": "mobile_menu",
+      "label": "Mobile Menu"
+    },
+    {
+      "type": "text",
+      "id": "menu_button_title",
+      "label": "Heading for Button Navigation",
+      "default": "Shop" 
+    },
+    {
+      "type": "link_list",
+      "id": "mobile_menu_2",
+      "label": "Mobile Menu 2"
+    },
+    {
+      "type": "color",
+      "label": "Mobile Background Color",
+      "id": "mobile_background_color",
+      "default": "#1b59b2"
+    },
+    {
+      "type": "color",
+      "id": "mobile_text_color",
+      "label": "Mobile Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "image_picker",
+      "label": "Mobile Background Image",
+      "id": "mobile_background_image",
+      "info": "Image is anchored to the bottom-left of the mobile menu"
+    }
+
+  ],
+  "blocks": [
+    {
+      "type": "menu_swatch",
+      "name": "Mobile Swatch/Button Nav",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Label",
+          "placeholder": "White Sox"
+        },
+        {
+          "type": "checkbox",
+          "label": "Show label text?",
+          "id": "show_label"
+        },
+        {
+          "type": "color",
+          "label": "Label text color",
+          "id": "label_color",
+          "default": "#000033"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Link"
+        },
+        {
+          "type": "link_list",
+          "id": "menu_categories",
+          "label": "Select a navigation list for the category"
+        },
+        {
+          "type": "select",
+          "label": "Button Width",
+          "id": "width_class",
+          "options": [
+            { "value": "menu-swatch__half", "label": "50%" },
+            { "value": "menu-swatch__full", "label": "100%" }
+          ],
+          "default": "menu-swatch__half"
+        }
+
+
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,107 @@
+{%- if get == blank -%}
+  {%- assign srtc_description = content | default: shortcode -%}
+  {%- assign the_content = '' -%}
+  {%- assign content_shortcodes = '' -%}
+
+  {%- assign srtc_description = srtc_description | replace: '<!--[', '&#90;' | replace: ']-->', '&#93;'  -%}
+  {%- assign srtc_description = srtc_description | replace: '&lt;!--[', '&#91;' | replace: ']--&gt;', '&#93;'  -%}
+  {%- assign get_all_shortcodes = srtc_description | split: '[' -%}
+
+  {%- if shortcodes != blank -%}
+    {%- assign shortcodes_array = shortcodes | replace: ' ', '' | split: ',' -%}
+
+    {%- for shortcode_name in shortcodes_array -%}
+      {%- assign srtc_name = shortcode_name | replace: ' ', '' -%}
+      {%- assign srtc_file = 'shortcode-' | append: srtc_name -%}
+      {%- assign srtc_start = '[' | append: srtc_name -%}
+      {%- assign srtc_end = '[/' | append: srtc_name | append: "]" -%}
+      {%- assign srtc_elements = srtc_description | split: srtc_start -%}
+
+      {%- for content in srtc_elements -%}
+        {%- assign srtc_content = content -%}
+
+        {%- unless content contains srtc_end -%}
+          {%- assign srtc_inline_fix = srtc_end | prepend: ']' -%}
+          {%- assign srtc_content = content | replace: ']', srtc_inline_fix -%}
+          {%- assign srtc_description = srtc_description | replace: content, srtc_content -%}
+        {%- endunless -%}
+
+        {%- assign srtc_second_phase = srtc_content | split: srtc_end -%}
+        {%- assign srtc_code = srtc_start | append: srtc_second_phase[0] | append: srtc_end -%}
+
+        {%- if srtc_second_phase.size >= 2 -%}
+          {%- assign srtc_third_phase = srtc_second_phase[0] | split: ']' -%}
+          {%- assign attributes = srtc_third_phase[0] -%}
+          {%- assign srtc_attrs = srtc_third_phase[0] | append: ']' -%}
+          {%- assign srtc_attrs_array = attributes | split: '"' -%}
+          {%- assign the_content = srtc_second_phase[0] | replace: srtc_attrs, '' | prepend: '<p>' | append: '</p>' -%}
+          {%- assign the_content = the_content | replace: '<p>﻿</p>', '' | replace: '<p></p>', '' | replace: '<p>&nbsp;</p>', '' | replace: '<p> </p>', '' | replace: '<p>  </p>', '' | replace: '<p><br></p>', '' -%}
+
+          {%- assign the_attrs = '' -%}
+
+          {%- assign srtc_last_attr = '' -%}
+
+          {%- for attr in srtc_attrs_array -%}
+            {%- assign odd = forloop.index | modulo: 2 -%}
+            {%- assign attr_arg = attr | replace: ' ', '' | replace: '=', '' -%}
+            {%- assign attr_content = attr -%}
+            {%- assign srtc_last_attr = attr_arg -%}
+
+            {%- if odd > 0 -%}
+              {%- if srtc_last_attr != blank -%}
+                {%- assign the_attrs = the_attrs | append: '(||)' | append: attr_arg | append: "=" -%}
+              {%- endif -%}
+            {%- else -%}
+              {%- if srtc_last_attr != blank -%}
+                {%- assign the_attrs = the_attrs | append: attr_content | append: '(||)' -%}
+              {%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}
+
+          {%- capture srtc_load -%}
+            {%- include srtc_file -%}
+          {%- endcapture -%}
+
+          {%- if srtc_load contains 'Liquid error' -%}
+            {%- continue -%}
+          {%- else -%}
+            {%- assign srtc_load_replace = srtc_load | prepend: '</p>' | append: '<p>' -%}
+            {%- assign srtc_description = srtc_description | replace_first: srtc_code, srtc_load_replace | replace: '<p>﻿</p>', '' | replace: '<p></p>', '' | replace: '<p>&nbsp;</p>', '' | replace: '<p> </p>', '' | replace: '<p>  </p>', '' | replace: '<p><br></p>', '' -%}
+          {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+
+      {%- assign the_content = srtc_description | replace: '<p>﻿</p>', '' | replace: '<p></p>', '' | replace: '<p>&nbsp;</p>', '' | replace: '<p> </p>', '' | replace: '<p>  </p>', '' | replace: '<p><br></p>', '' -%}
+
+      {%- assign srtc_file = '' -%}
+      {%- assign srtc_name = '' -%}
+      {%- assign srtc_elements = '' -%}
+      {%- assign srtc_code = '' -%}
+      {%- assign srtc_start = '' -%}
+      {%- assign srtc_end = '' -%}
+      {%- assign srtc_attrs = '' -%}
+      {%- assign srtc_third_phase = '' -%}
+      {%- assign srtc_attrs_array = '' -%}
+      {%- assign srtc_second_phase = '' -%}
+      {%- assign srtc_last_attr = '' -%}
+    {%- endfor -%}
+  {%- else -%}
+    {%- assign the_content = srtc_description -%}
+  {%- endif -%}
+
+  {{- the_content -}}
+{%- else -%}
+  {%- assign srtc_the_attr_content = '' -%}
+  {%- capture srtc_find_attr -%}
+    {{- get -}}
+  {%- endcapture -%}
+
+  {%- assign srtc_find_attr = get | append: '=' | prepend: '(||)' -%}
+
+  {%- if the_attrs contains srtc_find_attr -%}
+    {%- assign srtc_the_attr_content = the_attrs | split: srtc_find_attr -%}
+    {%- assign srtc_the_attr_content = srtc_the_attr_content[1] | split: '(||)' -%}
+
+    {{- srtc_the_attr_content[0] -}}
+  {%- endif -%}
+{%- endif -%}

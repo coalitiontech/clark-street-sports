@@ -1,0 +1,254 @@
+{% comment %}
+==================================================
+COLLECTION TEMPLATES
+==================================================
+{% endcomment %}
+
+{% raw %}
+  <script id="CollectionFiltersTemplate" type="text/x-handlebars-template">
+    <span class="mobile-close"></span>
+    <ul class="filter-list">
+      {{#xif "activeFilters.length > 0"}}
+        <li>
+          <h3 class="your-selection">Your Selections</h3>
+          <ul class="active-filter-list">
+            {{#each activeFilters}}
+              <li class="active-filter">{{ name }}</li>
+            {{/each}}
+          </ul>
+          <a href="#" class="clear-all-filters">Clear All</a>
+        </li>
+      {{/xif}}
+      {{#each categories}}
+        {{#if visible}}
+          {{#xif "name.indexOf('Size') == -1 && name != 'Price' "}}
+            <li>
+              <h3>{{ name }}</h3>
+              <ul class="filter-list-item">
+                {{#each filters}}
+                  {{#if visible}}
+                    <li class="filter-group">
+                      <input type="checkbox" value="{{ tag }}" id="{{ tag }}" class="filter-input" {{#if selected }}checked="checked"{{/if}}/>
+                      <label for="{{ tag }}" class="filter-label">{{ name }} {{#if product_count}}({{ product_count }}){{/if}}</label>
+                    </li>
+                  {{/if}}
+                {{/each}}
+              </ul>
+            </li>
+          {{/xif}}
+          {{#xif "name.indexOf('Size') > -1"}}
+            <li>
+              <h3>{{ name }}</h3>
+              <ul class="filter-list-item filter-size-swatches variant-container" data-handle="{{ handle }}">
+                {{#each filters}}
+                  {{#if visible}}
+                    <li class="filter-group filter-size-swatch"  data-handle="{{ handle }}">
+                      <input type="checkbox" value="{{ tag }}" id="{{ tag }}" class="filter-input" {{#if selected }}checked="checked"{{/if}}/>
+                      <label for="{{ tag }}" class="filter-label">{{ name }}</label>
+                    </li>
+                  {{/if}}
+                {{/each}}
+              </ul>
+            </li>
+          {{/xif}}
+        {{/if}}
+        {{#xif "name == 'Price'"}}
+            <li>
+              <h3>Price</h3>
+              <ul class="price-filter-list-item">
+                <li class="price-filter-group">
+                  <input type="radio" value="" data-min="1" data-max="1000" id="priceRange-10" name="price-ranges" class="price-range-radio" {{#xif "lowPrice == 1"}}checked="checked"{{/xif}}/>
+                  <label for="priceRange-10" class="filter-label">Under $10</label>
+                </li>
+                <li class="price-filter-group">
+                  <input type="radio" value="" data-min="1000" data-max="2000" id="priceRange-20" name="price-ranges" class="price-range-radio" {{#xif "lowPrice == 1000"}}checked="checked"{{/xif}}/>
+                  <label for="priceRange-20" class="filter-label">$10 - $20</label>
+                </li>
+                <li class="price-filter-group">
+                  <input type="radio" value="" data-min="2000" data-max="4000" id="priceRange-40" name="price-ranges" class="price-range-radio" {{#xif "lowPrice == 2000"}}checked="checked"{{/xif}}/>
+                  <label for="priceRange-40" class="filter-label">$20 - $40</label>
+                </li>
+                <li class="price-filter-group">
+                  <input type="radio" value="" data-min="4000" data-max="6000" id="priceRange-60" name="price-ranges" class="price-range-radio" {{#xif "lowPrice == 4000"}}checked="checked"{{/xif}}/>
+                  <label for="priceRange-60" class="filter-label">$40 - $60</label>
+                </li>
+                <li class="price-filter-group">
+                  <input type="radio" value="" data-min="6000" data-max="" id="priceRange-60-plus" name="price-ranges" class="price-range-radio" {{#xif "lowPrice == 6000"}}checked="checked"{{/xif}}/>
+                  <label for="priceRange-60-plus" class="filter-label">Over $60</label>
+                </li>
+              </ul>
+              {{#if hasPriceRange }}
+                <a class="clear-price-range" href="#">Clear Price Range</a>
+              {{/if}}
+            </li>
+          {{/xif}}
+      {{/each}}
+    </ul>
+  </script>
+
+  <script id="CollectionProductsTemplate" type="text/x-handlebars-template">
+    {{#if loading}}
+      {{#repeat 6}}
+        <li>
+          <a href="{{ url_with_collection }}">
+            <div class="collection-product-image product-image" data-aspect-ratio="1">
+              <span class="loading-image"></span>
+            </div>
+            <h4>
+              <span class="loading-title"></span>
+              <span class="loading-title"></span>
+            </h4>
+            <span class="loading-price"></span>
+          </a>
+        </li>
+      {{/repeat}}
+    {{else}}
+      {{#each products}}
+        <li class="product-item">
+          <a href="{{ url_with_collection }}" class="product-item--link">
+            <div class="collection-product-image product-image" data-aspect-ratio="{{ image_aspect_ratio }}">
+              <div class="countdown-container">  
+                <img src="{{ image }}" alt="">
+
+                  <input id="countdownMetafield" type="hidden" value="{{ countdown_date_time}}">
+                  
+                  <input id="countdownToggle" type="hidden" value="true">
+        
+                  {{#if countdown_date_time_data }}
+                    <div class="countdown-overlay">
+                      <div class="countdown-overlay__date">
+                  
+                        <span>{{countdown_date_time_data.month}}</span>
+                        <p>{{countdown_date_time_data.day}}</p>
+                      </div>
+                      <div class="countdown-overlay__header--countdown-timer">
+                        <div class="time-unit">
+                          <span class="countdown-timer__digit timer-days days-{{id}}">00</span>
+                          <p>days</p>
+                        </div>
+                        <div class="time-unit">
+                          <span class="countdown-timer__digit timer-hours hours-{{id}}">00</span>
+                          <p>hours</p>
+                        </div>
+                        <div class="time-unit">
+                          <span class="countdown-timer__digit timer-minutes minutes-{{id}}">00</span>
+                          <p>mins</p>
+                        </div>
+                        <div class="time-unit">
+                          <span class="countdown-timer__digit timer-seconds seconds-{{id}}">00</span>
+                          <p>secs</p>
+                        </div>
+    
+                      </div>
+                     </div>
+                     {{/if}}
+        
+              </div> 
+            </div>
+            <h4>{{ title }}</h4>
+            <span class="price">
+              <span class="current-price">{{ formatMoney price }}</span>
+              {{#if is_sale }}
+                <span class="original-price">{{ formatMoney compare_at_price_max }}</span>
+              {{/if}}
+            </span>
+            <div class="tags-wrapper">
+              {{#if is_new }}
+                <span class="new-tag">
+                  {% endraw %}{{ 'general.product.new_tag' | t }}{% raw %}
+                </span>
+              {{/if}}
+              {{#if is_sale }}
+                <span class="sale-tag">
+                  {% endraw %}{{ 'general.product.sale_tag' | t }}{% raw %}
+                </span>
+              {{/if}}
+              {{#each badges}}
+                <span class="custom-tag">
+                  <img src="{{ this }}"/>
+                </span>
+              {{/each}}
+            </div>
+
+          </a>
+        </li>
+      {{/each}}
+    {{/if}}
+  </script>
+
+  <script id="CollectionSortBy" type="text/x-handlebars-template">
+    {{#each sort}}
+      {{#if selected}}
+          <option value="{{ value }}" selected="selected">Sort by {{ title }}</option>
+      {{else}}
+        <option value="{{ value }}">Sort by {{ title }}</option>
+      {{/if}}
+    {{/each}}
+  </script>
+
+  <script id="CollectionPagination" type="text/x-handlebars-template">
+    {{#if loading}}
+    {{else}}
+      <ul>
+        {{#each parts}}
+          {{#if is_link}}
+            {{#if active}}
+              <span class="active">{{ title }}</span>
+            {{else}}
+              <a href="#" data-value="{{ page }}" class="pagination-link">{{ title }}</a>
+            {{/if}}
+          {{else}}
+            <span>{{ title }}</span>
+          {{/if}}
+        {{/each}}
+      </ul>
+    {{/if}}
+  </script>
+{% endraw %}
+
+{% comment %}
+==================================================
+INITIALIZE COLLECTION FILTERS
+==================================================
+{% endcomment %}
+<script>
+  var BOLD = BOLD || {};
+  BOLD.collection_filter = BOLD.collection_filter || {};
+  BOLD.collection_filter.categories = {{ linklists['collection-filters'].links | map: 'title' | json }};
+  BOLD.collection_filter.settings = BOLD.collection_filter.settings || {};
+  BOLD.collection_filter.settings.image_size = '600x600';
+  BOLD.collection_filter.settings.debug = false;
+  BOLD.collection_filter.sort = {{ collection.default_sort_by | json }};
+  BOLD.collection_filter.settings.separator = ':';
+  BOLD.collection_filter.defaultSort = {{  collection.default_sort_by | json }};
+
+  BOLD.collection_filter = BOLD.collection_filter || {};
+  BOLD.collection_filter.config = {
+    products: {% include 'bold-ajax-product-json' %},
+    product_count: {{ collection.all_products_count | default: search.results_count | default: 0 }},
+    collection: "{{ collection.handle }}",
+    pagination: {
+      current_page: {{ paginate.current_page }},
+      pages: {{ paginate.pages }},
+      page_size: {{ paginate.page_size }},
+    },
+    url: "{{ collection.url | default: '/collections/all' }}?sort_by=manual",
+    fetch_count: 250,
+    tags: {{ collection.all_tags | json }}
+  }
+</script>
+
+<script>
+  {% if collection.handle == 'all' %}
+  {% assign my_switch = 1 %}
+  {% else %}
+  {% assign my_switch = collection.metafields.sf_team_filter.filter_enabled %} 
+  {% endif %}
+
+  {% if my_switch == 1 %}
+    BOLD.collection_filter.categories.unshift('Team');
+  {% endif %}
+</script>
+
+{% comment %} {{ 'https://localhost:8080/bold-collection-filter.js' | script_tag }} {% endcomment %}
+{{ 'bold-collection-filter.min.js' | asset_url | script_tag }}

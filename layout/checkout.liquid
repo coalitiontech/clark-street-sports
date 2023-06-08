@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="{{ locale }}" dir="{{ direction }}" class="{{ checkout_html_classes }}">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, height=device-height, minimum-scale=1.0, user-scalable=0">
+    <meta name="referrer" content="origin">
+
+    <title>{{ page_title }}</title>
+
+    {{ content_for_header }}
+
+    {{ checkout_stylesheets }}
+    {{ checkout_scripts }}
+    {{ 'jquery-ui.min.css' | asset_url | stylesheet_tag }}
+    {{ 'jquery-ui.structure.min.css' | asset_url | stylesheet_tag }}
+    <!-- Global site tag (gtag.js) - Google Ads: 950940829 -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=AW-950940829"></script>
+	<script>
+  		window.dataLayer = window.dataLayer || [];
+  		function gtag(){dataLayer.push(arguments);}
+  		gtag('js', new Date());
+
+  		gtag('config', 'AW-950940829');
+	</script>
+  </head>
+  <body>
+    {{ skip_to_content_link }}
+
+    <div class="banner" data-header>
+      <div class="wrap">
+        {{ content_for_logo }}
+      </div>
+    </div>
+
+    {{ order_summary_toggle }}
+
+    <div class="content" data-content>
+      <div class="wrap">
+        <div class="main" role="main">
+          <div class="main__header">
+            {{ content_for_logo }}
+            {{ breadcrumb }}
+            {{ alternative_payment_methods }}
+          </div>
+          <div class="main__content">
+            {{ content_for_layout }}
+          </div>
+          <div class="main__footer">
+            {{ content_for_footer }}
+          </div>
+        </div>
+        <div class="sidebar" role="complementary">
+          <div class="sidebar__header">
+            {{ content_for_logo }}
+          </div>
+          <div class="sidebar__content">
+            {{ content_for_order_summary }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+ <script> Shopify = window.Shopify || {}; Shopify.shop = Shopify.shop || 'clarkstreetsports1.myshopify.com'; (function (doc) { if (window.location.href.indexOf('checkouts') == -1) { return; } var sc, node; sc = doc.createElement("script"); sc.type = "text/javascript"; sc.async = !0; sc.src = '/apps/sap/fe/loader_2.js?shop=clarkstreetsports1.myshopify.com'; node = doc.getElementsByTagName("script")[0]; node.parentNode.insertBefore(sc, node); })(document); </script> 
+    {{ tracking_code }}
+
+    <script src="{{ 'jquery-ui.min.js' | asset_url }}"></script>
+    <script src="{{ 'iscroll.min.js' | asset_url }}"></script>
+    <script type="text/javascript" src="{{ 'bms.common.js' | asset_url }}"></script>
+    {% include "checkout-init" %}
+  <div data-rebuy-id="63738"></div>
+<script async src="https://cdn.rebuyengine.com/onsite/js/rebuy.js?shop=clarkstreetsports1.myshopify.com"></script>
+</body>
+</html>

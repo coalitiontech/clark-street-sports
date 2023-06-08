@@ -1,0 +1,76 @@
+{%- assign _settings = section.settings -%}
+{%- assign _blocks = section.blocks -%}
+<div class="wrapper">
+    <div class="featured-products">
+      {% unless section.settings.title == blank %}
+      <div class="featured-products__header">
+        {{ section.settings.title }}
+
+        {% unless section.settings.bottom_button_label == blank %}
+        <div class="cta desktop-only">
+          <a class="btn featured-products__cta"  href="{{ section.settings.bottom_button_link }}">{{ section.settings.bottom_button_label }}</a>
+        </div>
+        {% endunless %}
+      </div>
+      {% endunless %}
+
+      <div class="products-row">
+        <ul class="products-list">
+          {%- for block in section.blocks -%}
+            {%- assign product_item = all_products[block.settings.product] -%}
+            {% include "product-item", with product_item %}
+          {%- endfor -%}
+        </ul>
+        
+        {% unless section.settings.bottom_button_label == blank %}
+        <div class="cta mobile-only menu-swatch__full">
+          <a class="btn featured-products__cta"  href="{{ section.settings.bottom_button_link }}">{{ section.settings.bottom_button_label }}</a>
+        </div>
+      {% endunless %}
+      </div>
+    </div>
+</div>
+
+
+{% schema %}
+{
+  "name": "Featured Products",
+  "settings": [
+    {
+      "type": "text",
+      "id": "bottom_button_label",
+      "label": "Bottom Button Label"
+    },
+    {
+      "type": "url",
+      "id": "bottom_button_link",
+      "label": "Bottom Button Link"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    }
+  ],
+  "max_blocks": 8,
+  "blocks": [
+    {
+      "type": "Product",
+      "name": "Product",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Products",
+      "category": "Misc"
+    }
+  ]
+}
+{% endschema %}

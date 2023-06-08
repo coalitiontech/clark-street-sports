@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="{{locale}}">
+  <head>
+    {%- include 'settings' -%}
+    {%- include 'head' -%}
+    <!-- Start content for header -->
+    {% render 'treedify' %}
+    {{ content_for_header }}
+    <!-- End content for header -->
+    {%- include 'bold-common' -%}
+    {%- include 'bold-product' with product, hide_action: 'header' -%}
+    {{ "bms.theme.scss.css" | asset_url | stylesheet_tag }}
+    {{ "bms.flex.scss.css" | asset_url | stylesheet_tag }}
+    {{ "jquery.toastr.min.css" | asset_url | stylesheet_tag }}
+    <!-- Global site tag (gtag.js) - Google Ads: 950940829 -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=AW-950940829"></script>
+	<script>
+  		window.dataLayer = window.dataLayer || [];
+  		function gtag(){dataLayer.push(arguments);}
+  		gtag('js', new Date());
+
+  		gtag('config', 'AW-950940829');
+	</script>
+    <!-- Hotjar Tracking Code for https://clarkstreetsports.com/ -->
+	<script>
+    	(function(h,o,t,j,a,r){
+        	h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+        	h._hjSettings={hjid:1161029,hjsv:6};
+        	a=o.getElementsByTagName('head')[0];
+        	r=o.createElement('script');r.async=1;
+        	r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+        	a.appendChild(r);
+    	})(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+	</script>
+
+    {{ 'bold-utilities.js' | asset_url | script_tag }}
+    {{ 'bms.polyfills.bundle.js' | asset_url | script_tag }}
+
+    {%- comment -%} <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous"> {%- endcomment -%}
+
+  <meta name="google-site-verification" content="OUz-sQGAwgo2OA41gb3qnFTLUGU2RWzoFv32Pp2uuMA" />
+  {% include 'bms.slick-init' %}
+  {% include 'bss-product-labels-configs' %}
+  {% render 'gift-card-pro' %} 
+{% render 'minmaxify-head' %}
+</head>
+             
+
+  {% assign body_class = template | split: '/' | last | split: '.' | last  %}
+
+  {% if body_class contains 'blog' %}
+    {% assign body_class = body_class | append : ' ' |  append: 'blog' %}
+  {% elsif body_class contains 'article' %}
+    {% assign body_class = body_class | append : ' ' |  append: 'blog single single-post' %}
+  {% elsif body_class contains 'collection' %}
+    {% assign body_class = body_class | append : ' ' |  append: 'archive' %}
+  {% elsif body_class contains 'product' %}
+    {% assign body_class = body_class | append : ' ' |  append: 'single single-product' %}
+  {% elsif template contains 'customers' %}
+    {% assign body_class = body_class | append : ' ' |  append: 'customer-templates' %}
+  {% endif %}
+
+  <body class="page-{{ body_class }}">
+    {% include "bms.theme-init" %}
+
+    {% if request.path == "/apps/store-locator" %}
+      {% include "bms-store-locator-init" %}
+    {% endif %}
+
+
+    <div class="is-hidden">{% include 'svg-icons' %}</div>
+
+    <div class="wrapper {{ request.path | handle }}">
+        <div class="sticky">
+            {%- section 'header' -%}
+            {% section 'navigation' %}
+            <div id="saso-notifications" style="padding-top: 0px; "></div>
+
+          <div class="mobile-search-form">
+            {%- include 'search-form' -%}
+          </div>
+        </div>
+
+        {{ content_for_layout }}
+	<noscript class="endOfLayoutContentX" type="text/mark"></noscript>{% render 'treedify_script' %}
+
+        {%- section 'footer' -%}
+    </div><!-- /.wrapper -->
+    {{ theme_scripts }}
+    {% include 'social-login' %}
+
+
+<script>
+  {% comment %} Changing the innerText of some elements based on whether the customer is logged in or not {% endcomment %}
+
+  var footerMenuLink = document.querySelector('.footer .customer-logged-in');
+  var mobileMenuLink = document.querySelector('.mobile-menu .customer-logged-in');
+
+  if (mobileMenuLink) {
+    mobileMenuLink.innerText = 'My Account';
+  }
+
+  if (footerMenuLink) {
+    footerMenuLink.innerText = 'Signed In';
+  }
+
+
+</script>
+{% include 'bms_back_to_top' %}
+
+    {% include 'bms-zoom-init' %}
+
+<!-- ECI:START SCHEMA, 11-22 -->
+    
+<!-- update for targeting all product template -->
+<script>
+    {% if template contains 'product' %}
+        var eci_page = 'product';
+        var eci_availability = {% if product.available %}"InStock"{% else %}"OutOfStock"{% endif %}
+    {% endif %}    
+</script>
+
+<script type="application/ld+json" id="eci-organization"></script>
+<script type="application/ld+json" id="eci-breadcrumb"></script>
+<script type="application/ld+json" id="eci-product"></script>
+<script>
+    $(function() {
+
+        try{
+
+            // organization
+            var eci_organization = {
+                data: {},
+                prepare: function() {
+                    this.data = {
+                        "@context": "https://schema.org",
+                        "@type": "Organization",
+                        "url": "https://clarkstreetsports.com/",
+                        "name": "Clark Street Sports"
+
+
+                    };
+
+                    // logo
+                    this.data['logo'] = 'https://cdn.shopify.com/s/files/1/2242/6395/t/38/assets/logo@2x.png';
+
+                    // contactPoint
+                    var contact_sel = $('a[href^="tel:"]');
+                    if( contact_sel.length ) {
+                        this.data['contactPoint'] = [{
+                            "@type": "ContactPoint",
+                            "telephone": "+1-" + contact_sel.text().replace('(','').replace(') ','-'),
+                            "contactType": "customer service"
+                        }];
+                    }else{
+                        // console.log("no contact_sel");
+                    }
+
+                    // Social profile
+                    var social_sel = $('div.socials').find('a');
+                    if( social_sel.length ) {
+                        this.data['sameAs'] = [];
+                        if(social_sel.length > 1 ){
+                            this.data['sameAs'].push($(social_sel[0]).attr('href'));
+                            this.data['sameAs'].push($(social_sel[1]).attr('href'));
+                            this.data['sameAs'].push($(social_sel[2]).attr('href'));
+                            this.data['sameAs'].push($(social_sel[3]).attr('href'));
+                        }
+                    }else{
+                        // console.log("no social_sel");
+                    }
+
+                },
+
+                render: function() {
+                    var obj = this;
+                    $("#eci-organization").text(JSON.stringify(obj.data));
+                    // console.log('eci-organization', JSON.stringify(obj.data));
+                },
+
+                init: function() {
+                    // on home page only
+                    if($('body.page-index').length){
+                        this.prepare();
+                        this.render();
+                    }
+                }
+            };
+
+            eci_organization.init();
+
+            // breadcrumb
+            var eci_breadcrumb = {
+                data: {},
+                prepare: function(breadcrumb) {
+
+                    this.data = {
+                        "@context": "https://schema.org",
+                        "@type": "BreadcrumbList",
+                        "itemListElement": []
+                    }
+
+                    var obj = this;
+                    $(breadcrumb).each(function(i, s){
+                        var item = {
+                            "@type": "ListItem",
+                            "position": i + 1,
+                            "name": $(s).text().replace('>','')
+
+                        };
+                        item["item"] = 'https://clarkstreetsports.com' + $(s).attr('href');
+
+                        obj.data.itemListElement.push(item);
+                    });
+
+
+                },
+                render: function() {
+                    var obj = this;
+                    $("#eci-breadcrumb").text(JSON.stringify(obj.data));
+                    // console.log('eci-breadcrumb', JSON.stringify(obj.data));
+                },
+
+                init: function() {
+
+                    // wherever breadcrumb appears (category, product and cms page)
+                    var breadcrumb = $('div.breadcrumbs').find('a');
+                    if( breadcrumb.length ) {
+                        this.prepare(breadcrumb);
+                        this.render();
+                    }else{
+                        // console.log("no breadcrumb");
+                    }
+
+                }
+            };
+
+            eci_breadcrumb.init();
+
+            // product
+            var eci_product = {
+                data: {},
+                prepare: function () {
+
+                    this.data = {
+                        "@context": "https://schema.org/",
+                        "@type": "Product",
+                        "offers": {
+                            "@type": "Offer",
+                            "availability": "http://schema.org/" + eci_availability,
+                            "priceCurrency": "USD",
+                            "price": $("div.price span.sale-price").text().replace("$","")						
+                        }
+                    };
+
+                    //product sku
+					var p_sku = $("div.product-description div.variant-sku").text();
+                    if (p_sku.length){
+                        this.data.sku = p_sku
+                    } else {
+                        console.log("no p_sku");
+                    }
+                  
+                    //product name
+                    var p_name = $("div.product-description > .inner > h2:first").text();
+                    if (p_name.length){
+                        this.data.name = p_name
+                    } else {
+                        throw "no product_name";
+                    }
+
+                    //product image
+                    var p_images = this.data.image = [];
+                    if($("div.product-images .featured__images li").length){
+                        $("div.product-images .featured__images li").each(function () {
+                            p_images.push("https:" + $(this).find("img").attr('src'));
+                        });
+                        this.data.image = p_images;
+                        // console.log('this.data.image', this.data.image);
+                    } else {
+                        throw "no product images"
+                    }
+
+                    //product description
+                    var p_desc = $(".description-row p");
+                    if (p_desc.length){
+                        this.data.description = p_desc.text().trim();
+                    } else {
+                        throw "no product description";
+                    }
+
+                    // url
+                    this.data['offers']['url'] = window.location.href;
+                  //brand
+                  this.data.brand = "Clark Street Sports";
+
+                },
+                render: function () {
+                    var obj = this;
+                    $("#eci-product").text(JSON.stringify(obj.data));
+                    //console.log('eci-product', JSON.stringify(obj.data));
+                },
+                init: function () {
+                    //if ($("body.page-product").length) {
+                        this.prepare();
+                        this.render();
+                    //}
+                }
+            };
+
+            // update for targeting all product template 
+            if($('.page-product').length){
+                eci_product.init();
+            }else {
+                console.log('no product');
+            }
+          	//eci_product.init();
+        }catch(e){
+
+            console.log(e);
+        }
+
+    });
+</script>
+<!-- ECI:END SCHEMA, 11-22 -->
+    <script id="system-messages" type="application/json">
+      {
+        "not_enough_products": {{ "general.system_messages.not_enough_products" | t | json }},
+        "updating_quantity": {{ "general.system_messages.updating_quantity" | t | json }},
+        "error_adding_product_to_cart": {{ "general.system_messages.error_adding_product_to_cart" | t | json }},
+        "not_valid_quantity": {{ "general.system_messages.not_valid_quantity" | t | json }}
+      }
+    </script>
+    <script type="text/javascript" charset="utf-8">
+    var shappify_customer_tags = {{ customer.tags | json }}
+  </script>
+
+<!-- navigation scripts -->
+<script>
+  $( document ).ready(function() {
+    if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+      $('.tn-nav__item').on('click tap', function(e) {
+        if (!$(this).hasClass('active')) {
+          event.preventDefault();
+          $('.tn-nav__item').removeClass('active');
+          $(this).addClass('active');
+        } 
+      });
+    } else {
+      $('.tn-nav__item').hover(function() {
+        if (!$(this).hasClass('active')) {
+          event.preventDefault();
+          $('.tn-nav__item').removeClass('active');
+          $(this).addClass('active');
+        }
+      });
+      $( "#shopify-section-navigation .megamenu" ).mouseleave(function() {
+        $('.tn-nav__item').removeClass('active');
+      });
+    }
+  });
+
+  $(document).on('click touchstart', function (e) {
+    if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+      var $tgt = $(e.target);
+      if (!$tgt.closest("#shopify-section-navigation").length) {
+        $('.tn-nav__item').removeClass('active');
+      }
+      if ($tgt.closest(".tn-nav__close").length) {
+        $('.tn-nav__item').removeClass('active');
+      }
+    }
+  });
+</script>
+    
+<script>(function(document, tag) { var script = document.createElement(tag); var element = document.getElementsByTagName('body')[0]; script.src = 'https://acsbap.com/apps/app/assets/js/acsb.js'; script.async = true; script.defer = true; (typeof element === 'undefined' ? document.getElementsByTagName('html')[0] : element).appendChild(script); script.onload = function() { acsbJS.init({ statementLink : '', feedbackLink : '', footerHtml : '', hideMobile : false, hideTrigger : false, language : 'en', position : 'right', leadColor : '#146ff8', triggerColor : '#146ff8', triggerRadius : '50%', triggerPositionX : 'right', triggerPositionY : 'bottom', triggerIcon : 'default', triggerSize : 'medium', triggerOffsetX : 20, triggerOffsetY : 20, mobile : { triggerSize : 'medium', triggerPositionX : 'right', triggerPositionY : 'bottom', triggerOffsetX : 5, triggerOffsetY : 5, triggerRadius : '0' } }); };}(document, 'script'));</script>
+
+<script>
+// Clear the Gift Card Pro form after it is added to the cart
+document.addEventListener('gcp-item-added', function() {
+
+window.GCPSDK.form.set('id', '41818368245955');
+window.GCPSDK.form.set('properties._gcp_send_to_self', false);
+window.GCPSDK.form.set('properties._gcp_recipient_email', "");
+window.GCPSDK.form.set('properties._gcp_recipient_phone', "");
+window.GCPSDK.form.set('properties._gcp_recipient_name', "");
+window.GCPSDK.form.set('properties._gcp_message_from', "");
+window.GCPSDK.form.set('properties._gcp_message_text', "");
+window.GCPSDK.form.set('properties._gcp_delivery_time', "Send Now");
+window.GCPSDK.form.set('properties._gcp_video_url', "");
+window.GCPSDK.form.set('properties._gcp_thumbnail_url', "");
+
+});
+</script>
+
+{% if content_for_header contains 'product_label' %}{% include 'bss-product-label-js' %}{% include 'bss-label-style-css' %}{% endif %}
+    <script src="//cdn.codeblackbelt.com/js/modules/frequently-bought-together/main.min.js?shop=clarkstreetsports1.myshopify.com" defer></script>
+<div class="site-overlay">
+</html>

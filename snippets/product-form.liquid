@@ -1,0 +1,181 @@
+
+{% assign is_limiter_product = false %}
+
+{% for tag in product.tags %}
+  {% if tag contains 'limiter' %}
+    {% assign is_limiter_product = true %}
+  {% endif %}
+{% endfor %}
+
+{% comment "HC - SPI - 10 Feb '22" %}
+<form action="/cart/add" method="post" class="product-form shopify-product-form {% if multiple_products %}no_bold_options{% endif %}"  data-product-handle="{{ product.handle }}" data-is-limiter-product="{{ is_limiter_product }}">
+{% endcomment %}
+{% capture form_classes %}product-form shopify-product-form {% if multiple_products %}no_bold_options{% endif %}{% endcapture %}
+{% form 'product', product, class: form_classes, data-product-handle: product.handle, data-is-limiter-product: is_limiter_product %}
+  <!-- HC - shoppay - 10 Feb '22 -->
+  <div class="hc-shoppay">
+    {{ form | payment_terms }}
+  </div>
+
+  <div class="form-row">
+    {% if size_guide %}
+      <div class="size-row">
+        <a href="#size-chart" class="view-size">
+          {{ 'general.product.size' | t }}
+        </a>
+      </div><!-- /.size-row -->
+
+      <div id="size-chart">
+        <img src="{{ size_guide | img_url: 'master' }}" style="max-width: 100%" />
+      </div><!-- /#size-chart -->
+    {% endif %}
+
+    {% if bold_variants_size > 1 %}
+      {%- assign options_with_values = product.options_with_values -%}
+      {%- assign selected_variant = bold_selected_or_first_available_variant -%}
+      {%- include 'bold-variant' with selected_variant, output: 'none' -%}
+
+      {% for option in options_with_values %}
+        {% assign option_index = forloop.index %}
+        {%- assign option_name = option.name | handle  -%}
+        {%- assign optName = 'options' | append: forloop.index -%}
+        {%- assign option_values = [optName] | default: option.values -%}
+
+
+
+          <label for="{{ option.name | escape }}">{{ option.name | escape }}</label>
+
+          {%- render 'variant-selector', variants: product, first_variant_available: bold_selected_or_first_available_variant -%} 
+
+
+      {% endfor %}    
+    {% endif %}
+
+    <!-- Always render the variant selector for the product, regardless of the variant count -->
+    <select id="product-select" name="id" style="display: none;">
+      {% for variant in product.variants %}
+        {%- include 'bold-variant' with variant, hide_action: 'skip' -%}
+        <option value="{{ variant.id }}"
+                data-price="{{ bold_variant_price | money }}"
+                data-quantity="{{ variant.inventory_quantity }}"
+                data-inventory-management="{{ variant.inventory_management }}"
+                data-inventory-policy="{{ variant.inventory_policy }}"
+                {% for option in options_with_values %} data-option-{{forloop.index}}="{{ variant.options[forloop.index0] | handle }}"{% endfor %}
+                {% if bold_selected_or_first_available_variant.id == variant.id %} selected="selected" {% endif %}>
+          {{ variant.title }}
+        </option>
+      {% endfor %}
+    </select>
+  </div>
+  {%- unless qb_loaded == 'true' or multiple_products  -%}
+    <div class='shappify-qty-msg quantity-break-container'>{{bold_selected_or_first_available_variant.metafields.shappify_csp.pricing_html}}</div>
+    {%- assign qb_loaded = 'true' -%}
+  {%- endunless -%}
+  <div class="cta-holder">
+    <div class="qty-wrapper">
+      <span class="qty-minus">-</span>
+      <input id="Quantity" type="number" name="quantity" class="variant-quantity" value="1" step="1" min="0" />
+      <span class="qty-plus">+</span>
+    </div><!-- /.qty-wrapper -->
+
+    {% assign submit_value = 'general.product.add_to_cart' %}
+    {% comment %} TODO: Validate this conditional {% endcomment %}
+    {%- unless true -%}
+      {% assign submit_value = 'general.product.pre_order' %}
+    {%- endunless -%}
+
+    {% if product.tags contains 'sd_preorder' %}
+    <!--Advanced Preorder custom work -->
+    <div class="sd-agreement-parent">
+
+      <div class="sd-agreement-items-flex">
+        <input id="sd-agreement-input" type="checkbox" value="" class="sd-agreement-input" name="sd-agreement">
+        <label for="sd-agreement-input" class="sd-inner">I agree to the terms of this pre-order.</br>
+          No cancellation, No returns, No exchanges. All sales final.
+        </label>
+      </div>
+         
+    </div>
+     <!--Advanced Preorder custom work -->
+    {% endif %}
+
+    {% comment %}when product is sold out{% endcomment %}
+    {% liquid
+      assign is_sold_out = false
+      if bold_selected_or_first_available_variant.inventory_quantity == 0 or bold_selected_or_first_available_variant.available == false
+        assign is_sold_out = true
+      endif
+      
+      assign sold_out_text = 'general.product.out_of_stock' | t
+      assign add_to_cart_text = submit_value | t
+
+      if is_sold_out
+        assign submit_value = sold_out_text
+      else
+        assign submit_value = add_to_cart_text
+      endif
+    %}
+    
+    <input type="submit" class="btn btn--black add-to-cart add-to-cart-primary{% if is_sold_out %} button-sold-out{% endif %}" value="{{ submit_value }}" />
+
+    <span disabled data-fancybox data-src="#product-customization" href="javascript:;"class="dummy-atc btn btn--black ">
+      Add To Cart
+    </span>
+
+    {% style %}
+      .product-description .cta-holder .btn.button-sold-out{
+        background: rgba(0, 0, 0, 0.5);
+        pointer-events: none; 
+      }
+     {% endstyle %} 
+    
+    <script>
+      window.addEventListener('DOMContentLoaded', event => {
+        const variantItem = document.querySelectorAll('#variants-wrapper .variantItem');
+        const buttonAddToCart = document.getElementsByClassName('add-to-cart-primary');
+
+        variantItem.forEach(variant => {
+          variant.addEventListener('click', function(event){
+            let isAvailable = this.dataset.available;
+            let quantity = parseInt(this.dataset.quantity);
+
+            if (isAvailable == 'true' || quantity > 0) {
+                buttonAddToCart.forEach(element => {
+                  element.value = '{{ add_to_cart_text }}';
+                  element.classList.remove('button-sold-out');
+                });
+            } else {
+                buttonAddToCart.forEach(element => {
+                  element.value = '{{ sold_out_text }}';
+                  element.classList.add('button-sold-out');
+                });
+            }
+          })
+        });
+      })
+    </script>
+  {% comment %}end when product is sold out{% endcomment %}
+  </div><!-- /.cta-holder -->
+
+  <div style="display:none;" id="product-customization">
+    <h1>Customize Product</h1>
+    <table id="customization-table">
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Type of Customization</th>
+          <th>Customization</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+    <span class="real-atc btn btn--black">
+      Add To Cart
+    </span>
+  </div>
+  <input type="hidden" name="properties[_productType]" value="{{ template.suffix }}">
+{% comment "HC - SPI - 10 Feb '22" %}
+</form>
+{% endcomment %}
+{% endform %}

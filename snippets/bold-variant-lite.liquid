@@ -1,0 +1,73 @@
+{%- assign bpl_product = base_product | default: product | default: item.product | default: item -%}
+{%- assign bpl_variant = variant | default: item.variant -%}
+{%- assign bpl_csp_customer_tag = bpl_csp_customer_tag | default: 'default' -%}
+{%- assign bpl_has_init = bpl_has_init | default: false -%}
+{%- assign bpl_variant_price = bpl_variant.price -%}
+{%- assign bpl_variant_title = bpl_variant.title -%}
+{%- assign bpl_remove_tag = bpl_remove_tag | default: blank -%}
+
+{%- if has_csp_version != 'none' -%}
+    {%- unless bpl_has_init -%}
+        {%- if customer.tags and shop.metafields.shop_csp_tag_group.shop_csp_tag -%}
+            {%- assign all_shop_tags = shop.metafields.shop_csp_tag_group.shop_csp_tag | append: ',default' | split: ',' -%}
+            {%- assign customer_tags = customer.tags | join: ',' | split: ',' -%}
+            {%- for customer_tag in customer_tags -%}
+                {%- if all_shop_tags contains customer_tag -%}
+                    {%- assign bpl_csp_customer_tag = customer_tag -%}
+                {%- endif -%}
+            {%- endfor -%}
+        {%- endif -%}
+        {% capture bpl_remove_tag %} ({{ bpl_csp_customer_tag }}){% endcapture %}
+        {%- assign bpl_has_init = true -%}
+    {%- endunless -%}
+{%- endif -%}
+
+{%- if has_bundle_version != 'none' and bundle_version != 'drafts' -%}
+    {%- if bpl_variant.metafields.shappify_bundle.is_bundle == 'true' -%}
+        {%- continue -%}
+    {%- endif -%}
+{% endif %}
+
+{%- if csp_version != 'variants' and has_csp_version != 'none' -%}
+    {%- assign csp_metafield_namespace = 'csp' | append: bpl_variant.id -%}
+    {%- assign csp_metafield_key = bpl_csp_customer_tag | append: '~' | append: '1' -%}
+    {%- assign csp_variant_metafield = bpl_product.metafields[csp_metafield_namespace][csp_metafield_key] -%}
+    {%- assign variant_price = bpl_variant_price -%}
+
+    {%- if csp_variant_metafield -%}
+        {%- assign csp_metafield_data = csp_variant_metafield | split: ',' -%}
+        {%- assign price_type = csp_metafield_data[0] -%}
+        {%- assign discount_value = csp_metafield_data[1] | times: 1 -%}
+        {%- assign cents = csp_metafield_data[2] -%}
+        {%- assign use_discount_compare_at = csp_metafield_data[4] -%}
+        {%- if use_discount_compare_at == '1' and variant.compare_at_price > 0 -%}
+            {%- assign variant_price = variant.compare_at_price -%}
+        {%- endif -%}
+        {%- case price_type -%}
+            {%- when '%' -%}
+            {%- assign variant_price = variant_price | times: discount_value | round -%}
+            {%- when '$' -%}
+            {%- assign variant_price = variant_price | minus: discount_value | round -%}
+            {%- when '-' -%}
+            {%- assign variant_price = discount_value | round -%}
+        {%- endcase -%}
+        {%- if bpl_price <= 0 -%}
+            {%- assign variant_price = variant.price -%}
+        {%- endif -%}
+        {%- if cents != '' -%}
+            {%- assign vanity_price = variant_price | plus: cents -%}
+            {%- assign variant_price = vanity_price -%}
+            
+        {%- endif -%}
+        {%- assign bpl_variant_price = variant_price -%}
+        {%- assign csp_version = 'drafts' -%}
+    {%- endif -%}
+{%- endif -%}
+
+{%- if csp_version != 'drafts' and has_csp_version != 'none' -%}
+    {%- if bpl_variant.metafields.shappify_csp.csp_tag and bpl_variant.metafields.shappify_csp.csp_tag != bpl_csp_customer_tag -%}
+        {%- continue -%}
+    {%- endif -%}
+    
+    {% assign bpl_variant_title = bpl_variant_title | remove: bpl_remove_tag %}
+{%- endif -%}

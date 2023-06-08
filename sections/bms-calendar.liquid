@@ -1,0 +1,83 @@
+{% if template contains 'page.calendar' %}
+  <div class="main">
+    <div class="container">
+      <h2 class="page-title"></h2>
+      <h2 class="bms-step-counter page-title">{{ 'corporate_sales.step_2.title' | t }}</h2>
+      <div class="page-content">
+        {{ page.content }}
+      </div>
+      <div id="fullcalendar"></div>
+    </div>
+  </div>
+
+  <style>
+    span.fc-time {
+      display:none;
+    }
+
+    .fc-event.disabled {
+      background-color: #255a75;
+      border-color: #255a75;
+      cursor: not-allowed;
+    }
+  </style>
+{% endif %}
+
+{% assign teams = section.blocks | map: 'settings' %}
+{% if template contains 'page.calendar' %}
+  {% include 'bms-calendar' %}
+{% endif %}
+
+{% if template contains 'page.corporate' %}
+  {% include 'bms-corporate-init' %}
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Calendar",
+    "blocks": [
+      {
+        "type": "team",
+        "name": "Team",
+        "settings": [
+          {
+            "label": "Team/Event Name",
+            "id": "title",
+            "type": "text"
+          },
+          {
+            "type": "image_picker",
+            "id": "logo",
+            "label": "Team/Event Logo Image"
+          },
+          {
+            "type": "text",
+            "id": "tagline",
+            "label": "Tagline for the Team/Event"
+          },
+          {
+            "type": "text",
+            "id": "description",
+            "label": "Description for the team/Event"
+          },
+          {
+            "type": "color",
+            "id": "background_color",
+            "label": "Background Color for the Team/Event Section",
+            "default": "#fff"
+          },
+          {
+            "label": "Lead Time",
+            "id": "lead_time",
+            "type": "number"
+          },
+          {
+            "label": "CSV",
+            "id": "csv",
+            "type": "text"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

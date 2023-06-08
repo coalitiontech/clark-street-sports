@@ -1,0 +1,69 @@
+[
+{%- if template contains 'search' -%}
+    {%- assign products = search.results -%}
+{%- else -%}
+    {%- assign products = collection.products -%}
+{%- endif -%}
+{%- capture productResult -%}
+{%- for product in products -%}
+{% comment %}start BSS Commerce Hide Price{% endcomment %}{% assign bsshp = product | default: prod | default: item %}{% capture hide_product %}{% render 'bsscommerce-hide-product', product: bsshp %}{% endcapture %}{% if hide_product contains "true" %}{% continue %}{% endif %}{% comment %}end BSS Commerce Hide Price{% endcomment %}
+{%- if product.object_type and product.object_type != 'product' -%}{%- continue -%}{%- endif -%}
+,{
+    "order": {{- paginate.current_offset | plus: forloop.index0 -}},
+    "id": {{- product.id -}},
+    "title": {{- product.title | json -}},
+    "type": "{{- product.type -}}",
+    "price_max": {{- product.price_max -}},
+    "price_min": {{- product.price_min -}},
+    "compare_at_price_max": {{- product.compare_at_price_max -}},
+    "compare_at_price_min": {{- product.compare_at_price_min -}},
+    {% assign secondsCreated = product.created_at | date: '%s' %}
+    {% assign secondsNow = 'now' | date: '%s' %}
+    {% assign daysNew = settings.new_product_days %}
+    {% assign secondsNew = daysNew | times: 86400 %}
+    {% assign secondsBetween = secondsNow | minus: secondsCreated %}
+    "is_new": {%- if secondsBetween < secondsNew -%}true
+			  {%- elsif product.tags contains 'new' -%}true
+              {%- else -%}false{%- endif -%},
+
+    {%- assign sizes = '' -%}
+    {%- assign size_prefix = 'Size:' -%}
+
+    {%- if product.tags contains 'Shop_For:Men' -%}
+        {%- assign size_prefix = 'Mens_Sizes:' -%}
+    {%- elsif product.tags contains 'Shop_For:Women' -%}
+        {%- assign size_prefix = 'Womens_Sizes:' -%}
+    {%- elsif product.tags contains 'Shop_For:Kids' or product.tags contains 'Shop_For:Baby and Toddler' -%}
+        {%- assign size_prefix = 'Kids_Sizes:' -%}
+    {%- endif -%}
+
+    {%- assign join_size_prefix = size_prefix | prepend: ',' -%}
+
+    {%- for option in product.options_with_values -%}
+        {%- if option.name contains 'Size' -%}
+            {%- assign sizes = option.values | join: join_size_prefix | prepend: size_prefix -%}
+        {%- endif -%}
+    {%- endfor -%}
+
+    {%- if product.tags.size > 0 -%}
+        {%- assign sizes = sizes | prepend: ',' -%}
+    {%- endif -%}
+
+    "tags": {{- product.tags | join: ',' | append: shop_for | append: sizes | split: ',' | json -}},
+    "handle": "{{- product.handle-}}",
+    "image": "{{- product.featured_image.src | img_url: 'x125' | remove: '_x125' | remove: '//cdn2.shopify.com/s/files/' | remove: '//cdn.shopify.com/s/files/' -}}",
+    "created_at": "{{- product.created_at -}}",
+    "published_at": "{{- product.published_at -}}",
+    "image_aspect_ratio": "{{- product.featured_image.aspect_ratio | default: 1 -}}",
+    "image_width": {{- product.featured_image.width | default: 0 -}},
+    "image_height": {{- product.featured_image.height | default: 0 -}}
+    {%- if product.metafields.unlock_the_drop.countdown_date_time != blank -%}
+    ,"countdown_date_time": "{{- product.metafields.unlock_the_drop.countdown_date_time -}}",
+    "isUnlockTheDrop": "{{product.metafields.unlock_the_drop.toggle}}" 
+
+    {%- endif -%}
+}
+{%- endfor -%}
+{%- endcapture -%}
+{{- productResult | remove_first: ',' -}}
+]

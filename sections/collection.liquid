@@ -1,0 +1,34 @@
+{%- assign collection_paginate = cart.attributes['paginate'] -%}
+
+{%- unless collection_paginate -%}
+  {% assign collection_paginate = 36 %}
+{%- endunless -%}
+
+
+{% paginate collection.products by collection_paginate %}
+<div class="main">
+    {%- include 'collections-top-line' -%}
+    <div class="collection-row" data-collection-url="{{ collection.url | default: '/collections/all' | prepend: shop.url }}">
+
+      <div class="filters collection-filters"></div><!-- /.filters -->
+      <div class="collection-products">
+        {% if collection.description != blank %}
+          <section class="collection-description">
+            {{ collection.description }}
+          </section>
+        {% endif %}
+        <div id="shopify-section-collection-products" class="shopify-section">
+          <div class="products-row">
+            <ul class="products-list"></ul>
+          </div>
+          <div class="collection-pagination paginate"></div>
+        </div>
+      </div><!-- /.collection-products -->
+
+    </div><!-- /.collection-row -->
+
+  </div><!-- /.main -->
+  {% include 'bold-collection-filter-init' %}
+{% endpaginate %}
+
+<div class="mobile-filter-overlay"></div>

@@ -1,0 +1,26 @@
+{%- assign _settings = section.settings -%}
+<div class="instagram-feed">
+  {%- if _settings.section_title != blank -%}
+    <h3>{{ _settings.section_title }}</h3>
+  {%- endif -%}
+  <div id="insta-feed"></div>
+</div><!-- /.instagram-feed -->
+
+{% schema %}
+{
+  "name": "Instagram Feed",
+  "settings": [
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section Title"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Instagram Feed",
+      "category": "Misc"
+    }
+  ]
+}
+{% endschema %}

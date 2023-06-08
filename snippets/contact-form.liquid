@@ -1,0 +1,49 @@
+{% form 'contact', class: 'form form-default form-contact' %}
+  {% assign attr_first_name = 'contact.form.first_name' | t | handle %}
+  {% assign attr_last_name = 'contact.form.last_name' | t | handle %}
+  {% assign attr_phone = 'contact.form.phone' | t | handle %}
+  {% capture field_name %}{% if form[name_attr] %}{{ form[name_attr] }}{% elsif customer %}{{ customer.name }}{% endif %}{% endcapture %}
+  {% capture field_email %}{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}{% endcapture %}
+  {% capture field_subject %}{% if form.subject %}{{ form.subject }}{% endif %}{% endcapture %}
+  {% capture field_message %}{% if form.body %}{{ form.body }}{% endif %}{% endcapture %}
+
+  {% if form.errors %}
+    <div class="form-alert error">
+      {{ form.errors | default_errors }}
+    </div><!-- /.form-notice -->
+  {% endif %}<a href="#"></a>
+
+  {% if form.posted_successfully? %}
+    <div class="form-alert success">
+      {{ 'contact.form.post_success' | t }}
+    </div><!-- /.form-alert -->
+  {% endif %}
+
+  <div class="form-body">
+    <div class="form-columns">
+      <div class="form-row">
+        <input type="text" id="field-contact-name" class="field" name="contact[{{ attr_first_name }}]" placeholder="{{ 'contact.form.first_name' | t }}" autocapitalize="words" value="{{ field_name }}">
+      </div><!-- /.form-row -->
+
+      <div class="form-row">
+        <input type="text" id="field-contact-name" class="field" name="contact[{{ attr_last_name }}]" placeholder="{{ 'contact.form.last_name' | t }}" autocapitalize="words" value="{{ field_name }}">
+      </div><!-- /.form-row -->
+    </div><!-- /.form-columns -->
+
+    <div class="form-row">
+      <input type="email" id="field-contact-email" class="field" name="contact[email]" placeholder="{{ 'contact.form.email' | t }}" autocorrect="off" autocapitalize="off" value="{{ field_email }}">
+    </div><!-- /.form-row -->
+
+    <div class="form-row">
+      <input type="text" id="field-contact-subject" class="field" name="contact[subject]" placeholder="{{ 'contact.form.subject' | t }}" value="{{ field_subject }}">
+    </div><!-- /.form-row -->
+
+    <div class="form-row">
+      <textarea rows="10" id="field-contact-message" class="field" name="contact[body]" placeholder="{{ 'contact.form.message' | t }}">{{ field_message }}</textarea>
+    </div><!-- /.form-row -->
+  </div><!-- /.form-body -->
+
+  <div class="form-actions clear">
+    <input type="submit" class="form-btn btn btn--black" value="{{ 'contact.form.send' | t }}">
+  </div><!-- /.form-actions -->
+{% endform %}

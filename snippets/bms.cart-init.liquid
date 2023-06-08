@@ -1,0 +1,25 @@
+{% comment %}
+  This snippet has all BMS files the page requires. Also it should to be included only once page.
+{% endcomment %}
+
+{{ 'bms.cart.bundle.css' | asset_url | stylesheet_tag }}
+
+<script type="text/javascript" src="{{ 'bms.cart.bundle.js' | asset_url }}" defer></script>
+<script type="text/javascript">
+  document.addEventListener("DOMContentLoaded", function() {
+    var settings = {
+      limiter: {
+        translations: {
+          thisItem: {{ "products.limiter.this_item" | t | json }},
+          variant: {
+            violation: {
+              min: {{ "cart.limiter.violation.min" | t | json }},
+              max: {{ "cart.limiter.violation.max" | t | json }}
+            }
+          }
+        }
+      }
+    };
+    BOLD.BMS.BUILDS.Cart.initAsync(settings);
+  });
+</script>

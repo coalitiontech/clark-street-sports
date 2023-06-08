@@ -1,0 +1,6 @@
+{% assign productTags = product | map: 'tags' | join: '~~~~' | downcase | split: '~~~~' | uniq %}
+{% assign tagName = 'final_sale' | downcase %}
+
+{% if productTags contains tagName %}
+  {% assign finalSaleText = '<span>Final Sale Item - No Returns or Exchanges</span>' %}
+{% endif %}

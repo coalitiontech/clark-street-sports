@@ -1,0 +1,234 @@
+{
+  "general": {
+    "search": {
+      "no_results_html": "Your search for \"{{ terms }}\" did not yield any results.",
+      "label": "Search",
+      "results_with_count": {
+        "one": "{{ count }} result for \"{{ terms }}\"",
+        "other": "{{ count }} results for \"{{ terms }}\""
+      },
+      "title": "Search our site",
+      "placeholder": "Search jerseys, hats, accessories...",
+      "submit": "Submit",
+      "close": "Close search"
+    },
+    "pagination": {
+      "first": "First",
+      "last": "Last",
+      "previous": "Previous",
+      "next": "Next",
+      "label": "{{ current_page }} of {{ pages }}"
+    },
+    "blog_posts": {
+      "related": "Related Blog Posts"
+    },
+    "product": {
+      "related": "Related Products",
+      "size": "Not sure about your size?",
+      "shipping": "This Item Ships Free!",
+      "low_quantity": "Low in Stock",
+      "pre_order": "Pre-order",
+      "add_to_cart": "Add to cart",
+      "found": " products found",
+      "new_tag": "NEW",
+      "sale_tag": "SALE"
+    }
+  },
+  "cart": {
+    "remove": "Remove",
+    "update": "Update",
+    "title": "YOUR CART",
+    "quantity": "QTY",
+    "subtotal": "Subtotal",
+    "checkout": "Checkout",
+    "shipping_calculate": "Shipping Calculated at Checkout",
+    "empty_cart_message": "Your cart is currently empty."
+  },
+  "customer": {
+    "account": {
+      "label": "Account",
+      "my_account": "My Account",
+      "order_history": "Order History",
+      "no_orders": "We don't see any orders associated with your account.",
+      "greeting": "Hi",
+      "sign_out": "Sign Out",
+      "info": "My Info"
+    },
+    "activate_account": {
+      "title": "Activate Account",
+      "subtext": "Create your password to activate your account.",
+      "password": "Password",
+      "password_confirm": "Confirm Password",
+      "submit": "Activate Account",
+      "cancel": "Decline Invitation"
+    },
+    "login": {
+      "title": "Sign In",
+      "with_email": "Sign in with email",
+      "email": "Enter your email",
+      "password": "Enter your password",
+      "forgot_password": "Forgot password",
+      "submit": "Sign in",
+      "guest_title": "Continue as a guest",
+      "guest_continue": "Continue"
+    },
+    "recover_password": {
+      "title": "Reset your password",
+      "submit": "Recover Password",
+      "back_to_login": "Back to login",
+      "email": "Enter your email",
+      "success": "We've sent you an email with a link to update your password."
+    },
+    "register": {
+      "title": "New to Clark street sports?",
+      "create_account": "Create an account for faster checkout.",
+      "email": "Enter your email",
+      "first_name": "First Name",
+      "last_name": "Last Name",
+      "password": "Password",
+      "confirm_password": "Re-enter your password",
+      "receive_newsletters": "Sign up to receive CARK STREET SPORTS newsletters",
+      "submit": "Create Your Account"
+    },
+    "orders": {
+      "title": "Order History",
+      "order_number": "Order",
+      "date": "Date",
+      "payment_status": "Payment Status",
+      "fulfillment_status": "Fulfillment Status",
+      "total": "Total",
+      "none": "You haven't placed any orders yet."
+    },
+    "order": {
+      "title": "Order {{ name }}",
+      "date": "Placed on {{ date }}",
+      "cancelled": "Order Cancelled on {{ date }}",
+      "cancelled_reason": "Reason: {{ reason }}",
+      "billing_address": "Billing Address",
+      "payment_status": "Payment Status",
+      "shipping_address": "Shipping Address",
+      "fulfillment_status": "Fulfillment Status",
+      "discount": "Discount",
+      "shipping": "Shipping",
+      "tax": "Tax",
+      "product": "Product",
+      "sku": "SKU",
+      "price": "Price",
+      "quantity": "Quantity",
+      "total": "Total",
+      "fulfilled_at": "Fulfilled {{ date }}",
+      "subtotal": "Subtotal"
+    },
+    "addresses": {
+      "title": "Your Addresses",
+      "default": "Default",
+      "add_new": "Add a New Address",
+      "edit_address": "Edit address",
+      "first_name": "First Name",
+      "last_name": "Last Name",
+      "company": "Company",
+      "address1": "Address1",
+      "address2": "Address2",
+      "city": "City",
+      "country": "Country",
+      "province": "Province",
+      "zip": "Postal\/Zip Code",
+      "phone": "Phone",
+      "set_default": "Set as default address",
+      "add": "Add Address",
+      "update": "Update Address",
+      "cancel": "Cancel",
+      "edit": "Edit",
+      "delete": "Delete",
+      "delete_confirm": "Are you sure you wish to delete this address?"
+    },
+    "reset_password": {
+      "title": "Reset account password",
+      "subtext": "Enter a new password for {{ email }}",
+      "password": "Password",
+      "password_confirm": "Confirm Password",
+      "submit": "Reset Password"
+    }
+  },
+  "collection": {
+    "view": "VIEW:",
+    "sort_price": "Sort by Price"
+  },
+  "contact": {
+    "form": {
+      "first_name": "First Name *",
+      "last_name": "Last Name *",
+      "email": "Enter your email address *",
+      "subject": "Subject",
+      "message": "Write your message here. *",
+      "send": "Submit",
+      "post_success": "Thanks for contacting us. We'll get back to you as soon as possible."
+    },
+    "misc": {
+      "contact_us": "Contact Us"
+    }
+  },
+  "store_locator": {
+    "general": {
+      "hours": "Store Hours",
+      "view": "View on Map",
+      "directions": "Get Directions"
+    },
+    "form_placeholders": {
+      "address_field": "Enter zip code or full address",
+      "submit": "Locate your nearest store"
+    }
+  },
+  "date_formats": {
+    "month_day_year": "%B %d, %Y"
+  },
+  "shopify": {
+    "checkout": {
+      "shipping": {
+        "title": "Store Pickup",
+        "waiting_on_rate_notice": "Please wait while we fetch available pickup rates...",
+        "no_rates_for_cart_or_destination_notice": "Pickup is not available for your cart or destination.",
+        "no_rates_for_country_notice": "We do not offer pickups in {{ country }}.",
+        "please_enter_your_shipping_information_notice": "Please go back to the shopping cart page and choose a pickup location."
+      },
+      "contact": {
+        "phone_label": "Your phone number",
+        "optional_phone_label": "Your phone number (optional)",
+        "phone_placeholder": "Your phone number",
+        "optional_phone_placeholder": "Your phone number (optional)",
+        "first_name_label": "Your first name",
+        "optional_first_name_label": "Your first name (optional)",
+        "first_name_placeholder": "Your first name (optional)",
+        "last_name_label": "Your last name",
+        "optional_last_name_label": "Your last name (optional)",
+        "last_name_placeholder": "Your last name",
+        "optional_last_name_placeholder": "Your last name (optional)",
+        "shipping_address_title": "Pickup address"
+      },
+      "general": {
+        "continue_to_shipping_method": "Continue",
+        "back_to_shipping_method": "Back",
+        "edit_shipping_address": "Edit",
+        "edit_shipping_method": "Edit"
+      },
+      "order_summary": {
+        "free_shipping_discount_label": "Free pickup",
+        "shipping_label": "Store Pickup"
+      },
+      "shipping_title": "Store Pickup",
+      "payment": {
+        "same_billing_address_label": "Please use the option below ⬇"
+      },
+      "thank_you": {
+        "marker": {
+          "shipping": "Pickup address",
+          "current": "Pickup address"
+        },
+        "shipping_address_title": "Pickup address",
+        "order_updates_subscribe_to_email_notifications": "Get pickup updates by email",
+        "order_updates_subscribe_to_phone_notifications": "Get pickup updates by email or SMS",
+        "order_updates_subscribe_to_email_or_phone_notifications": "Get pickup updates by SMS"
+      }
+    }
+  }
+}

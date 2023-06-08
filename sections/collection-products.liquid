@@ -1,0 +1,39 @@
+
+<script>
+  var BOLD = BOLD || {};
+  {% comment %} BOLD.customTags = {{ section.blocks | map: 'settings' | map: 'image' | json }}; {% endcomment %}
+
+  BOLD.customTags = [
+    {%- for block in section.blocks -%}
+      {%- assign field = block.settings -%}
+      {
+        "placeholder": {{ field.placeholder | json }},
+        "image": {{ field.image | img_url: '50x' | json }}
+      }{% unless forloop.last %},{% endunless %}
+    {%- endfor -%}
+  ]
+</script>
+
+{% schema %}
+{
+  "name": "Custom Tags",
+  "blocks": [
+    {
+      "type": "custom_tag",
+      "name": "Tag",
+      "settings": [
+        {
+          "type": "text",
+          "id": "placeholder",
+          "label": "Placeholder"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,2 @@
+Array.prototype.find||Object.defineProperty(Array.prototype,"find",{value:function(t){if(this==null)throw new TypeError('"this" is null or not defined');var e=Object(this),i=e.length>>>0;if(typeof t!="function")throw new TypeError("predicate must be a function");for(var o=arguments[1],r=0;r<i;){var n=e[r];if(t.call(o,n,r,e))return n;r++}},configurable:!0,writable:!0});
+//# sourceMappingURL=/s/files/1/2242/6395/t/207/assets/polyfill.js.map?v=1643906680

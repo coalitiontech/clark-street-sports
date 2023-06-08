@@ -1,0 +1,31 @@
+{{ 'bms.corporate.bundle.css' | asset_url | stylesheet_tag }}
+<script defer src="{{ 'bms.corporate.bundle.js' | asset_url }}"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    new BOLD.BMS.Corporate(
+      {
+        teams: [
+          {% for team in teams %}
+            {
+              name: {{ team.title | json }},
+              csvURL: {{ team.csv | file_url | json }},
+              logo: {{ team.logo | img_url: 'x300' | json }},
+              backgroundColor: {{ team.background_color | json }},
+              tagLine: {{ team.tagline | json }},
+              description: {{ team.description | json }}
+            }{% unless forloop.last %},{% endunless %}
+          {% endfor %}
+        ],
+        descriptionSettings: {
+          isEnabled: true,
+          maxHeight: 100,
+          label: {
+            more: "Read More",
+            less: "Read Less"
+          }
+        }
+      }
+    );
+  });
+</script>

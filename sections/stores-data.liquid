@@ -1,0 +1,133 @@
+{%- assign _settings = section.settings -%}
+{%- assign _blocks = section.blocks -%}
+
+<script src="https://maps.googleapis.com/maps/api/js?key={{ _settings.google_map_key }}&libraries=geometry"
+type="text/javascript"></script>
+{{ 'infobox.js' | asset_url | script_tag }} 
+
+<script type="text/javascript">
+  // Managable options
+  var store_map;
+  var store_radius_meters = {{ _settings.radius }}; 
+  var info_boxes = [];
+
+  var store_markers = [
+    {%- for _block in _blocks -%}
+      {%- assign field = _block.settings -%}
+      {
+        name: '{{ field.name }}',
+        address: '{{ field.address | newline_to_br | strip_newlines | replace: "'", "\\'" }}',
+        phone: '{{ field.phone }}',
+        hours: '{{ field.hours | newline_to_br | strip_newlines | replace: "'", "\\'" }}',
+        lat: '{{ field.latitude }}',
+        lng: '{{ field.longitude }}'
+      }{%- unless forloop.last -%},{%- endunless -%}
+    {%- endfor -%}
+  ];
+</script>
+
+<div class="main">
+  <div class="container">
+    <h2 class="page-title">
+      {{ page.title }}
+    </h2><!-- /.page-title -->
+	{% render 'okendo-reviews-product-rating-summary', product: product %}
+    <template id="result-template" style="display: none;">
+      <div class="result-box">
+        <h2 class="title"></h2>
+        <div class="distance"></div><!-- /.distance -->
+        <div class="address"></div><!-- /.address -->
+        <div class="phone"><a href="#"></a></div><!-- /.phone -->
+        <div class="hours">
+          <span>{{ 'store_locator.general.hours' | t }}</span>
+          <div class="inner"></div><!-- /.inner -->
+        </div><!-- /.hours -->
+        <div class="view-map">
+          <p><a href="#" class="map">{{ 'store_locator.general.view' | t }}</a></p>
+          <p><a href="#" class="directions" target="_blank">{{ 'store_locator.general.directions' | t }}</a></p>
+        </div><!-- /.view-map -->
+      </div><!-- /.result-box -->
+    </template>
+
+    <div class="stores">
+      <div class="stores__form">
+        <form action="#" method="post">
+          <input class="address-field" type="textbox" value="" placeholder="{{ 'store_locator.form_placeholders.address_field' | t }}">
+          <input type="submit" class="btn btn--black" value="{{ 'store_locator.form_placeholders.submit' | t }}">
+        </form>
+
+        <div class="stores__results">
+        </div><!-- /.results -->
+      </div><!-- /.stores__form -->
+
+      <div class="stores__map">
+        <span class="back">Back</span>
+        <div id="map" style="height: 620px;" data-close="{{ 'close-icon.png' | asset_url }}"></div>
+      </div><!-- /.stores__map -->
+    </div><!-- /.stores-row -->
+  </div><!-- /.container -->
+</div><!-- /.main -->
+
+<script type="text/javascript">
+  function hideInfobox(){
+    $('.stores').removeClass('active');
+  }
+</script>
+
+
+{% schema %}
+{
+  "name": "Stores Data",
+  "settings": [
+    {
+      "type": "text",
+      "id": "google_map_key",
+      "label": "Google Map Key"
+    },
+    {
+      "type": "text",
+      "id": "radius",
+      "label": "Radius (in meters)"
+    }
+  ],
+  "max_blocks": 9999,
+  "blocks": [
+    {
+      "type": "store_info",
+      "name": "Store Info",
+      "settings": [
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Name"
+        },
+        {
+          "type": "textarea",
+          "id": "address",
+          "label": "Address"
+        },
+        {
+          "type": "text",
+          "id": "phone",
+          "label": "Phone"
+        },
+        {
+          "type": "textarea",
+          "id": "hours",
+          "label": "Hours"
+        },
+        {
+          "type": "text",
+          "id": "latitude",
+          "label": "Latitude"
+        },
+        {
+          "type": "text",
+          "id": "longitude",
+          "label": "Longitude"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,199 @@
+<div class="individual-store">
+  <div class="container">
+    {% for block in section.blocks %}
+      {% assign prev_index = forloop.index0 | minus: 1 %}
+      {% assign prev_block = section.blocks[prev_index] %}
+      {% assign next_index = forloop.index0 | plus: 1 %}
+      {% assign next_block = section.blocks[next_index] %}
+
+      {% if page.handle == block.settings.page %}
+        {% if block.type == 'store_info' %}
+          <meta name="description" content="{{ block.settings.metadescription }}">
+          {% if block.settings.banner %}
+            <div class="store-banner">
+              <img src="{{ block.settings.banner | img_url: 'master' }}" alt="{{ block.settings.banner_alt }}" {% if block.settings.banner_mobile != blank %}class="desktop-only"{% endif %} />
+              {% if block.settings.banner_mobile != blank %}
+                <img src="{{ block.settings.banner_mobile | img_url: 'master' }}" alt="{{ block.settings.banner_alt }}" class="mobile-only" />
+              {% endif %}
+            </div>
+          {% endif %}
+
+
+          <div class="sidebar store-information">
+            <div class="store-details">
+              <h3 class="store-details__header">{{ block.settings.title }}</h3>
+              <p class="store-details__description">{{ block.settings.description }}</p>
+            </div>
+            <div class="store-contact">
+              <h3>{{ section.settings.title }}</h3>
+              {% if block.settings.address %}
+                <p class="address">
+                  <i class="fa fa-map-marker" aria-hidden="true"></i>
+                  {{ block.settings.address }}
+                </p>
+              {% endif %}
+              {% if block.settings.hours %}
+                <div class="hours-container">
+                  <p class="hours">
+                    <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                    <span>{{ section.settings.hour_header }}</span>
+                  </p>
+                  {{ block.settings.hours }}
+                </div>
+              {% endif %}
+              {% if block.settings.phone %}
+                <p class="phone">
+                <i class="fa fa-phone" aria-hidden="true"></i>
+                {{ block.settings.phone }}</p>
+              {% endif %}
+              {% if block.settings.email %}
+                <p class="email">
+                <i class="fa fa-envelope" aria-hidden="true"></i>
+                {{ block.settings.email }}</p>
+              {% endif %}
+            </div>
+          </div>
+        {% elsif block.type == 'slider' %}
+
+          {% if prev_block.type !=  block.type %}
+            {% assign thumbnail_slider = '' %}
+            <div class="store-block-wrapper">
+              <div class="store-block-slider">
+          {% endif %}
+          
+            {% capture image_slider %}
+            <div class="image-slider">
+              <img src="{{ block.settings.image | img_url: '850x450', crop: 'center' }}" alt="{{ block.settings.image_alt }}" />
+            </div>
+            {% endcapture %}
+            {{ image_slider }}
+            {% assign thumbnail_slider = thumbnail_slider | append: image_slider %}
+
+          {% if next_block.type !=  block.type %}
+              </div>
+              <div class="thumbnail-wrapper">
+                {{ thumbnail_slider }}
+              </div>
+            </div>
+          {% endif %}
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Stores Data",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Contact Info header",
+      "default": "Store's Contact Information"
+    },
+    {
+      "type": "text",
+      "id": "hour_header",
+      "label": "Store Hours header",
+      "default": "Store Hours"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "store_info",
+      "name": "Store Info",
+      "settings": [
+        {
+          "type": "page",
+          "id": "page",
+          "label": "Store's page"
+        },
+        {
+          "type": "image_picker",
+          "id": "banner",
+          "label": "Store Banner - Desktop",
+          "info": "optional"
+        },
+        {
+          "type": "image_picker",
+          "id": "banner_mobile",
+          "label": "Store Banner - Mobile",
+          "info": "optional"
+        },
+        {
+          "type": "text",
+          "id": "banner_alt",
+          "label": "Store Banner Alt Text",
+          "info": "for accessibility purposes"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Store Name"
+        },
+        {
+          "type": "textarea",
+          "id": "metadescription",
+          "label": "Meta Description"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description"
+        },
+        {
+          "type": "header",
+          "content": "Contact Information"
+        },
+        {
+          "type": "text",
+          "id": "address",
+          "label": "Store Address",
+          "default": "4506 W. Lawrence Chicago, IL 60630"
+        },
+        {
+          "type": "richtext",
+          "id": "hours",
+          "label": "Store Hours"
+        },
+        {
+          "type": "text",
+          "id": "phone",
+          "label": "Store Phone",
+          "default": "(773) 831-4030"
+        },
+        {
+          "type": "text",
+          "id": "email",
+          "label": "Store Email",
+          "default": "customerservice@clarkstreetsports.com"
+        }
+      ]
+    },
+    {
+      "type": "slider",
+      "name": "Store Image Gallery",
+      "settings": [
+        {
+          "type": "page",
+          "id": "page",
+          "label": "Store's page"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Store Image"
+        },
+        {
+          "type": "text",
+          "id": "image_alt",
+          "label": "Store Image Alt Text",
+          "info": "for accessibility purposes"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+

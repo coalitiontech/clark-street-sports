@@ -1,0 +1,91 @@
+$xs: 450px;
+$xxs: 350px;
+
+
+.d-none{
+  display:none;
+}
+
+.fixed {
+  position: fixed;
+  z-index:1;
+
+  &.fixed-side-bar{
+    text-align:right;
+    right:0;
+    bottom: 0;
+    color:#FFF;
+    font-size:1em;
+    padding: 15px 10px;
+    background-color:#1b59b2;
+    font-weight:bold;
+    img.icon{
+      width: 35px;
+    }
+    @media(max-width:$xs){
+      text-align: center;
+      font-size:0.80em;
+      width:100%;
+    }
+    @media(max-width:$xxs){
+      text-align:right;
+      font-size:0.70em;
+      img.icon{
+        width: 30px;
+      }
+    }
+  }
+}
+
+.animated {
+  animation-duration: 1s;
+  animation-fill-mode: both;
+}
+@keyframes slideInUp {
+  from {
+    transform: translate3d(0, 100%, 0);
+    visibility: visible;
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.slideInUp {
+  animation-name: slideInUp;
+}
+
+.main{
+  padding-top:0;
+}
+
+.main-black{
+  padding-top:0;
+  background-color: black;
+}
+
+.bms-step-counter {
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+#VIPInformationBtn {
+  color: blue;
+  text-decoration: underline;
+  cursor: pointer;
+}
+#shopify-section-size-guide-no-add-to-cart {
+	display: block;
+  	width: 100%
+}
+
+.saso-cart-item-price, .saso-cart-item-line-price, .ajax-cart__price {
+
+  .original_price {
+    text-decoration: line-through;
+  }
+  .discounted_price {
+    font-weight: bold;
+  }
+
+}

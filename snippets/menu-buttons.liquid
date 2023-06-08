@@ -1,0 +1,62 @@
+<div class="menu-swatches">
+  {% unless section.settings.menu_button_title == blank %}
+  <div class="menu-swatches__header">
+    {{ section.settings.menu_button_title }}
+
+    {% unless section.settings.cta_text == blank %}
+    <div class="cta desktop-only">
+      <a class="btn menu-swatches__cta"  href="{{ section.settings.cta_url }}">{{ section.settings.cta_text }}</a>
+    </div>
+    {% endunless %}
+  </div>
+  {% endunless %}
+
+
+
+  {%- for block in buttons -%}
+    {%- assign btn = block.settings -%}
+    
+    {% assign loop_control = forloop.index | modulo: 2 %}
+    {% if loop_control == 1 %}
+      {% if linklist[btn.menu_categories].links != empty %}
+        {% assign button_1 = btn %}
+      {% else %}
+        {% assign button_1 = blank %}
+      {% endif %}
+    {% elsif loop_control == 0 %}
+      {% if linklist[btn.menu_categories].links != empty %}
+        {% assign button_2 = btn %}
+      {% else %}
+        {% assign button_2 = blank %}
+      {% endif %}
+    {% endif %}
+
+
+    <div class="{{ btn.width_class }} {{ btn.visibility }}">
+      <div class="menu-swatch" data-swatch="{{ btn.title | handleize }}">
+        <a class="menu-swatch__link" {% if linklists[btn.menu_categories].links == empty %}href="{{ btn.url }}"{% endif %} title="{{ btn.title }}">
+          {%- if btn.show_label -%}
+          <span class="menu-swatch__label" style="color: {{ btn.label_color }}">{{ btn.title }}</span>
+          {%- endif -%}
+          <img class="menu-swatch__image" src="{{ btn.image | img_url: '400x' }}" alt="{{ btn.image.alt | default: btn.title }}"/>
+        </a>
+      </div>
+    </div>
+
+    {% if loop_control == 0 %}
+      {% if button_1 != blank%}
+        {% render 'menu-buttons-categories', btn: button_1 %}
+      {% endif %}
+      {% if button_2 != blank %}
+        {% render 'menu-buttons-categories', btn: button_2 %}
+      {% endif %}
+    {% endif %}
+    
+  {%- endfor -%}
+
+  {% unless section.settings.cta_text == blank %}
+  <div class="cta mobile-only menu-swatch__full">
+    <a class="btn menu-swatches__cta"  href="{{ section.settings.cta_url }}">{{ section.settings.cta_text }}</a>
+  </div>
+  {% endunless %}
+</div>

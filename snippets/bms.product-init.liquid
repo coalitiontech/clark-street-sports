@@ -1,0 +1,92 @@
+{% comment %}
+  This snippet has all BMS files the page requires. Also it should to be included only once page.
+{% endcomment %}
+
+<script type="text/template" id="line-input-container-template">
+  <div class="line-quantity__container">
+    <span class="line-quantity__label"></span>
+    <input type="number" min="0" class="line-quantity__input" value="0" name="">
+  </div>
+</script>
+
+
+<script id="product-object-json" type="application/json">
+  {{ product | json }}
+</script>
+
+
+{{ 'bms.product.bundle.css' | asset_url | stylesheet_tag }}
+<script type="text/javascript" src="{{ 'bms.product.js' | asset_url }}" defer></script>
+<script type="text/javascript" src="{{ 'bms.product.bundle.js' | asset_url }}" defer></script>
+
+
+{% assign is_limiter_product = false %}
+
+{% for tag in product.tags %}
+  {% if tag contains 'limiter' %}
+    {% assign is_limiter_product = true %}
+  {% endif %}
+{% endfor %}
+
+
+<script type="text/javascript">
+  document.addEventListener("DOMContentLoaded", function() {
+    var settings = {
+      isLimiterProduct: {{ is_limiter_product | json }},
+      handle: {{ product.handle | json }},
+      options: {
+        selected: {{ product.selected_or_first_available_variant.id | json }}
+      },
+      translations: {
+        invalidForm: {{ "products.invalid_form" | t | json }}
+      },
+      limiter: {
+        translations: {
+          thisItem: {{ "products.limiter.this_item" | t | json }},
+          variant: {
+            violation: {
+              min: {{ "products.limiter.variant.violation.min" | t | json }},
+              max: {{ "products.limiter.variant.violation.max" | t | json }}
+            }
+          }
+        }
+      },
+      productOptions: {
+        translations: {
+          title: {{ "products.product_options.title" | t | json }},
+          deleteConfirmation: {{ "products.product_options.delete_confirmation" | t | json }}
+        }
+      }
+    };
+
+    var data = {
+      product: {{ product | json }},
+      blocks: {
+        types: [
+          {%- for block in section.blocks -%}
+          {{- block.type | json -}}{%- unless forloop.last -%},{%- endunless -%}
+          {%- endfor -%}
+        ],
+        contents: [
+          {%- for block in section.blocks -%}
+          {{- block.settings | json -}}{%- unless forloop.last -%},{%- endunless -%}
+          {%- endfor -%}
+        ]
+      }
+    };
+
+    BOLD.BMS.BUILDS.ProductEs5.init(data);
+    BOLD.BMS.BUILDS.Product.init(JSON.parse(document.querySelector('#product-object-json').innerHTML), settings);
+    BOLD.BMS.BUILDS.Countdown.init();
+    BOLD.BMS.BUILDS.UnlockTheDropProduct.init();
+    BOLD.BMS.BUILDS.VIPModalPresenter.init(); 
+    BOLD.BMS.BUILDS.ProductDropdownPresenter.init();
+    BOLD.BMS.BUILDS.CorporateFlow.initProductPage();
+
+    var sizeSelect = document.querySelector('[data-sizes]');
+
+    if (sizeSelect) {
+      new BOLD.BMS.BUILDS.CommerceSizeSort(sizeSelect);
+    }
+  });
+</script>

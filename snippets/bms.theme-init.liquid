@@ -1,0 +1,53 @@
+{{ 'bms.theme.bundle.css' | asset_url | stylesheet_tag }}
+<script type="text/javascript" src="{{ 'bms.theme.bundle.js' | asset_url }}" defer></script>
+
+{% render 'bms.product-limits', output: true %}
+
+<script type="text/javascript">
+  document.addEventListener("DOMContentLoaded", function() {
+    try {
+      var productLimitsData = JSON.parse(document.getElementById('ProductLimitsData').innerHTML);
+    } catch (e) {
+      console.error('An error occured while processing Product Limit Data\n', e);
+      var productLimitsData = null;
+    }
+    var settings = {
+      template: {
+        name: {{ template.name | json }},
+        suffix: {{ template.suffix | json }}
+      },
+      translations: {},
+      ajaxCart: {
+        limiter: {
+          translations: {
+            thisItem: {{ "products.limiter.this_item" | t | json }},
+            removeMinConfirmation: {{ "products.limiter.remove_min_confirmation" | t | json }},
+            variant: {
+              violation: {
+                min: {{ "products.limiter.variant.violation.min" | t | json }},
+                max: {{ "products.limiter.variant.violation.max" | t | json }}
+              }
+            }
+          }
+        }
+      },
+      productLimitsData
+    };
+    BOLD.BMS.BUILDS.Theme.init(settings);
+    BOLD.common.eventEmitter.on('BOLD_cart_reloaded', () => new BOLD.BMS.BUILDS.CartNote());
+    if(window.BOLD && BOLD.BMS && BOLD.BMS.BUILDS && BOLD.BMS.BUILDS.MobileNav) {
+      BOLD.BMS.BUILDS.MobileNav;
+    }
+  });
+
+  window.addEventListener("load", function() {
+    var BOLD = window.BOLD || {};
+    BOLD.BMS = BOLD.BMS || {};
+    BOLD.BMS.BUILDS = BOLD.BMS.BUILDS || {};
+    {% if template.suffix contains 'store' %}
+    BOLD.BMS.BUILDS.Store.slick(jQuery);
+    {% endif %}
+    BOLD.BMS.BUILDS.Store.nav(jQuery);
+  });
+
+</script>

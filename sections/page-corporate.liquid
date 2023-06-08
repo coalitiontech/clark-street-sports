@@ -1,0 +1,70 @@
+<div class="main">
+  <div class="container">
+      <h2 class="page-title">
+      {{ page.title }}
+    </h2><!-- /.page-title -->
+    <div class="page-content">
+      
+    {% assign teams = section.blocks | map: 'settings' %}
+    {% include 'bms-corporate-init' %}
+
+      <div class="page-description">
+        {{ page.content }}
+      </div>
+      
+      <h2 class="bms-step-counter page-title">{{ 'corporate_sales.step_1.title' | t }}</h2>
+      <div class="teams-section"></div>
+    </div><!-- /.page-content -->
+  </div><!-- /.container -->
+</div><!-- /.main -->
+
+
+{% schema %}
+  {
+    "name": "Calendar",
+    "blocks": [
+      {
+        "type": "team",
+        "name": "Team",
+        "settings": [
+          {
+            "label": "Team/Event Name",
+            "id": "title",
+            "type": "text"
+          },
+          {
+            "type": "image_picker",
+            "id": "logo",
+            "label": "Team/Event Logo Image"
+          },
+          {
+            "type": "text",
+            "id": "tagline",
+            "label": "Tagline for the Team/Event"
+          },
+          {
+            "type": "text",
+            "id": "description",
+            "label": "Description for the team/Event"
+          },
+          {
+            "type": "color",
+            "id": "background_color",
+            "label": "Background Color for the Team/Event Section",
+            "default": "#fff"
+          },
+          {
+            "label": "Lead Time",
+            "id": "lead_time",
+            "type": "number"
+          },
+          {
+            "label": "CSV",
+            "id": "csv",
+            "type": "text"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

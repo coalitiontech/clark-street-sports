@@ -1,0 +1,18 @@
+{% assign page_handle = handle %}
+<script defer src="{{ 'bms-calendar.js' | asset_url }}"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    BOLD.BMS.Calendar.init({
+      teams: [
+        {% for team in teams %}
+          {
+            name: {{ team.title | json }},
+            leadTime: {{ team.lead_time | json }},
+            csvURL: {{ team.csv | file_url | json }}
+          }{% unless forloop.last %},{% endunless %}
+        {% endfor %}
+      ],
+      timeNow: "{{ 'now' | date: '%m/%d/%Y' }}"
+    });
+  });
+</script>

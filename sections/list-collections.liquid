@@ -1,0 +1,17 @@
+<div class="main">
+  <div class="container">
+    <div class="products-row">
+      <ul class="products-list">
+        {%- for collection in collections -%}
+          <li>
+            <a href="{{ collection.url }}">
+              {%- assign image = collection.image | default: collection.products[0].images[0] -%}
+              <img src="{{ image | img_url: '600x' }}" alt="" />
+              <h4>{{ collection.title }}</h4>
+            </a>
+          </li>
+        {%- endfor -%}
+      </ul><!-- /.products-list -->
+    </div><!-- /.products-row -->
+  </div><!-- /.container -->
+</div><!-- /.main -->

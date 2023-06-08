@@ -1,0 +1,11 @@
+{%- capture contentForQuerystring -%}{{ content_for_header }}{%- endcapture -%}
+  {%- assign page_url = content_for_header| split:'"pageurl":"' | last | split:'"' | first  -%}
+  {%- assign return_param = '' -%}
+
+  {%- for i in (1..1) -%}
+    {%- unless page_url contains "?" -%}{% break %}{%- endunless -%}
+    {%- assign query_string = page_url | split:'?' | last -%}
+
+  {%- endfor -%}
+
+  {%- echo query_string -%}

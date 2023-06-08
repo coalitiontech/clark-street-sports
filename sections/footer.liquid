@@ -1,0 +1,278 @@
+
+<footer class="footer">
+  <div class="container">
+    <div class="widgets">
+
+      {%- for block in section.blocks -%}
+        {%- assign field = block.settings -%}
+        {%- if block.type == 'menu' -%}
+          <div class="widget widget-menu">
+            {%- if field.title != blank -%}
+              <h5>{{ field.title }}</h5>
+            {%- endif -%}
+            {%- include 'menu', menu_handle: field.menu -%}
+          </div><!-- /.widget -->
+        {%- endif -%}
+        {%- if block.type == 'newsletter' -%}
+          <div class="widget widget--newsletter">
+            <div class="widget--social">
+              {%- if field.social_section_title != blank -%}
+                <h5>{{ field.social_section_title }}</h5>
+              {%- endif -%}
+
+              {%- include 'social-networks' content: field  -%}
+            </div><!-- /.widget-social -->
+
+            {%- if field.newsletter_section_title != blank -%}
+              <h5 class="no-border">{{ field.newsletter_section_title }}</h5>
+            {%- endif -%}
+
+            <div class="embed">
+              {{ field.mailchimp_embed }}
+            </div><!-- /.embed -->
+          </div><!-- /.widget -->
+
+        {%- endif -%}
+        {%- if block.type == 'social' -%}
+          <div class="widget widget--social">
+            {%- if field.social_section_title != blank -%}
+              <h5>{{ field.social_section_title }}</h5>
+            {%- endif -%}
+
+            {%- include 'social-networks' content: field  -%}
+          </div><!-- /.widget -->
+        {%- endif -%}
+        {%- if block.type == 'text' -%}
+          <div class="widget widget--text">
+            {%- if field.title != blank -%}
+              <h5>{{ field.title }}</h5>
+            {%- endif -%}
+            <ul>
+            <div class="widget-column-one">
+              {%- if field.location != blank -%}
+                <li>
+                  <p>
+                    <i class="fa fa-map-marker" aria-hidden="true"></i> {{ field.location }}
+                  </p>
+                </li>
+              {%- endif -%}
+              {%- if field.service_title != blank or field.service_hours_text != blank -%}
+                <li>
+                  {%- if field.service_title != blank -%}
+                    <p>
+                      <i class="fa fa-user" aria-hidden="true"></i> {{ field.service_title }}
+                    </p>
+                  {%- endif -%}
+                  {{ field.service_hours_text | newline_to_br }}
+                </li>
+              {%- endif -%}
+              {%- if field.phone != blank -%}
+                <li>
+                  <p>
+                    <i class="fa fa-phone" aria-hidden="true"></i> {{ field.phone | replace: '<p>', '' | replace: '</p>' }}
+                  </p>
+                </li>
+              {%- endif -%}
+              </div>
+              <div class="widget-column-two">
+              {%- if field.store_hours_title != blank or field.store_hours_text != blank -%}
+                <li>
+                  {%- if field.store_hours_title != blank -%}
+                    <p>
+                      <i class="fa fa-shopping-cart" aria-hidden="true"></i> {{ field.store_hours_title }}
+                    </p>
+                  {%- endif -%}
+                  {{ field.store_hours_text | newline_to_br }}
+                </li>
+              {%- endif -%}
+              {%- if field.email != blank -%}
+                <li>
+                  <p>
+                    <i class="fa fa-envelope" aria-hidden="true"></i> {{ field.email | replace: '<p>', '' | replace: '</p>' }}
+                  </p>
+                </li>
+              {%- endif -%}
+              </div>
+            </ul>
+          </div><!-- /.widget -->
+        {%- endif -%}
+      {%- endfor -%}
+    </div><!-- /.widgets -->
+
+    {%- if section.settings.copyright_text != blank -%}
+      <div class="copyright">
+        {{ section.settings.copyright_text }}
+      </div><!-- /.copyright -->
+    {%- endif -%}
+  </div><!-- /.container -->
+</footer><!-- /.footer -->
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    {
+      "type": "text",
+      "id": "copyright_text",
+      "label": "Copyright Text"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "menu",
+      "name": "Menu",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Choose Menu"
+        }
+      ]
+    },
+    {
+      "type": "social",
+      "name": "Socials",
+      "settings": [
+        {
+          "type": "text",
+          "id": "social_section_title",
+          "label": "Section Title"
+        },
+        {
+          "type": "text",
+          "id": "facebook_url",
+          "label": "Facebook URL"
+        },
+        {
+          "type": "text",
+          "id": "twitter_url",
+          "label": "Twitter URL"
+        },
+        {
+          "type": "text",
+          "id": "instagram_url",
+          "label": "Instagram URL"
+        },
+        {
+          "type": "text",
+          "id": "pinterest_url",
+          "label": "Pinterest URL"
+        }
+      ]
+    },
+    {
+      "type": "newsletter",
+      "name": "Newsletter",
+      "settings": [
+        {
+          "type": "text",
+          "id": "social_section_title",
+          "label": "Section Title"
+        },
+        {
+          "type": "text",
+          "id": "facebook_url",
+          "label": "Facebook URL"
+        },
+        {
+          "type": "text",
+          "id": "twitter_url",
+          "label": "Twitter URL"
+        },
+        {
+          "type": "text",
+          "id": "instagram_url",
+          "label": "Instagram URL"
+        },
+        {
+          "type": "text",
+          "id": "pinterest_url",
+          "label": "Pinterest URL"
+        },
+        {
+          "type": "text",
+          "id": "newsletter_section_title",
+          "label": "Section Title"
+        },
+        {
+          "type": "html",
+          "id": "mailchimp_embed",
+          "label": "Mailchimp Embed code"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "header",
+          "content": "Location"
+        },
+        {
+          "type": "textarea",
+          "id": "location",
+          "label": "Location"
+        },
+        {
+          "type": "header",
+          "content": "Store Hours"
+        },
+        {
+          "type": "text",
+          "id": "store_hours_title",
+          "label": "Title"
+        },
+        {
+          "type": "textarea",
+          "id": "store_hours_text",
+          "label": "Content"
+        },
+        {
+          "type": "header",
+          "content": "Service Hours"
+        },
+        {
+          "type": "text",
+          "id": "service_title",
+          "label": "Title"
+        },
+        {
+          "type": "textarea",
+          "id": "service_hours_text",
+          "label": "Content"
+        },
+        {
+          "type": "header",
+          "content": "Phone"
+        },
+        {
+          "type": "richtext",
+          "id": "phone",
+          "label": "Phone"
+        },
+        {
+          "type": "header",
+          "content": "Email"
+        },
+        {
+          "type": "richtext",
+          "id": "email",
+          "label": "Email"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+

@@ -1,0 +1,9 @@
+<div class="qty-wrapper">
+  {% if line_item.properties._productType == "quantity-bundle" %}
+    {% include "cart-item-quantity-input", disabled: true %}  
+  {% else %}
+    <span class="qty-minus quantity-button">-</span>
+      {% include "cart-item-quantity-input" %}
+    <span class="qty-plus quantity-button">+</span>  
+  {% endif %}
+</div>

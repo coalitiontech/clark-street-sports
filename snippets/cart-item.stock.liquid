@@ -1,0 +1,10 @@
+{% if variant.available %}
+  {% if variant.inventory_management == "" or variant.inventory_management != "" and variant.inventory_policy != "deny" %}
+    {% assign message = "general.product.available" | t %}
+  {% else %}
+    {% assign message = "general.product.quantity_available" | t: quantity: variant.inventory_quantity %}
+  {% endif %}
+{% else %}
+  {% assign message = "general.product.out_of_stock" | t %}
+{% endif %}
+<span class="variant-availability">{{ message }}</span>

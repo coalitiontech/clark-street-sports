@@ -1,0 +1,50 @@
+{%- assign _blocks = section.blocks -%}
+<div id="error-features">
+  <div class="columns">
+    <div class="columns__row">
+      {%- for _block in _blocks -%}
+        <a href="{{ _block.settings.link }}" class="columns__box" style="background-image: url({{ _block.settings.image | img_url: '2048x' }})">
+          <span class="columns__text">
+            {{ _block.settings.title }}
+          </span>
+        </a><!-- /.columns__box -->
+      {%- endfor -%}
+    </div><!-- /.columns__row -->
+  </div><!-- /.columns -->
+</div><!-- /#error-collections -->
+
+{% schema %}
+{
+  "name": "Three Columns",
+  "max_blocks": 3,
+  "blocks": [
+    {
+      "type": "Column",
+      "name": "Column",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Three Columns",
+      "category": "Misc"
+    }
+  ]
+}
+{% endschema %}

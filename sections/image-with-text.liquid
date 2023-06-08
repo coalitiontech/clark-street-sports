@@ -1,0 +1,79 @@
+{%- assign _blocks = section.blocks -%}
+{%- assign align_class = '' -%}
+
+{%- for _block in _blocks -%}
+  {%- if _block.settings.image_position == 'right' -%}
+    {%- assign align_class = 'reverse' -%}
+  {%- else -%}
+    {%- assign align_class = '' -%}
+  {%- endif -%}
+
+  <div class="text-image {{ align_class }}" style="background-color: {{_block.settings.background_color}}">
+    <div class="container">
+      <div class="inner">
+        {%- if _block.settings.image != blank -%}
+          <div class="col col--image">
+            <img src="{{ _block.settings.image | img_url: '2048x' }}" alt="" width="621" height="466" />
+          </div><!-- /.col -->
+        {%- endif -%}
+
+        <div class="col col--text">
+          {%- if _block.settings.title != blank -%}
+            <h4>{{ _block.settings.title }}</h4>
+          {%- endif -%}
+
+          {%- if _block.settings.content != blank -%}
+            <p>
+              {{ _block.settings.content }}
+            </p>
+          {%- endif -%}
+        </div><!-- /.col-text -->
+      </div><!-- /.inner -->
+    </div><!-- /.container -->
+  </div><!-- /.text-image -->
+{%- endfor -%}
+
+{% schema %}
+{
+  "name": "Images With Text",
+  "blocks": [
+    {
+      "type": "Item",
+      "name": "Item",
+      "settings": [
+        {
+          "type": "color",
+          "id": "background_color",
+          "label": "Background Color",
+          "default": "#fff"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "textarea",
+          "id": "content",
+          "label": "Content"
+        },
+        {
+          "type": "radio",
+          "id": "image_position",
+          "label": "Image Position",
+          "options": [
+              { "value": "left", "label": "Left" },
+              { "value": "right", "label": "Right" }
+            ],
+            "default":   "left"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

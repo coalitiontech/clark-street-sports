@@ -1,0 +1,214 @@
+{% include "bms.product-init" %}
+{% include 'bold-pre-order' %}
+{% include 'css-final-sale' %}
+{% include 'css-ships-free' %}
+{% include 'css-bogo' %}
+{% include 'bold-product' with product, hide_action: 'break', output: 'none' %}
+{% for block in section.blocks %}
+  {% unless block.type == 'size_guide' %}{% continue %}{% endunless %}
+  {% assign guideTitle = block.settings.title | handleize %}
+  {% unless product.tags contains guideTitle %}{% continue %}{% endunless %}
+  {% assign size_guide = block.settings.size_guide_img %}
+  {% break %}
+{% endfor %}
+
+<div class="main-black" data-template-type="{{ template.suffix }}">
+  <div class="product-holder">
+    <div class="product-images">
+      {%- include 'breadcrumbs' -%}
+
+      <div class="product-images-holder{%- if product.images.size <= 1 -%} single-image{% endif %}">
+        <div class="featured__images">
+          <ul>
+            {%- for image in product.images -%}
+              <li class="zoom-image" data-zoom-src="{{ image | img_url: 'original' }}" data-index="{{ forloop.index }}" id="featured__image-{{ forloop.index }}">
+                    <img src="{{ image | img_url: '720x' }}" alt=" {{image.alt }}"/>
+              </li>
+            {%- endfor -%}
+          </ul>
+        </div><!-- /.featured__images -->
+        {%- if product.images.size > 1 -%}
+          <div class="product__thumbs">
+            <ul>
+              {%- for image in product.images -%}
+                {%- if forloop.index0 == 0 -%}
+                  {%- assign li_class = 'active' -%}
+                {%- else -%}
+                  {%- assign li_class = '' -%}
+                {%- endif -%}
+
+                <li class="{{ li_class }}">
+                  <a href="#featured__image-{{ forloop.index }}" data-index="{{ forloop.index }}">
+                    <img src="{{ image | img_url: '100x100' }}" alt="{{ image.alt }}" />
+                  </a>
+                </li>
+              {%- endfor -%}
+            </ul>
+          </div><!-- /.product__thumbs -->
+        {%- endif -%}
+      </div><!-- /.product-images-holder -->
+    </div><!-- /.product-images -->
+
+    <div class="product-description">
+      <div class="inner">
+
+        {%- assign low_quantity = settings.low_quantity_number | times: 1 -%}
+        {%- assign totalQuantity = 0 -%}
+
+        {% assign secondsCreated = product.published_at | date: '%s' %}
+        {% assign secondsNow = 'now' | date: '%s' %}
+        {% assign daysNew = settings.new_product_days %}
+        {% assign secondsNew = daysNew | times: 86400 %}
+        {% assign secondsBetween = secondsNow | minus: secondsCreated %}
+        {% assign current_variant = bold_selected_or_first_available_variant %}
+        {%- include 'bold-variant' with current_variant, output: 'none' -%}
+
+        <div class="variant-sku">
+          {{ current_variant.sku }}
+        </div>
+
+        {% for variant in product.variants %}
+          {%- include 'bold-variant' with variant, hide_action: 'skip' -%}
+          {%- assign totalQuantity = totalQuantity | plus: variant.inventory_quantity -%}
+        {% endfor %}
+        {% if product.tags contains 'pre-order' %}
+          <h5 class="availability">
+            {{ preOrderText }}
+          </h5><!-- /.availability -->
+        {% elsif totalQuantity <= 0 and product.variant.iventory_management == "shopify" and product.handle != 'gift-card' %}
+          <h5 class="availability">{{ 'general.product.sold_out' | t }}
+            {{ preOrderText }}
+          </h5><!-- /availability -->
+        {% elsif low_quantity >= totalQuantity and product.variant.iventory_management == "shopify" and product.handle != 'gift-card' %}
+          <h5 class="availability" data-low_quantity="{{ low_quantity }}">{{ 'general.product.low_quantity' | t }}
+            {{ preOrderText }}
+          </h5><!-- /.availability -->
+        {% elsif secondsBetween < secondsNew %}
+          <h5 class="availability">{{ 'general.product.new_tag' | t }}
+            {{ preOrderText }}
+          </h5>
+        {% endif %}
+        
+        {% if product.tags contains 'final_sale' %}
+          <h5 class="availability">
+            {{ finalSaleText }}
+          </h5>
+        {% elsif bold_compare_at_price_max > 0 %}
+          <h5 class="availability">{{ 'general.product.sale_tag' | t }}
+            {{ preOrderText }}
+          </h5>
+        {% endif %}
+        {%if product.tags contains 'ships-free' %}
+          <h5 class="ships-free">
+            {{ shipsFreeText }}
+          </h5>
+        {% endif %}
+        {%if product.tags contains 'bogo' %}
+          <h5 class="special-offer">
+            {{ bogoText }}
+          </h5>
+        {% endif %}
+        {% if product.metafields.sf_product.enable_shipping_message == 1 %}
+          {% assign shippingMessage = product.metafields.sf_product.shipping_message %}
+          {% if shippingMessage %}
+            <div class= shipping-message>
+              {{ shippingMessage }}
+            </div>  
+          {% endif %}
+        {% endif %}
+        <h2>
+          {{ product.title }}
+        </h2>
+    	{% render 'okendo-reviews-product-rating-summary', product: product %}
+        <div class="price">
+          <span class="sale-price">
+            <span class="sale-price">
+              {{ bold_selected_or_first_available_variant.price | money }}
+            </span>
+            
+          </span>
+          {% if bold_compare_at_price_max > 0 %}
+            <span class="compare-price">{{ bold_compare_at_price_max | money }}</span>
+          {% endif %}
+        </div><!-- /.price -->
+
+        {% include 'shappify-sales-clock' %}
+        <!-- <div class="variant-availability"></div> -->
+        
+        {% assign multiple_products = false %}
+        {% if template.suffix == "multiple-products" %}
+          {% assign multiple_products = true %}
+        {% endif %}
+
+        {% include 'product-form', multiple_products: multiple_products %}
+
+        <div class="form-row description-row">
+          <label>Description</label><hr>
+          <p>{{ product.content }}</p>
+        </div>
+
+      </div><!-- /.inner -->
+      {% include 'share' %}
+    </div><!-- /.product-description -->
+  </div><!-- /.product-holder -->
+  
+  <section class="product-video">
+    <div class="container d-flex flex-column align-items-center">
+      <h2 class="title">
+        {{ 'general.product.video' | t }}
+      </h2>
+      <div id="ytplayer"></div>
+    </div>
+  </section>
+  
+</div><!-- /.main -->
+
+{% schema %}
+  {
+    "name": "Product Item",
+    "blocks": [{
+      "type": "product_video",
+      "name": "Product Video",
+      "settings": [{
+          "id": "product_video_enabled",
+          "type": "checkbox",
+          "label": "Is Enabled",
+          "default": true
+        },
+        {
+          "id": "product_video_target",
+          "type": "product",
+          "label": "Target Product",
+          "info": "Select a Product for the Video"
+        },
+        {
+          "id": "product_video_url",
+          "type": "text",
+          "label": "Product Video Url"
+        },
+        {
+          "id": "product_video_autoplay",
+          "type": "checkbox",
+          "label": "Enable Autoplay",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "size_guide",
+      "name": "Size Guide",
+      "settings": [
+        {
+          "id": "title",
+          "label": "Product Type",
+          "type": "text"
+        },
+        {
+          "id": "size_guide_img",
+          "label": "Size Guide Image",
+          "type": "image_picker"
+        }
+      ]
+    }]
+  }
+{% endschema %}

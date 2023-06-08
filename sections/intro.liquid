@@ -1,0 +1,19 @@
+{%- assign _settings = section.settings -%}
+<div class="intro intro--page">
+  <div class="intro__image" style="background-image: url({{ _settings.image | img_url: '2048x' }})">
+    <h2>{{ page.title }}</h2>
+  </div><!-- /.intro__image -->
+</div><!-- /.intro-->
+
+{% schema %}
+{
+  "name": "Intro",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,37 @@
+{% include "bms.collection-init" %}
+
+{% schema %}
+  {
+    "name": "Collection Settings",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Description Limit Settings"
+      },
+      {
+        "id": "description-limit-enabled",
+        "type": "checkbox",
+        "label": "Is Enabled",
+        "default": true
+      },
+      {
+        "id": "description-limit-max-height",
+        "type": "number",
+        "label": "Max Height",
+        "default": 100
+      },
+      {
+        "id": "description-limit-label-more",
+        "type": "text",
+        "label": "Label More",
+        "default": "Read more"
+      },
+      {
+        "id": "description-limit-label-less",
+        "type": "text",
+        "label": "Label Less",
+        "default": "Close"
+      }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,15 @@
+{%- for option in line_item.product.options_with_values -%}
+  {%- assign index = forloop.index0 -%}
+  {%- assign optionValue = line_item.variant.options[index] | handle -%}
+  {%- unless optionValue == "default-title" -%}
+    <span>{{- option.name -}}: </span>{{- line_item.variant.options[index] -}}
+  {%- endunless -%}
+{% endfor %}
+
+{% for property in line_item.properties %}
+  {% unless property.first.first == '_' or property.last == blank %}
+    <div class="option-item">
+      {{ property.first }}: <b>{{ property.last }}</b>
+    </div>
+  {% endunless %}
+{% endfor %}

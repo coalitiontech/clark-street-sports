@@ -1,0 +1,28 @@
+$vp-xx-lg: 1450px; // ~ 1449px
+$vp-x-lg: 1200px; // ~ 1199px
+$vp-lg: 1024px; // ~ 1023px
+$vp-md: 960px; // ~ 959px
+$vp-md-sm: 798px; //797px 
+$vp-sm: 768px; // ~ 767px
+$vp-x-sm: 480px; // ~ 479px
+
+.products-row {
+    margin: 0 30px;
+    .products-list {
+        .product-item {
+            //min-width: 300px;
+            //width: calc(25% - 24px);
+            .product-image {
+                margin: 0 auto;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: $vp-sm - 1) {
+    .products-banner {
+        .image {
+            position: initial;
+        }
+    }
+}

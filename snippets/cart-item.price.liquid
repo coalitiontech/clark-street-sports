@@ -1,0 +1,8 @@
+
+<span class="Bold-theme-hook-DO-NOT-DELETE bold_cart_item_price" style="display:none !important;"></span>
+{% if line_item.final_price < bold_item_price %}
+        <span class="discounted_price">{{ line_item.final_price | money }}</span>
+        <span class="original_price"> {{ bold_item_price | money }}</span>
+  {% else %}
+  {{ bold_item_price | money }}
+  {% endif %}

@@ -1,0 +1,523 @@
+{%- assign _blocks = section.blocks -%}
+
+{%- if _blocks != blank -%}
+  <div id="snap">
+    <div class="intro">
+      <div class="intro__slider">
+        {%- for _block in _blocks -%}
+          {% assign _settings = _block.settings %}
+          <div class="intro__slide block-{{ _block.id }}">
+            <a href="{{ _settings.button_link }}" data-desktop="{{ _settings.image | img_url: '2048x' }}" data-mobile="{{ _settings.mobile_image | img_url: '600x' }}">
+              <div class="bms-intro__text">
+                <h1 class="intro__text-heading">{{ _settings.title }}</h1>
+                {%- if _settings.sub1 != blank -%}<h2 class="intro__text-sub1">{{ _settings.sub1 }}</h2>{% endif %}
+                {%- if _settings.sub2 != blank -%}<h2 class="intro__text-sub2">{{ _settings.sub2 }}</h2>{% endif %}
+                <span class="intro__text-button btn">{{ _settings.button_label }}</span>
+              </div>
+
+            </a>
+
+            <style>
+              {% assign mobile_up = "768px" %}
+
+              .intro .intro__slide.block-{{ _block.id }} {
+                  background-color: {{ _settings.mobile_background_colour }};
+                  background-image: url("{{ _settings.mobile_image | img_url: 'master' }}");
+                  background-repeat: no-repeat;
+                  background-size: {{ _settings.mobile_image_size }};
+                  background-position: {{ _settings.mobile_image_position }};
+                }
+              .intro .intro__slide.block-{{ _block.id }} .bms-intro__text {
+                {% if _settings.mobile_vert_text_align == 'top' %}
+                top: 0;
+                {% elsif _settings.mobile_vert_text_align == 'middle' %}
+                top: 50%;
+                transform: translateY(-50%);
+                {% elsif _settings.mobile_vert_text_align == 'bottom' %}
+                bottom: 0;
+                {% endif %}
+                left: 2.5%;
+                width: 95%;
+                align-items: {{ _settings.mobile_text_align }};
+                background-color: {{ _settings.mobile_text_background_colour }};
+                color: {{ _settings.mobile_text_colour }};
+              }
+              #snap .intro .intro__slide a {
+                height: {{ section.settings.mobile_height }}vw;
+                max-height: {{ section.settings.mobile_height }}vw; }
+              @media screen and (min-width: 768px) {
+                #snap .intro .intro__slide a {
+                  height: {{ section.settings.desktop_height }}vw;
+                  max-height: {{ section.settings.desktop_height }}vw;
+                }
+                .intro .intro__slide.block-{{ _block.id }} {
+                  background-color: {{ _settings.desktop_background_colour }};
+                  background-image: url("{{ _settings.desktop_image | img_url: 'master' }}");
+                  background-size: {{ _settings.desktop_image_size }};
+                  background-position: {{ _settings.desktop_image_position }};
+                }
+                .intro .intro__slide.block-{{ _block.id }} .bms-intro__text {
+                  width: {{ _settings.desktop_text_section_width }}%;
+                  padding: 1%;
+
+                  {% if _settings.desktop_text_position contains 'left' %}
+                  left: 0;
+                  right: auto;
+                  {% elsif _settings.desktop_text_position contains 'right' %}
+                  right: 0;
+                  left: auto;
+                  {% else %}
+                  left: 50%;
+                  transform: translateX(-50%){% if _settings.desktop_text_position contains 'middle' %} translateY(-50%){% endif %};
+                  {% endif %}
+
+                  {% if _settings.desktop_text_position contains 'top' %}
+                  top: 0;
+                  bottom: auto;
+                  {% elsif _settings.desktop_text_position contains 'bottom' %}
+                  bottom: 0;
+                  top: auto;
+                  {% else %}
+                  top: 50%;
+                  {% unless _settings.desktop_text_position contains 'center' %}transform: translateY(-50%){% endunless %};
+                  {% endif %}
+                  align-items: {{ _settings.desktop_text_align }};
+                  background-color: {{ _settings.desktop_text_background_colour }};
+                  color: {{ _settings.desktop_text_colour }};
+                }
+              }
+
+              .intro .intro__slide.block-{{ _block.id }} .bms-intro__text .intro__text-heading {
+                color: inherit;
+                font-size: calc({{ _settings.title_size }}vw + .25rem);
+              }
+
+              #snap .intro .intro__slide.block-{{ _block.id }} .bms-intro__text .intro__text-sub1 {
+                color: inherit;
+                font-size: calc({{ _settings.sub1_size }}vw + .25rem);
+              }
+
+              #snap .intro .intro__slide.block-{{ _block.id }} .bms-intro__text .intro__text-sub2 {
+                color: inherit;
+                font-size: calc({{ _settings.sub1_size }}vw + .25rem);
+              }
+              
+
+              .intro .intro__slide.block-{{ _block.id }} .bms-intro__text .intro__text-button {
+                color: {{ _settings.button_color }};
+                background-color: {{ _settings.button_background_color }};
+              }
+
+              
+              #error-search h3 {
+                font-size: calc({{ _settings.srch_top_size }}vw + .25rem);
+                }
+
+              @media screen and (max-width: {{ mobile_up }}) {
+                .intro .intro__slide.block-{{ _block.id }} .bms-intro__text .intro__text-heading {
+                  font-size: calc({{ _settings.title_size_mobile }}vw + .25rem);
+                }
+                #snap .intro .intro__slide.block-{{ _block.id }} .bms-intro__text .intro__text-sub1 {
+                  color: inherit;
+                  font-size: calc({{ _settings.sub1_size_mobile }}vw + .25rem);
+                }
+                #snap .intro .intro__slide.block-{{ _block.id }} .bms-intro__text .intro__text-sub2 {
+                  color: inherit;
+                  font-size: calc({{ _settings.sub1_size_mobile }}vw + .25rem);
+                }
+                #error-search h3 {
+                  font-size: calc({{ _settings.srch_top_size_mobile }}vw + .25rem);
+                }
+              }
+            </style>
+          </div><!-- /.intro__slide -->
+        {%- endfor -%}
+      </div><!-- /.intro__slider -->
+    </div><!-- /.intro -->
+  </div><!-- /#snap -->
+{%- endif -%}
+
+<div id="error-search">
+  {%- if _settings.srch-top-head != blank -%}<h3 class="srch-top-head">{{ _settings.srch-top-head }}</h3>{% endif %}
+  <div class="header__item search">
+    <form action="/search" method="get" class="search-header search-form" role="search">
+        <button  name="search_submit" class="header__icon-link">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M8 16C3.58172 16 0 12.4183 0 8C0 3.58173 3.58172 0 8 0C12.4183 0 16 3.58173 16 8C16 9.84871 15.3729 11.551 14.3199 12.9056L19.7071 18.2929L18.2929 19.7071L12.9056 14.3199C11.551 15.3729 9.84871 16 8 16ZM14.0001 8C14.0001 11.3137 11.3138 14 8.00012 14C4.68641 14 2.00012 11.3137 2.00012 8C2.00012 4.68629 4.68641 2 8.00012 2C11.3138 2 14.0001 4.68629 14.0001 8Z" fill="#0F2C51"/>
+            </svg>
+        </button>
+        <input class="search-header__input search__input" type="search" name="q" placeholder="Search">
+    </form>
+  </div>
+  {%- if _settings.srch-bottom-head != blank -%}<h3 class="srch-bottom-head">{{ _settings.srch-bottom-head }}</h3>{% endif %}
+</div><!-- /#error-search -->
+
+{{ '404page.scss.css' | asset_url | stylesheet_tag }}
+
+
+{% schema %}
+{
+  "name": "404Hero",
+  "settings": [
+      {
+        "type": "range",
+        "id": "desktop_height",
+        "min": 10,
+        "max": 100,
+        "step": 5,
+        "unit": "vw",
+        "label": "Desktop Height",
+        "default": 50
+      },
+      {
+        "type": "range",
+        "id": "mobile_height",
+        "min": 50,
+        "max": 200,
+        "step": 10,
+        "unit": "vw",
+        "label": "Mobile Height",
+        "default": 160
+      }
+  ],
+  "blocks": [
+    {
+      "type": "Slider",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Desktop Settings"
+        },
+        {
+          "type": "image_picker",
+          "id": "desktop_image",
+          "label": "Image"
+        },
+        {
+          "type": "select",
+          "id": "desktop_image_size",
+          "label": "Image size",
+          "options": [
+            { "value": "auto", "label": "Auto - No resizing" },
+            { "value": "50% 100%", "label": "50% width, 100% height" },
+            { "value": "50% auto", "label": "50% width, auto height"},
+            { "value": "contain", "label": "Fill space but do not crop" },
+            { "value": "cover", "label": "Cover entire space, crop if needed" }
+          ],
+          "default": "50% auto"
+        },
+        {
+          "type": "select",
+          "id": "desktop_image_position",
+          "label": "Image position",
+          "options": [
+            { "value": "top left", "label": "Top Left" },
+            { "value": "top center", "label": "Top Center" },
+            { "value": "top right", "label": "Top Right" },
+            { "value": "center left", "label": "Middle Left" },
+            { "value": "center center", "label": "Middle Center" },
+            { "value": "center right", "label": "Middle Right" },
+            { "value": "bottom left", "label": "Bottom Left" },
+            { "value": "bottom center", "label": "Bottom Center" },
+            { "value": "bottom right", "label": "Bottom Right" }
+          ],
+          "default": "top right",
+          "info": "Only applies if 'size' is not set to cover entire space"
+        },
+        {
+          "type": "range",
+          "id": "desktop_text_section_width",
+          "label": "Text Container Size",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "%",
+          "default": 90
+        },
+        {
+          "type": "select",
+          "id": "desktop_text_position",
+          "label": "Text position",
+          "options": [
+            { "value": "top left", "label": "Top Left" },
+            { "value": "top center", "label": "Top Center" },
+            { "value": "top right", "label": "Top Right" },
+            { "value": "middle left", "label": "Middle Left" },
+            { "value": "middle center", "label": "Middle Center" },
+            { "value": "middle right", "label": "Middle Right" },
+            { "value": "bottom left", "label": "Bottom Left" },
+            { "value": "bottom center", "label": "Bottom Center" },
+            { "value": "bottom right", "label": "Bottom Right" }
+          ],
+          "default": "middle left"
+        },
+        {
+          "type": "select",
+          "id": "desktop_text_align",
+          "label": "Text alignment (within text container)",
+          "options": [
+            { "value": "center", "label": "Center" },
+            { "value": "flex-end", "label": "Right" },
+            { "value": "flex-start", "label": "Left" }
+          ],
+          "default": "center"
+        },    
+        {
+          "type": "color",
+          "id": "desktop_background_colour",
+          "label": "Background Color",
+          "default": "#1b59b2"
+        },
+        {
+          "type": "color",
+          "id": "desktop_text_colour",
+          "label": "Text Color",
+          "default": "#FFF"
+        },
+        { 
+          "type": "color",
+          "id": "desktop_text_background_colour",
+          "label": "Text Background Color",
+          "default": "transparent"
+        },
+        {
+          "type": "header",
+          "content": "Mobile Settings"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile Image"
+        },
+        {
+          "type": "select",
+          "id": "mobile_image_size",
+          "label": "Image size",
+          "options": [
+            { "value": "auto", "label": "Auto - No resizing" },
+            { "value": "100% 50%", "label": "50% height, full width" },
+            { "value": "auto 50%", "label": "50% height, auto width"},
+            { "value": "contain", "label": "Fill space but do not crop" },
+            { "value": "cover", "label": "Cover entire space, crop if needed" }
+          ],
+          "default": "auto 50%"
+        },
+        {
+          "type": "select",
+          "id": "mobile_image_position",
+          "label": "Image position",
+          "options": [
+            { "value": "top left", "label": "Top Left" },
+            { "value": "top center", "label": "Top Center" },
+            { "value": "top right", "label": "Top Right" },
+            { "value": "center left", "label": "Middle Left" },
+            { "value": "center center", "label": "Middle Center" },
+            { "value": "center right", "label": "Middle Right" },
+            { "value": "bottom left", "label": "Bottom Left" },
+            { "value": "bottom center", "label": "Bottom Center" },
+            { "value": "bottom right", "label": "Bottom Right" }
+          ],
+          "default": "top center",
+          "info": "Only applies if 'size' is not set to cover entire space"
+        },
+        {
+          "type": "select",
+          "id": "mobile_vert_text_align",
+          "label": "Text Container Alignment",
+          "options": [
+            { "value": "top", "label": "Top" },
+            { "value": "middle", "label": "Middle" },
+            { "value": "bottom", "label": "Bottom" }
+          ],
+          "default": "top"
+        },
+        {
+          "type": "select",
+          "id": "mobile_text_align",
+          "label": "Text alignment (within text container)",
+          "options": [
+            { "value": "center", "label": "Center" },
+            { "value": "flex-end", "label": "Right" },
+            { "value": "flex-start", "label": "Left" }
+          ],
+          "default": "center"
+        },
+        
+        { 
+          "type": "color",
+          "id": "mobile_background_colour",
+          "label": "Background Color",
+          "default": "#1b59b2"
+        },
+        { 
+          "type": "color",
+          "id": "mobile_text_colour",
+          "label": "Text Color",
+          "default": "#FFF"
+        },
+        { 
+          "type": "color",
+          "id": "mobile_text_background_colour",
+          "label": "Text Background Color",
+          "default": "transparent"
+        },
+        {
+          "type": "header",
+          "content": "Title"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Oh<br/>Snap!"
+        },
+        {
+          "type": "range",
+          "id": "title_size",
+          "label": "Font Size of the title",
+          "min": 1.0,
+          "max": 9.0,
+          "step": 0.1,
+          "unit": "vw",
+          "default": 3.0
+        },
+        {
+          "type": "range",
+          "id": "title_size_mobile",
+          "label": "Font Size of the title (Mobile)",
+          "min": 1.0,
+          "max": 20.0,
+          "step": 0.5,
+          "unit": "vw",
+          "default": 5.5
+        },
+        {
+          "type": "header",
+          "content": "Subhead 1"
+        },
+        {
+          "type": "text",
+          "id": "sub1",
+          "label": "Subhead 1",
+          "default": "It looks like someone dropped the ball!"
+        },
+        {
+          "type": "range",
+          "id": "sub1_size",
+          "label": "Font Size of Subhead 1",
+          "min": 1.0,
+          "max": 9.0,
+          "step": 0.1,
+          "unit": "vw",
+          "default": 3.0
+        },
+        {
+          "type": "range",
+          "id": "sub1_size_mobile",
+          "label": "Font Size of Subhead 1 (Mobile)",
+          "min": 1.0,
+          "max": 9.0,
+          "step": 0.1,
+          "unit": "vw",
+          "default": 7.7
+        },
+        {
+          "type": "header",
+          "content": "Subhead 2"
+        },
+        {
+          "type": "text",
+          "id": "sub2",
+          "label": "Subhead 2",
+          "default": "It seems the page you are looking for is no longer in the playbook."
+        },
+        {
+          "type": "range",
+          "id": "sub2_size",
+          "label": "Font Size of Subhead 2",
+          "min": 1.0,
+          "max": 9.0,
+          "step": 0.1,
+          "unit": "vw",
+          "default": 2.5
+        },
+        {
+          "type": "range",
+          "id": "sub2_size_mobile",
+          "label": "Font Size of Subhead 2 (Mobile)",
+          "min": 1.0,
+          "max": 9.0,
+          "step": 0.1,
+          "unit": "vw",
+          "default": 5.5
+        },
+        {
+          "type": "header",
+          "content": "Button"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button Label"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button Link"
+        },
+        {
+          "type": "color",
+          "id": "button_color",
+          "label": "Color of the button text",
+          "default": "#fff"
+        },
+        {
+          "type": "color",
+          "id": "button_background_color",
+          "label": "Background color of the button",
+          "default": "#000"
+        },
+        {
+          "type": "text",
+          "id": "srch-top-head",
+          "label": "Text above search",
+          "default": "Run a quick search…"
+        },
+        {
+          "type": "text",
+          "id": "srch-bottom-head",
+          "label": "Text below search",
+          "default": "or explore one of our featured collections"
+        },
+        {
+          "type": "range",
+          "id": "srch_top_size",
+          "label": "Font Size of Search text",
+          "min": 1.0,
+          "max": 9.0,
+          "step": 0.1,
+          "unit": "vw",
+          "default": 1.8
+        },
+        {
+          "type": "range",
+          "id": "srch_top_size_mobile",
+          "label": "Font Size of Search text (Mobile)",
+          "min": 1.0,
+          "max": 9.0,
+          "step": 0.1,
+          "unit": "vw",
+          "default": 4.5
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "404Hero",
+      "category": "Sliders"
+    }
+  ]
+}
+{% endschema %}

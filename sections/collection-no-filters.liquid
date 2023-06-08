@@ -1,0 +1,43 @@
+{%- assign collection_paginate = cart.attributes['paginate'] -%}
+
+{%- unless collection_paginate -%}
+  {% assign collection_paginate = 36 %}
+{%- endunless -%}
+
+<style>
+.main {
+  padding-bottom: 0;
+}
+
+.collection-products {
+  padding-top: 0;
+}
+</style>
+
+
+{% paginate collection.products by collection_paginate %}
+  <div class="main">
+    {%- include 'collections-top-line' -%}
+    <div class="collection-row centered-grid" data-collection-url="{{ collection.url | default: '/collections/all' | prepend: shop.url }}">
+      <div class="collection-products">
+        <h2 class="bms-step-counter page-title">{{ 'corporate_sales.step_3.title' | t }}</h2>
+        {% if collection.description != blank %}
+          <section class="collection-description">
+            {{ collection.description }}
+          </section>
+        {% endif %}
+        <div id="shopify-section-collection-products" class="shopify-section">
+          <div class="products-row">
+            <ul class="products-list"></ul>
+          </div>
+          <div class="collection-pagination paginate"></div>
+        </div>
+      </div><!-- /.collection-products -->
+
+    </div><!-- /.collection-row -->
+
+  </div><!-- /.main -->
+  {% include 'bold-collection-filter-init' %}
+{% endpaginate %}
+
+<div class="mobile-filter-overlay"></div>

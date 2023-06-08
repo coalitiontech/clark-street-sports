@@ -1,0 +1,116 @@
+$vp-xx-lg: 1450px; // ~ 1449px
+$vp-x-lg: 1200px; // ~ 1199px
+$vp-lg: 1024px; // ~ 1023px
+$vp-md: 960px; // ~ 959px
+$vp-md-sm: 798px; //797px 
+$vp-sm: 768px; // ~ 767px
+$vp-x-sm: 480px; // ~ 479px
+
+.collection-products {
+    .products-row {
+        .products-list {
+            display: flex;
+            flex-wrap: wrap;
+            li {
+                .collection-product-image {
+                    width: 300px;
+                    height: 300px;
+                    img {
+                        width: auto;
+                        max-height: 100%;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: $vp-sm - 1) {
+    .collection-products {
+        .products-row {
+            .products-list {
+                li {
+                    width: auto;
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: $vp-x-sm + 20) {
+    .main {
+        padding-top: 40px;
+    }
+}
+.countdown-overlay {
+    position: absolute;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.35); /* Black see-through */
+    color: #f1f1f1;
+    width: 100%;
+    color: white;
+    font-size: 20px;
+    padding: 20px;
+    text-align: center;
+}
+.countdown-overlay__date {
+    position: absolute;
+    left: 0;
+    top: 0;
+    padding: 2% 4%;
+    background: white;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #1B59B2;
+}
+.countdown-overlay__date span {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 1.5;
+    text-align: center;
+    color: #C91E2A;
+}
+.countdown-overlay__date p {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 1.75rem;
+    line-height: 1.0;
+    margin: 0;
+    text-align: center;
+    color: #003989;
+}
+.countdown-overlay__header--countdown-timer {
+    display: flex;
+    width: 100%;
+    justify-items: center;
+    justify-content: space-around;
+    align-items: stretch;
+    align-content: space-between;
+    padding: 2% 0 0 20%;
+    color: white;
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 0px;
+}
+.countdown-overlay__header--countdown-timer .time-unit {
+    text-align: center;
+    color: white;
+    display: flex;
+    flex-direction: column;
+}
+.countdown-overlay__header--countdown-timer .countdown-timer__digit {
+    font-size: 18px;
+    font-weight: 900;
+}
+.countdown-overlay__header--countdown-timer p {
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: none;
+    margin: 20px 0 5px;
+}

@@ -1,0 +1,68 @@
+{%- assign _blocks = section.blocks -%}
+
+<div class="collection-products">
+	<div class="products-row">
+		<ul class="products-list">
+			{%- for _product in collection.products -%}
+				<li>
+					<a href="{{ _product.url | within: _product.collections[0] }}">
+						{%- assign seconds_being_new_product = settings.new_product_days | times: 24 | times: 60 | times: 60 -%}
+						{%- assign product_publish_date = _product.published_at | date: "%s" -%}
+						{%- assign date_when_product_stops_being_new = product_publish_date | plus: seconds_being_new_product | date: "%s" -%}
+						{%- assign now = "now" | date: "%s" -%}
+
+						<div class="tags-wrapper">
+							{%- if now < date_when_product_stops_being_new -%}
+								<span class="new-tag">
+									{{ 'general.product.new_tag' | t }}
+								</span>
+							{%- endif -%}
+
+							{%- if _product.selected_or_first_available_variant.price < _product.compare_at_price_max -%}
+								<span class="sale-tag">
+									{{ 'general.product.sale_tag' | t }}
+								</span>
+							{%- endif -%}
+							
+							{%- for _block in _blocks -%}
+								<span class="custom-tag">
+									<img src="{{ image | img_url: '50x' }}"/>
+								</span>
+							{%- endfor -%}
+						</div><!-- /.tags-wrapper -->
+
+						<img src="{{ _product.images[0] | img_url: '2048x' }}" alt="" width="291" height="290" />
+
+						<h4>{{ _product.title }}</h4>
+
+						<span class="price">{{ _product.price | money }}</span>
+					</a>
+				</li>
+			{%- endfor -%}
+		</ul><!-- /.products-list -->
+	</div><!-- /.products-row -->
+</div><!-- /.collection-products -->
+
+{% schema %}
+{
+	"name": "Custom Tags",
+	"blocks": [
+		{
+			"type": "custom_tag",
+			"name": "Tag",
+			"settings": [
+				{
+					"type": "text",
+					"id": "placeholder",
+					"label": "Placeholder"
+				},
+				{
+					"type": "image_picker",
+					"id": "image",
+					"label": "Image"
+				}
+			]
+		}
+	]
+}
+{% endschema %}

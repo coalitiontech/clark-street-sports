@@ -1,0 +1,182 @@
+<script>
+  document.addEventListener("globo.preorder.show.preorder", function(e) {
+      const form = e.detail.form;
+    
+      form.find('.gPreorderAgree').length == 0 && form.find('.cta-holder')
+      .append(
+          `<div class="gPreorderAgree">
+            <label class="Polaris-Choice" for="preorderAgree" onclick="onChangeAgree(this)">
+              <span class="Polaris-Choice__Control">
+                <span class="Polaris-Checkbox">
+                  <input id="preorderAgree" type="checkbox" class="Polaris-Checkbox__Input" value="">
+                  <span class="Polaris-Checkbox__Backdrop"></span>
+                  <span class="Polaris-Checkbox__Icon">
+                    <span class="Polaris-Icon">
+                      <span class="Polaris-VisuallyHidden"></span>
+                      <svg viewBox="0 0 20 20" class="Polaris-Icon__Svg" focusable="false" aria-hidden="true">
+                        <path d="M14.723 6.237a.94.94 0 0 1 .053 1.277l-5.366 6.193a.834.834 0 0 1-.611.293.83.83 0 0 1-.622-.264l-2.927-3.097a.94.94 0 0 1 0-1.278.82.82 0 0 1 1.207 0l2.297 2.43 4.763-5.498a.821.821 0 0 1 1.206-.056Z"></path><
+                      /svg>
+                    </span>
+                  </span>
+                </span>
+              </span>
+              <span class="Polaris-Choice__Label">${e.detail.profile.message.labelCountdownStart}</span>
+            </label>
+          </div>`
+      )
+
+      if(form.find('.gPreorderAgree').length && !form.find('.gPreorderAgree').find('#preorderAgree').is(':checked')){
+          form.find('.gPreorderBtn').attr('disabled', 'disabled');
+      }else{
+          form.find('.gPreorderBtn').removeAttr('disabled', 'disabled');
+      }
+  });
+
+  function onChangeAgree(e){
+      if(e.querySelector('#preorderAgree').checked) e.closest('form').querySelector('.gPreorderBtn').removeAttribute('disabled');
+      else e.closest('form').querySelector('.gPreorderBtn').setAttribute('disabled', 'disabled');
+  }
+</script>
+<style>
+  .Polaris-Choice {
+    display: inline-flex;
+    justify-content: flex-start;
+    padding: var(--p-space-1) 0;
+    cursor: pointer;
+  }
+  .Polaris-Choice__Label {
+    font-size: var(--p-font-size-4);
+    font-weight: var(--p-font-weight-regular);
+    line-height: var(--p-line-height-2);
+    text-transform: initial;
+    letter-spacing: initial;
+    -webkit-tap-highlight-color: transparent;
+    margin-left: 1rem;
+  }
+  .Polaris-Choice__Control {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: stretch;
+    width: var(--p-choice-size);
+    height: var(--p-choice-size);
+    margin-right: var(--p-space-2);
+  }
+  .Polaris-Checkbox {
+    position: relative;
+    margin: var(--p-choice-margin);
+    height: 2rem !important;
+    width: 2rem !important;
+  }
+  .Polaris-Choice__Control > * {
+    width: 100%;
+  }
+  .Polaris-Checkbox__Input {
+    position: absolute !important;
+    top: 0;
+    width: 0.0625rem !important;
+    height: 0.0625rem !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    clip-path: inset(50%) !important;
+    border: 0 !important;
+    white-space: nowrap !important;
+  }
+  .Polaris-Checkbox__Backdrop {
+    position: relative;
+    border: 0.125rem solid rgba(140, 145, 150, 1);
+    background-color: rgba(255, 255, 255, 1);
+    border-radius: 0.25rem;
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+  .Polaris-Checkbox__Backdrop::before {
+    content: '';
+    position: absolute;
+    top: calc(var(--p-control-border-width)*-1);
+    right: calc(var(--p-control-border-width)*-1);
+    bottom: calc(var(--p-control-border-width)*-1);
+    left: calc(var(--p-control-border-width)*-1);
+    border-radius: var(--p-border-radius-1);
+    background-color: var(--p-interactive);
+    opacity: 0;
+    transform: scale(0.25);
+    transition: opacity var(--p-duration-100) var(--p-ease), transform var(--p-duration-100) var(--p-ease);
+  }
+  .Polaris-Checkbox__Backdrop::after {
+    content: '';
+    position: absolute;
+    z-index: 1;
+    top: calc(var(--p-control-border-width)*-1 + -0.0625rem);
+    right: calc(var(--p-control-border-width)*-1 + -0.0625rem);
+    bottom: calc(var(--p-control-border-width)*-1 + -0.0625rem);
+    left: calc(var(--p-control-border-width)*-1 + -0.0625rem);
+    display: block;
+    pointer-events: none;
+    box-shadow: 0 0 0 calc(var(--p-control-border-width)*-1 + -0.0625rem) var(--p-focused);
+    transition: box-shadow var(--p-duration-100) var(--p-ease);
+    border-radius: calc(var(--p-border-radius-1) + 0.0625rem);
+  }
+  .Polaris-Checkbox__Icon {
+    position: absolute;
+    top: 55%;
+    left: 60%;
+    transform-origin: 50% 50%;
+    pointer-events: none;
+    transform: translate(-50%, -50%) scale(0.25);
+    opacity: 0;
+    transition: opacity var(--p-duration-100) var(--p-ease), transform var(--p-duration-100) var(--p-ease);
+  }
+  .Polaris-Icon {
+    display: block;
+    height: 2.5rem;
+    width: 2.5rem;
+    max-height: 100%;
+    max-width: 100%;
+    margin: auto;
+  }
+  .Polaris-VisuallyHidden {
+    position: absolute !important;
+    top: 0;
+    width: 0.0625rem !important;
+    height: 0.0625rem !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    clip-path: inset(50%) !important;
+    border: 0 !important;
+    white-space: nowrap !important;
+  }
+  .Polaris-Icon__Svg, .Polaris-Icon__Img {
+    position: relative;
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    max-height: 100%;
+  }
+  .Polaris-Checkbox__Icon svg {
+    fill: var(--p-icon-on-interactive);
+  }
+  .Polaris-Checkbox__Input:checked + .Polaris-Checkbox__Backdrop {
+    border-color: var(--p-interactive);
+  }
+  .Polaris-Checkbox__Input:checked + .Polaris-Checkbox__Backdrop::before{
+    opacity: 1;
+    transform: scale(1);
+  }
+  .Polaris-Checkbox__Input:checked ~ .Polaris-Checkbox__Icon {
+    transition: opacity var(--p-duration-150) var(--p-ease), transform var(--p-duration-150) var(--p-ease);
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  .qty-wrapper{
+      width: 100%;
+      margin-bottom: 15px;
+  }
+  .gPreorderPartialPaymentWrapper{
+      margin-top: 15px;
+  }
+</style>

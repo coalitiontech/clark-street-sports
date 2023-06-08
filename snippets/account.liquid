@@ -1,0 +1,173 @@
+<div class="main">
+  <div class="container">
+    <div class="account-row">
+      <h3>{{ 'customer.account.greeting' | t }} {{ customer.first_name }} {{ customer.last_name }}</h3>
+      <div class="sidebar">
+
+        <ul>
+          <li class="active">
+            <a href="/account">{{ 'customer.account.my_account' | t }}</a>
+          </li>
+
+          <li>
+            <a href="/account?view=order">{{ 'customer.account.order_history' | t }}</a>
+          </li>
+          <li>
+            <a href="#sd_partialpay">Pending Balance</a>
+          </li>
+        </ul>
+
+        <div class="cta-holder">
+          <a href="/account/logout">{{ 'customer.account.sign_out' | t }}</a>
+        </div><!-- /.cta-holder -->
+      </div><!-- /.sidebar -->
+      
+      <div class="content">
+        {% paginate customer.addresses by 5 %}
+          <div class="addresses">
+            <a href="#" class="btn-new-adress">{{ 'customer.addresses.add_new' | t }}</a>
+
+            <h2>{{ 'customer.addresses.title' | t }}</h2>
+
+            {% assign form_class = 'form form-default form-add-address' %}
+            {% form 'customer_address', customer.new_address, class: form_class  %}
+              {% assign idx = form.id %}
+
+              <div class="form-head">
+                <h1>{{ 'customer.addresses.add_new' | t }}</h1>
+              </div><!-- /.form-head -->
+
+              {% if form.errors %}
+                <div class="form-notice">
+                  {{ form.errors | default_errors }}
+                </div><!-- /.form-notice -->
+              {% endif %}
+
+              <div class="form-body">
+                {% include 'form-address-body' %}
+              </div><!-- /.form-body -->
+              
+              <div class="form-actions clear">
+                <input type="submit" class="form-btn" value="{{ 'customer.addresses.add' | t }}" >
+
+                <a href="#" class="link cancel">{{ 'customer.addresses.cancel' | t }}</a>
+              </div><!-- /.form-actions -->
+            {% endform %}
+
+            {% for address in customer.addresses %}
+              {% assign first_name = address.first_name %}
+              {% assign last_name = address.last_name %}
+              {% assign company = address.company %}
+              {% assign street = address.street %}
+              {% assign city = address.city %}
+              {% assign province_code = address.province_code %}
+              {% assign zip = address.zip %}
+              {% assign country = address.country %}
+              {% assign phone = address.phone %}
+              {% capture default %}{% if address.id == customer.default_address.id %}true{% endif %}{% endcapture %}
+              {% assign class = '' %}
+
+              {% if default != blank %}
+                {% assign class = class | append: ' ' | append: 'default' %}
+              {% endif %}
+
+              <div class="accordion-section{{ class }}">
+                <div class="accordion-head">
+                  <h3>
+                    {{ first_name | capitalize }} {{last_name | capitalize }}
+                    {% if default != blank %}({{ 'customer.addresses.default' | t }}){% endif %}
+                  </h3>
+
+                  <address>
+                    {% unless company == blank %}
+                      {{ company }}
+
+                      <br />
+                    {% endunless %}
+
+                    {% unless street == blank %}
+                      {{ street }}
+
+                      <br />
+                    {% endunless %}
+
+                    {% unless city == blank %}
+                      {{ city }}
+
+                      <br />
+                    {% endunless %}
+
+                    {% unless province_code == blank %}
+                      {{ province_code }}
+
+                      <br />
+                    {% endunless %}
+
+                    {% unless zip == blank %}
+                      {{ zip }}
+
+                      <br />
+                    {% endunless %}
+
+                    {% unless country == blank %}
+                      {{ country }}
+
+                      <br />
+                    {% endunless %}
+
+                    {% unless phone == blank %}
+                      {{ phone }}
+
+                      <br />
+                    {% endunless %}
+                  </address>
+                  
+                  <div class="actions">
+                    {{ 'customer.addresses.edit' | t | edit_customer_address_link: address.id }}
+
+                     | 
+
+                    {{ 'customer.addresses.delete' | t | delete_customer_address_link: address.id }}
+                  </div><!-- /.actions -->
+                </div><!-- /.accordion-head -->
+
+                <div class="accordion-body">
+
+                  {% assign form_class = 'form form-default form-edit-address '  | append : 'edit-address-' | append : address.id %}
+                  {% form 'customer_address', address, class: form_class  %}
+                    {% assign idx = form.id %}
+
+                    <div class="form-head">
+                      <h1>{{ 'customer.addresses.edit_address' | t }}</h1>
+                    </div><!-- /.form-head -->
+
+                    {% if form.errors %}
+                      <div class="form-notice">
+                        {{ form.errors | default_errors }}
+                      </div><!-- /.form-notice -->
+                    {% endif %}
+
+                    <div class="form-body">
+                      {% include 'form-address-body' %}
+                    </div><!-- /.form-body -->
+                    
+                    <div class="form-actions clear">
+                      <input type="submit" class="form-btn btn btn--black" value="{{ 'customer.addresses.update' | t }}" >
+
+                      <a href="#" class="link cancel">{{ 'customer.addresses.cancel' | t }}</a>
+                    </div><!-- /.form-actions -->
+                  {% endform %}
+                </div><!-- /.accordion-body -->
+              </div><!-- /.accordion-section -->
+            {% endfor %}
+
+            {% include 'pagination' %}
+          </div><!-- /.addresses -->
+        {% endpaginate %}
+
+       <div id="sd_partialpay"></div>
+      </div><!-- /.content -->
+    </div><!-- /.account-row -->
+  </div><!-- /.container -->
+
+</div><!-- /.main -->

@@ -1,0 +1,536 @@
+BOLD.formatMoney = function (t,e){function o(t,e){return"undefined"==typeof t?e:t}function i(t,e,i,r){if(e=o(e,2),i=o(i,","),r=o(r,"."),isNaN(t)||null==t)return 0;t=(t/100).toFixed(e);var n=t.split("."),a=n[0].replace(/(\d)(?=(\d\d\d)+(?!\d))/g,"$1"+i),s=n[1]?r+n[1]:"";return a+s}"string"==typeof t&&(t=t.replace(".",""));var r="",n=/\{\{\s*(\w+)\s*\}\}/,a=e||this.money_format;switch(a.match(n)[1]){case"amount":r=i(t,2);break;case"amount_no_decimals":r=i(t,0);break;case"amount_with_comma_separator":r=i(t,2,".",",");break;case"amount_no_decimals_with_comma_separator":r=i(t,0,".",",")}return a.replace(n,r)};
+
+/*============================================================================
+Handlebars Helpers
+- Adds ability to add conditions to if statements and other helpers
+==============================================================================*/
+Handlebars.registerHelper("xif", function (expression, options) {
+    return Handlebars.helpers["x"].apply(this, [expression, options]) ? options.fn(this) : options.inverse(this);
+});
+
+Handlebars.registerHelper("x", function(expression, options) {
+    var result;
+    var context = this;
+    with(context) {
+        result = (function() {
+        try {
+            return eval(expression);
+        } catch (e) {
+            console.warn('•Expression: {{x \'' + expression + '\'}}\n•JS-Error: ', e, '\n•Context: ', context);
+        }
+        }).call(context);
+    }
+    return result;
+});
+
+Handlebars.registerHelper("formatMoney", function(price) {
+    return BOLD.formatMoney(price, BOLD.money_format || "{% raw %}${{amount}}{% endraw %}");
+});
+
+Handlebars.registerHelper('repeat', function(n, block) {
+    var accum = '';
+    for(var i = 0; i < n; ++i)
+        accum += block.fn(i);
+    return accum;
+  });
+
+
+/*============================================================================
+  Collection Filter Rendering
+==============================================================================*/
+var CollectionFilters = (function () {
+    var Filter = function(){
+        this.cache = {
+            filterTemplate          : Handlebars.compile($('#CollectionFiltersTemplate').html()),
+            $filterContainer        : $('.collection-filters'),
+            productTemplate         : Handlebars.compile($('#CollectionProductsTemplate').html()),
+            $productContainer       : $('.products-list'),
+            $minPrice               : $('.min-price'),
+            $maxPrice               : $('.max-price'),
+            $goButton               : $('.search-price-button'),
+            $clearPriceRange        : $('.clear-price-range'),
+            sortByTemplate          : Handlebars.compile($('#CollectionSortBy').html()),
+            $sortContainer          : $('.sort-by'),
+            paginationTemplate      : Handlebars.compile($('#CollectionPagination').html()),
+            $paginationContainer    : $('.collection-pagination'),
+            $toggleFilters          : $('.toggle-filters'),
+            $mobileFilterOverlay    : $('.mobile-filter-overlay'),
+            $mobileClose            : $('.mobile-close')
+        }
+
+        this.state = {
+            minPrice: null,
+            maxPrice: null
+        }
+
+        this.bindEvents();
+    }
+
+    Filter.prototype.bindEvents = function(){
+        BOLD.collection_filter.app.on('render_products', this.renderProducts.bind(this));
+        BOLD.collection_filter.app.on('render_pagination', this.renderPagination.bind(this));
+        BOLD.collection_filter.app.on('render_filters', this.renderFilters.bind(this));
+        BOLD.collection_filter.app.on('render_sort', this.renderSort.bind(this));
+        this.cache.$sortContainer.on('change', this.updateSort.bind(this));
+        this.cache.$toggleFilters.on('click', this.toggleFilters.bind(this));
+        this.cache.$mobileFilterOverlay.on('click', this.toggleFilters.bind(this));
+    }
+
+    Filter.prototype.toggleFilters = function(e){
+        e.preventDefault();
+        this.cache.$filterContainer.toggleClass('show');
+        this.cache.$mobileFilterOverlay.toggleClass('show');
+
+        if(this.cache.$filterContainer.hasClass('show')){
+            // $('body').css('overflow', 'hidden');
+
+            $('html,body').css({
+                'overflow': 'hidden',
+                'position': 'relative',
+                'height': '100%'
+            })
+        }
+        else {
+            // $('body').css('overflow', '');
+
+            $('html,body').css({
+                'overflow': '',
+                'position': '',
+                'height': ''
+            })
+        }
+    }
+
+    Filter.prototype.closeFilters = function(e){
+        e.preventDefault();
+        this.cache.$filterContainer.toggleClass('show');
+        this.cache.$mobileFilterOverlay.toggleClass('show');
+        if(this.cache.$filterContainer.hasClass('show')){
+            // $('body').css('overflow', 'hidden');
+
+            $('html,body').css({
+                'overflow': 'hidden',
+                'position': 'relative',
+                'height': '100%'
+            })
+        }
+        else {
+            // $('body').css('overflow', '');
+
+            $('html,body').css({
+                'overflow': '',
+                'position': '',
+                'height': ''
+            })
+        }
+    }
+
+    Filter.prototype.validateNumber = function(e){
+        e = e || window.event;
+        var charCode = (typeof e.which == "undefined") ? e.keyCode : e.which;
+        if(charCode == 8){
+            return true;
+        }
+        var charStr = String.fromCharCode(charCode);
+        var regex = /[0-9]|\./;
+        if( !regex.test(charStr) ) {
+            e.preventDefault();
+            return false;
+        }
+        return true;
+    }
+
+    Filter.prototype.updateMin = function(e){
+        this.state.minPrice = e.target.value * 100;
+    }
+
+    Filter.prototype.updateMax = function(e){
+        this.state.maxPrice = e.target.value * 100;
+    }
+
+    Filter.prototype.updateFilter = function(event){
+        var tag = event.target.value;
+        var checked = event.target.checked;
+
+        BOLD.collection_filter.app.emit('update_filter', { tag: tag, selected: checked });
+        $('html,body').animate({scrollTop: 0}, "slow");
+    }
+
+    Filter.prototype.updatePage = function(page){
+        BOLD.collection_filter.app.emit('update_page', page);
+        $('html,body').animate({scrollTop: 0}, "slow");
+    }
+
+    Filter.prototype.updateSort = function(event){
+        BOLD.collection_filter.app.emit('update_sort', event.target.value);
+        $('html,body').animate({scrollTop: 0}, "slow");
+    }
+
+    Filter.prototype.clearFilters = function(event){
+        event.preventDefault();
+        this.state.minPrice = null;
+        this.state.maxPrice = null;
+        BOLD.collection_filter.app.emit('clear_filters');
+        $('html,body').animate({scrollTop: 0}, "slow");
+    }
+
+    Filter.prototype.clearPriceRange = function(event){
+        event.preventDefault();
+        this.state.minPrice = null;
+        this.state.maxPrice = null;
+        BOLD.collection_filter.app.emit('clear_price_range');
+        $('html,body').animate({scrollTop: 0}, "slow");
+    }
+
+    Filter.prototype.renderProducts = function(data){
+        var theProducts = data.data.products; 
+        theProducts.map(function(product){
+            product.is_sale = product.price_min < product.compare_at_price_max ? true : false;
+            product.badges = [];
+            product.tags.map(function(tag){
+                BOLD.customTags.map(function(subTag){
+                    tag = tag.toLowerCase();
+                    subTagPlaceHolder = subTag.placeholder.toLowerCase();
+                    if(tag == subTagPlaceHolder){
+                        product.badges.push(subTag.image)
+                    }
+                });
+            });
+
+            const isCountDownOver = (dateTime) => {
+                if(dateTime) {
+                    if(new Date(dateTime) < new Date()) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            if (product.countdown_date_time != null && !isCountDownOver(product.countdown_date_time) && product.isUnlockTheDrop == 'true') {
+                product.countdown_date_time_data = {};
+                
+                var date = new Date(product.countdown_date_time);
+                var months = ["Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"];
+                product.countdown_date_time_data.month = months[date.getMonth()];
+                product.countdown_date_time_data.day = date.getDate(); // numerical day value
+                var countdown = date.getTime() - new Date().getTime();
+
+                const getNewValue = (timeUnit, timeDiff) => {
+                    if(timeUnit == 'days') {
+                        return Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+                    } else if(timeUnit == 'hours') {
+                        return Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    } else if(timeUnit == 'minutes') {
+                        return Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+                    } else if(timeUnit == 'seconds') {
+                        return Math.floor((timeDiff % (1000 * 60)) / 1000);
+                    }
+                }
+                
+                product.countdown_date_time_data.days = getNewValue('days');
+                product.countdown_date_time_data.hours = getNewValue('hours');
+                product.countdown_date_time_data.minutes = getNewValue('minutes');
+                product.countdown_date_time_data.seconds = getNewValue('seconds');
+
+                if ( countdown < 0 ) {
+                    product.countdown_date_time_data = false; 
+                }
+
+                var intervalId = setInterval(() => {
+                    if(!isCountDownOver(product.countdown_date_time)) {
+                        var daysElement = document.querySelector(`.days-${product.id}`);
+                        var hoursElement = document.querySelector(`.hours-${product.id}`);
+                        var minutesElement = document.querySelector(`.minutes-${product.id}`);
+                        var secondsElement = document.querySelector(`.seconds-${product.id}`);
+                        var countdown = date.getTime() - new Date().getTime();
+
+                        if(daysElement) {
+                            daysElement.innerHTML = getNewValue('days', countdown);
+                        }
+                        if(hoursElement) {
+                            hoursElement.innerHTML = getNewValue('hours', countdown);
+                        }
+                        if(minutesElement) {
+                            minutesElement.innerHTML = getNewValue('minutes', countdown);
+                        }
+                        if(secondsElement) {
+                            secondsElement.innerHTML = getNewValue('seconds', countdown);
+                        }
+                    } else {
+                        document.querySelector('.countdown-overlay').style.display = 'none';
+                        clearInterval(intervalId);
+                    }
+                    
+                }, 1000)
+                
+            }
+            return product;
+        });
+
+        if(!data.data.loading){
+            if(data.data.count == 1){
+                $('.product-count').html(data.data.count + ' Product Found');
+            }
+            else {
+                $('.product-count').html(data.data.count + ' Products Found');
+            }
+        }
+        this.cache.$productContainer.html(this.cache.productTemplate(data.data));
+    }
+
+    Filter.prototype.convertToCondensedSizeNames = function(name){
+        name = name.replace('2X-Large', '2XL');
+        name = name.replace('X-Large', 'XL');
+        name = name.replace('Large', 'L');
+        name = name.replace('Medium', 'M');
+        name = name.replace('X-Small', 'XS');
+        name = name.replace('Small', 'S');
+        name = name.replace(' Months', 'm');
+
+        if(name.indexOf('L ')>-1 || name.indexOf('M ')>-1 || name.indexOf('S ')>-1){
+            name = name.split(' ')[1];
+        }
+
+        return name;
+    }
+
+    Filter.prototype.renderFilters = function(data){
+        var activeFilters = data.data.activeFilters.map(function(category){
+            return category.filters;
+        });
+        activeFilters = [].concat.apply([], activeFilters);
+
+        var categories = data.data.categories.map(function(category){
+            var categoryNameSlug = BOLD.BMS.Common.slugify(category.name);
+
+            switch (categoryNameSlug) {
+                case "price": {
+                    category.lowPrice = data.data.price_range.low;
+                    category.highPrice = data.data.price_range.high;
+                    break;
+                }
+                case "shop-for": {
+                    category.filters = category.filters.map(function(filter){
+                        filter.name = filter.name.replace("Home Office & Auto", "Home, Office & Auto");
+                        return filter;
+                    }.bind(this));
+                    break;
+                }
+                default: {
+                    if(categoryNameSlug.indexOf('size') > -1){
+                        category.filters = category.filters.map(function(filter){
+                            filter.name = this.convertToCondensedSizeNames(filter.name);
+                            filter.handle = BOLD.BMS.Common.slugify(filter.name);
+                            return filter;
+                        }.bind(this));
+                        category.name = category.name.replace("s Sizes", "'s Sizes");
+                        category.handle = BOLD.BMS.Common.slugify(category.name);
+        
+                        _sortSizeFilter(category.handle, category.filters);
+                    }
+                }
+            }  
+            
+            return category;
+        }.bind(this))
+
+        var low = data.data.price_range.low;
+
+        if(data.data.price_range.low && data.data.price_range.high){
+            var priceName = '';
+
+            if(low == 1){
+                priceName = 'Less than $10';
+            }
+            else if(low == 1000){
+                priceName = '$10 - $20';
+            }
+            else if(low == 2000){
+                priceName = '$20 - $40';
+            }
+            else if(low = 4000){
+                priceName = '$40 - $60';
+            }
+            else if(low == 6000){
+                priceName = 'Over $60';
+            }
+
+            activeFilters.push({
+                name: priceName
+            })
+        }
+
+        this.cache.$filterContainer.html(this.cache.filterTemplate({
+            categories: categories,
+            activeFilters: activeFilters,
+            lowPrice: data.data.price_range.low,
+            highPrice: data.data.price_range.high,
+            hasPriceRange: data.data.price_range.low > 0 && data.data.price_range.high > 0
+        }));
+
+        this.cache.$clearPriceRange = $('.clear-price-range');
+        this.cache.$mobileClose = $('.mobile-close');
+    
+        this.cache.$filterContainer.find('.filter-input').on('change', this.updateFilter.bind(this));
+        this.cache.$filterContainer.find('.clear-filters').on('click', this.clearFilters.bind(this));
+        this.cache.$clearPriceRange.on('click', this.clearPriceRange.bind(this));
+        this.cache.$mobileClose.on('click', this.closeFilters.bind(this));
+        $('.clear-all-filters').on('click', this.clearFilters.bind(this));
+
+        $('.price-range-radio').on('change', function(event){
+            var $element = $(event.target);
+
+            var min = $element.attr('data-min');
+            var max = $element.attr('data-max');
+
+            if(max == ''){
+                max = data.data.price_range.absolute_highest_price;
+            }
+
+            BOLD.collection_filter.app.emit('update_price_range', { low: min, high: max });
+            $('html,body').animate({scrollTop: 0}, "slow");
+        });
+    }
+
+    Filter.prototype.renderSort = function(data){
+        data.data.sort = data.data.sort.map(function(sort){
+            if(sort.title == 'Default'){
+                sort.title = 'Best Sellers'
+            }
+            return sort;
+        })
+        this.cache.$sortContainer.html(this.cache.sortByTemplate(data.data));
+    }
+
+    Filter.prototype.renderPagination = function(data){
+      // Bugfix: Sometimes pagination renders with no active page
+      if(data.data.parts && data.data.parts.find){
+          var activePage = data.data.parts.find(function(page){ return page.active });
+          if(!activePage){
+            console.log('UPDATED ACTIVE LINK')
+            data.data.parts[0].active = true;
+          }
+        }
+
+        this.cache.$paginationContainer.html(this.cache.paginationTemplate(data.data));
+
+        this.cache.$paginationContainer.find('a').on('click', function(e){
+            e.preventDefault();
+            var page = $(e.target).attr('data-value');
+            this.updatePage(page);
+        }.bind(this));
+    }
+
+    var _sortSizeFilter = function (type, filters) {
+        var delegate = null;
+
+        switch(type) {
+            case "kids-sizes": {
+                delegate = _calculateKidSizeWeight;
+                break;
+            }
+            default: {
+                delegate = _calculateSizeWeight;
+                break;
+            }
+        }
+
+        filters.sort(function(sizeA, sizeB) {
+            return delegate(sizeA.name) - delegate(sizeB.name);
+        });
+    }.bind(this);
+  
+    var _calculateSizeWeight = function (size) {
+        // If it is a size with letters
+        var weight = _calculateSizeLetterWeight(size);
+        return weight ? weight : _calculateSizeNumberWeight(size);
+    }.bind(this);
+
+    var _calculateSizeNumberWeight = function(size) {
+        // Capture 1: One or more digits, not required
+        // Capture 2: One or more digits, required
+        // Capture 3: One or two digits, required
+        // Capture 4: Wrapping capture 2 and 3, not required
+        // Example: https://regex101.com/r/lLOMT5/
+        var result = /(\d+)?(?:\s(\d+)\/(\d+))?/.exec(size);
+
+        if (result) {
+            var integer = parseInt(result[1]);
+            var fraction = result[2] && result[3] ? parseInt(result[2])/(parseInt(result[3]) || 1) : 0;
+
+            return integer + fraction;
+        }
+
+        return 0;
+    }.bind(this);
+
+    var _calculateSizeLetterWeight = function (size) {
+        var sizeWeights = {
+            "x": 10,
+            "s": 100,
+            "m": 1000,
+            "l": 10000
+        }
+
+        // Capture 1: Zero or more digits, not required
+        // Capture 2: One more more letters that match "x", "s", "m" or "l", required
+        // Example: https://regex101.com/r/Z59FQi/
+        var result = (/(\d*)?([xsml]+)/i).exec(size.toLowerCase());
+        if (result) {
+            var sizeMultiplier = parseInt(result[1]) || 0;
+            var size = result[2];
+            
+            var weight = 0;
+
+            // If it is a Small item
+            var modifier = size.indexOf("s") > 0 ? -1 : 1;
+
+            // Loop through all letters and sum their weight
+            for (var i = 0; i < size.length; i++) {
+                var current = size[i];
+                weight += current === "x" ? modifier * sizeWeights[current] : sizeWeights[current];
+            }
+
+            // Sum the size multiplier to the final weight
+            return weight + sizeMultiplier;
+        }
+
+        return 0;
+    }.bind(this);
+
+    var _calculateKidSizeWeight = function (size) {
+        // Capture 1: One or two digits, required
+        // Capture 2: "- or /", not required
+        // Capture 3: One or two digits, not required
+        // Capture 4: Any letter from "a to z", not required
+        // Example: https://regex101.com/r/spaDtJ/
+        var result = (/(\d{1,2})([-/])?(\d{1,2})?([a-z])?/i).exec(size.toLowerCase());
+
+        if (result) {
+            var multiplier = 1;
+            // If there is a letter, calculate the multiplier
+            if (result[4]) {
+                var base = 0.1;
+                // 'a' should come before 'z', hence 30 - letter number
+                var exponent = 30 - (result[4].charCodeAt(0) - 97);
+                multiplier = Math.pow(base, exponent);
+            }
+        
+            var x = parseInt(result[1]) || 0;
+            var y = parseInt(result[3]) || 0;
+
+            var hasRange = result[2] && /[-/]/.test(result[2]);
+
+            // If has range, sum both numbers, subtract 0.1 and divide it by 2, sum them otherwise
+            var res = hasRange ? (x + y - 0.1) / 2 : x + y;
+
+            return res * multiplier;
+        }
+
+        return 0;
+    }.bind(this);
+
+    return Filter;
+})();
+
+var CollectionFilter = new CollectionFilters();

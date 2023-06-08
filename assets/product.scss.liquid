@@ -1,0 +1,180 @@
+$vp-xx-lg: 1450px; // ~ 1449px
+$vp-x-lg: 1200px; // ~ 1199px
+$vp-lg: 1024px; // ~ 1023px
+$vp-md: 960px; // ~ 959px
+$vp-md-sm: 798px; //797px 
+$vp-sm: 768px; // ~ 767px
+$vp-x-sm: 480px; // ~ 479px
+
+$color-white: #FFFFFF;
+$color-green: #006400;
+$color-red: #8B0000;
+$color-grey: #808080;
+
+.product-description {
+    .inner {
+        width: 80%;
+        .variant-availability {
+            color: $color-green;
+            &.not {
+                color: $color-red;
+            }
+        }
+                
+        //3, 4, 4/5, 5, 5/6, 6/6X, 6X, 7
+        //Newborn, 0-3 Months, 0-6 Months, 3-6 Months, 6 Months, 6-9 Months, 6-12 Months, 9-12 Months, 12 Months, 12-18 Months, 12-24 Months, 18 Months, 24 Months, OSFA
+        //6 3/8, 6 1/2, 6 5/8, 6 3/4, 6 7/8, 7, 7 1/8, 7 1/4, 7 3/8, 7 1/2, 7 5/8, 7 3/4, 7 7/8, 8
+        .variant-container {
+            [data-handle^='-x-small'], [data-handle='xs'],
+            [data-handle='2t'],
+            [data-handle='3'],
+            [data-handle='newborn'],
+            [data-handle='6-3-8'] {
+                order: 10;
+            }
+            [data-handle^='small'], [data-handle='s'],
+            [data-handle='3t'],
+            [data-handle='4'],
+            [data-handle='0-3-months'],
+            [data-handle='6-1-2'] {
+                order: 20;
+            }
+            [data-handle^='medium'], [data-handle='m'],
+            [data-handle='4t'],
+            [data-handle='4-5'],
+            [data-handle='0-6-months'],
+            [data-handle='6-5-8'] {
+                order: 30;
+            }
+            [data-handle^='large'], [data-handle='l'],
+            [data-handle='5'],
+            [data-handle='3-6-months'],
+            [data-handle='6-3-4'] {
+                order: 40;
+            }
+            [data-handle^='x-large'], [data-handle='xl'],
+            [data-handle='5-6'],
+            [data-handle='6-months'],
+            [data-handle='6-7-8'] {
+                order: 50;
+            }
+            [data-handle^='2x-large'], [data-handle='2xl'],
+            [data-handle='6-6x'],
+            [data-handle='6-9-months'],
+            [data-handle='7'] {
+                order: 60;
+            }
+            [data-handle^='3x-large'], [data-handle='3xl'],
+            [data-handle='6x'],
+            [data-handle='6-12-months'],
+            [data-handle='7-1-8'] {
+                order: 70;
+            }
+            [data-handle='9-12-months'],
+            [data-handle='7-1-4'] {
+                order: 80;
+            }
+            [data-handle='12-months'],
+            [data-handle='7-3-8'] {
+                order: 90;
+            }
+            [data-handle='12-18-months'],
+            [data-handle='7-1-2'] {
+                order: 100;
+            }
+            [data-handle='12-24-months'],
+            [data-handle='7-5-8'] {
+                order: 110;
+            }
+            [data-handle='18-months'],
+            [data-handle='7-3-4'] {
+                order: 120;
+            }
+            [data-handle='24-months'],
+            [data-handle='7-7-8'] {
+                order: 130;
+            }
+            [data-handle='osfa'],
+            [data-handle='8'] {
+                order: 140;
+            }
+        }
+
+        .cta-holder {
+            .qty-wrapper {
+                input[type='number'] {
+                    appearance: textfield;
+                    -moz-appearance:textfield;
+                }
+                input[type=number]::-webkit-inner-spin-button,
+                input[type=number]::-webkit-outer-spin-button {
+                    appearance: none;
+                    -webkit-appearance: none;
+                    margin: 0;
+                }
+            }
+            .btn {
+                &.add-to-cart {
+                    &:disabled {
+                        pointer-events: none;
+                        border: 1px solid $color-white;
+                        background-color: $color-grey !important;
+                    }
+                }
+            }
+        }
+    }
+}
+
+section {
+    padding: 30px 0 0;
+    .title {
+        margin-bottom: 50px;
+        color: #000000;
+        font-family: "Roboto Condensed";
+        font-size: 28px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        text-align: center;
+    }
+}
+
+.product-video {
+    display: none;
+    iframe#ytplayer {
+        height: 360px;
+        width: 100%;
+        max-width: 640px;
+    }
+}
+
+@media screen and (max-width: $vp-sm - 1) {
+    section {
+        padding-top: 19px;
+        .title {
+            font-size: 18px;
+            margin-bottom: 12px;
+        }
+    }
+
+    .product-description {
+        .inner {
+            .cta-holder {
+                .btn {
+                    &.add-to-cart {
+                        margin-top: 15px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: $vp-x-sm - 1) {
+    .product-video {
+        iframe#ytplayer {
+            height: 240px;
+        }
+    }
+}

@@ -1,0 +1,60 @@
+{%- include 'bold-cart' -%}
+{% include "bms.cart-init" %}
+
+<main class="main container">
+  {% if cart.items.size > 0 %}
+    <div class="title-container">
+      <h2 class="page-title">{{ 'cart.title' | t }}</h2>
+    </div>
+
+<div id="shappify-qty-cart-msg"></div>
+    <form action="/cart" method="post"> 
+      <div class="cart-items">
+        {% for line_item in cart.items %}
+          {%- include 'bold-cart-item' with line_item -%}
+          <div class="cart-item d-flex"
+            data-product-id="{{ line_item.product_id }}"
+            data-variant-id="{{ line_item.variant_id }}">
+            <div class="item-image">
+              {% include "cart-item.image", line_item: line_item %}
+            </div>
+
+            <div class="item-description-container item-container">
+              <div class="item-title-container d-flex">
+                <a href="{{ line_item.url }}" class="item-title">{{line_item.product.title}} <span class=tdf-cart-item-t></span> - <span class="item-price">{% include "cart-item.price", line_item: line_item %}</span></a>
+              </div>
+
+              {% if line_item.product.options_with_values.size > 0  %}
+                <div class="item-options">
+                  {% include "cart-item.options", line_item: line_item %}
+                </div>
+              {% endif %}
+              
+              <div class="item-quantity">
+                {% include "cart-item.quantity", line_item: line_item %}
+              </div>
+            </div>
+              
+            <div class="item-actions-container item-container">
+              <div class="item-total">
+                {{ line_bold_item_line_price | money }}
+              </div>
+              <div class="item-actions">
+                {% include "cart-item.remove", cart: cart, index: forloop.index %}
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      <div class="warning-list"></div>
+      <div class="cart-checkout-container d-flex flex-column align-items-end">
+        {% include "cart.total", cart: cart %}
+        <div class="cart-actions-container">
+          {% include "cart.actions", cart: cart, checkout_css: "btn btn--black" %}
+        </div>
+      </div>
+    </form>
+  {% else %}
+    {% include "cart.empty" %}
+  {% endif %}
+</main>

@@ -1,0 +1,52 @@
+{%- assign _settings = section.settings -%}
+{%- assign _blocks = section.blocks -%}
+
+<div class="products-banner">
+  <div class="image" style="background-image: url({{ _settings.image | img_url: '2048x' }})"></div><!-- /.image -->
+  <div class="text-box">
+    {%- if _settings.content != blank -%}
+      <h2>{{ _settings.content }}</h2>
+    {%- endif -%}
+      
+    {%- if _settings.top_button_label != blank and _settings.top_button_link != blank -%}
+      <a href="{{ _settings.top_button_link }}" class="btn">
+        {{ _settings.top_button_label }}
+      </a>
+    {%- endif -%}
+  </div><!-- /.text-box -->
+</div><!-- /.product-banner -->
+
+
+{% schema %}
+{
+  "name": "Fullwidth",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "content",
+      "label": "Content"
+    },
+    {
+      "type": "text",
+      "id": "top_button_label",
+      "label": "Top Button Label"
+    },
+    {
+      "type": "url",
+      "id": "top_button_link",
+      "label": "Top Button Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Fullwidth",
+      "category": "Misc"
+    }
+  ]
+}
+{% endschema %}

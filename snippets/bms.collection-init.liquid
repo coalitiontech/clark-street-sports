@@ -1,0 +1,28 @@
+{% comment %}
+    This snippet has all BMS files the page requires. Also it should to be included only once page.
+{% endcomment %}
+
+{{ 'bms.collection.scss.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'bms.collection.js' | asset_url }}" defer></script>
+<script src="{{ 'bms.collection.bundle.js' | asset_url }}" defer></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    var data = {
+      descriptionLimit: {
+        isEnabled: {{ section.settings.description-limit-enabled | json }},
+        maxHeight: {{ section.settings.description-limit-max-height | json }},
+        label: {
+          more: {{ section.settings.description-limit-label-more | json }},
+          less: {{ section.settings.description-limit-label-less | json }}
+        }
+      }
+    }
+    BOLD.BMS.BUILDS.CollectionEs5.init(data);
+
+    {% if template contains 'no-filters' %}
+    BOLD.BMS.BUILDS.CorporateFlow.initCollectionPage();
+    {% endif %}
+
+    BOLD.BMS.BUILDS.Countdown.init();
+  });
+</script>

@@ -1,0 +1,14 @@
+<script>
+  // if verifies if the URL has the product name as a param, if not, it will add it. - only on "product.no-add-to-cart.liquid"
+  var url = new URL(window.location.href);
+  var search_params = url.searchParams;
+  if(!search_params.has('productName')) {
+    setTimeout(() => {
+      prodObj = JSON.parse(document.getElementById('product-object-json').textContent);
+      var prodName = prodObj.title;
+      search_params.set('productName', prodName);
+      window.location.replace(url);
+    }, 100);
+    
+  }
+</script>

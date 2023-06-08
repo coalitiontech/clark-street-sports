@@ -1,0 +1,20 @@
+{%- if product.metafields.sf_product.enable_shipping_message == 1 -%}
+  <div class="fixed fixed-side-bar d-none animated">
+    <span>
+      {%- if product.metafields.sf_product.shipping_message != blank -%}
+        {{- product.metafields.sf_product.shipping_message -}}
+      {%- else -%}
+        {{ 'general.product.shipping' | t | default: 'This Item Ships Free!' }}
+      {%- endif -%}
+    </span>
+    <img src="{{ 'shipping.svg' | asset_url }}" class="icon" alt="Picture of a Shipping Truck"/>
+  </div><!-- /.shipping-holder -->
+  <script>
+    //Please see bold-defered.js for event firing.
+    BOLD.common.eventEmitter.waitForEvent('jQueryLoaded').then(function(){
+      jQuery(function($){ //simulating waiting for a while.
+        $('.fixed.fixed-side-bar').addClass('slideInUp').removeClass('d-none');
+      });
+    });
+  </script>
+{%- endif -%}

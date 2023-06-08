@@ -1,0 +1,2 @@
+var BOLD=BOLD||{};BOLD.BMS=BOLD.BMS||{},BOLD.BMS.BUILDS=BOLD.BMS.BUILDS||{},BOLD.BMS.BUILDS.CollectionEs5=function(n){"use strict";var r={};function o(e,i){e=e||{},n.extend(!0,r,i),c.init(e.descriptionLimit)}var c=function(){var e={selector:".collection-description",get element(){return document.querySelector(this.selector)}};function i(t){t&&t.isEnabled&&e.element&&BOLD.BMS.Common.limitContent(t,e.element)}return{init:i}}();return{init:o}}(BOLD.jQuery||jQuery);
+//# sourceMappingURL=/s/files/1/2242/6395/t/207/assets/bms.collection.js.map?v=1643906689

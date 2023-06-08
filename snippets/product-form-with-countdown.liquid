@@ -1,0 +1,226 @@
+<script>
+  // clean up item from localstorage on load
+  if (localStorage.getItem('isVIP')) {
+    localStorage.removeItem('isVIP');
+  }
+</script>
+<!-- query_string capture -->
+{%- assign query_string = '' -%}
+
+{% capture query_string %}{% render 'vip-tag-url-filter' %}{% endcapture %}
+<!-- end query_string capture --> 
+{% assign decoded_query = query_string | url_decode %}
+
+{% assign is_limiter_product = false %}
+{% assign hasCustomer = false %}
+
+{% if customer %}
+  {% assign hasCustomer = true %}
+  {% if customer.tags contains 'VIP' or customer.tags contains 'CssInsider' %}
+    <script>
+      localStorage.setItem('isVIP', 'true')
+    </script>
+  {% endif %}
+{% endif %}
+
+{% for tag in product.tags %}
+  {% if tag contains 'limiter' %}
+    {% assign is_limiter_product = true %}
+  {% endif %}
+{% endfor %}
+
+
+{% if product.metafields.unlock_the_drop.toggle %}
+    <input id="countdownMetafield" type="hidden" value="{{ product.metafields.unlock_the_drop.countdown_date_time}}">
+    <input id="countdownToggle" type="hidden" value="{{ product.metafields.unlock_the_drop.toggle}}">
+      <div class="VIP-deals__header--countdown-wrapper hide-countdown-view">
+        <h3>{{ settings.countdown_dropping_msg }}</h3>
+        <div class="VIP-deals__header--countdown-timer" style="color: {{ settings.countdown_color }}">  
+          <div class="time-unit">
+            <span class="countdown-timer__digit timer-days">00</span>
+            <p>Days</p>
+          </div>
+          <div class="time-unit">
+            <span class="countdown-timer__digit timer-hours">00</span>
+            <p>Hours</p>
+          </div>
+          <div class="time-unit">
+            <span class="countdown-timer__digit timer-minutes">00</span>
+            <p>Minutes</p>
+          </div>
+          <div class="time-unit">
+            <span class="countdown-timer__digit timer-seconds">00</span>
+            <p>Seconds</p>
+          </div>
+          
+        </div>
+      </div>
+    {% endif %}
+
+<!-- CSS Insiders Unlock the Drop button Commented OUT -->
+<!-- {% if product.metafields.unlock_the_drop.toggle %}
+
+  <p class="above-btn-message hide-countdown-view">{{ settings.countdown_above_button_msg }}</p>
+
+  {% if hasCustomer %}
+    <button class="unlock-the-drop-btn-disabled btn button--disabled hide-countdown-view">{{ "general.product.unlock_the_drop_buton" | t  }}</button>
+
+    <p id="vip-btn-msg"></p>
+  {% else %}
+
+    <a class="hide-countdown-view" href="/account?unlock-the-drop={{ product.handle }}{% if decoded_query contains 'tag=CssInsider' %}&tag=CssInsider{% endif %}">
+      <button id="unlock-the-drop-btn" class="btn" style="cursor: pointer;">{{ "general.product.unlock_the_drop_buton" | t  }}</button>
+    </a>
+
+  {% endif %}
+  <p class="vip-click-here hide-countdown-view">{{ settings.countdown_modal_message }} <span id="VIPInformationBtn">{{ settings.countdown_click_here }}</span></p>
+{% endif %}
+-->
+
+<form action="/cart/add" method="post" class="product-form shopify-product-form {% if multiple_products %}no_bold_options{% endif %}"  data-product-handle="{{ product.handle }}" data-is-limiter-product="{{ is_limiter_product }}">
+  <div class="form-row">
+    {% if size_guide %}
+      <div class="size-row">
+        <a href="#size-chart" class="view-size">
+          {{ 'general.product.size' | t }}
+        </a>
+      </div><!-- /.size-row -->
+
+      <div id="size-chart">
+        <img src="{{ size_guide | img_url: 'master' }}" style="max-width: 100%" />
+      </div><!-- /#size-chart -->
+    {% endif %}
+
+    {% if bold_variants_size > 1 %}
+      {%- assign options_with_values = product.options_with_values -%}
+      {%- assign selected_variant = bold_selected_or_first_available_variant -%}
+      {%- include 'bold-variant' with selected_variant, output: 'none' -%}
+
+      {% for option in options_with_values %}
+        {% assign option_index = forloop.index %}
+        {%- assign option_name = option.name | handle  -%}
+        {%- assign optName = 'options' | append: forloop.index -%}
+        {%- assign option_values = [optName] | default: option.values -%}
+
+        {% unless product.handle contains 'gift-card' %}<label for="{{ option.name | escape }}">{{ option.name | escape }}</label>{% endunless %}
+        
+        {%- render 'variant-selector', variants: product, first_variant_available: bold_selected_or_first_available_variant -%} 
+
+      {% endfor %}    
+    {% endif %}
+
+    <!-- Always render the variant selector for the product, regardless of the variant count -->    
+    <select id="product-select" name="id" style="display: none;">
+        {% for variant in product.variants %}
+        {%- include 'bold-variant' with variant, hide_action: 'skip' -%}
+        <option value="{{ variant.id }}"
+                data-price="{{ bold_variant_price | money }}"
+                data-quantity="{{ variant.inventory_quantity }}"
+                data-inventory-management="{{ variant.inventory_management }}"
+                data-inventory-policy="{{ variant.inventory_policy }}"
+                {% for option in options_with_values %} data-option-{{forloop.index}}="{{ variant.options[forloop.index0] | handle }}"{% endfor %}
+                {% if bold_selected_or_first_available_variant.id == variant.id %} selected="selected" {% endif %}>
+            {{ variant.title }}
+          </option>
+        {% endfor %}
+    </select>
+  </div>
+  {%- unless qb_loaded == 'true' or multiple_products  -%}
+    <div class='shappify-qty-msg quantity-break-container'>{{bold_selected_or_first_available_variant.metafields.shappify_csp.pricing_html}}</div>
+    {%- assign qb_loaded = 'true' -%}
+  {%- endunless -%}
+  <div class="cta-holder">
+    <!-- Code to hide the quantity input box -->
+    <!--  <input hidden id="Quantity" type="number" name="quantity" class="variant-quantity" value="1" step="1" min="0" /> -->
+
+    <div class="qty-wrapper">
+      <span class="qty-minus">-</span>
+      <input id="Quantity" type="number" name="quantity" class="variant-quantity" value="1" step="1" min="0" />
+      <span class="qty-plus">+</span>
+    </div><!-- /.qty-wrapper -->
+
+    {% assign submit_value = 'general.product.add_to_cart' %}
+    {% comment %} TODO: Validate this conditional {% endcomment %}
+    {%- unless true -%}
+      {% assign submit_value = 'general.product.pre_order' %}
+    {%- endunless -%}
+
+
+    {% if product.metafields.unlock_the_drop.toggle %}
+    
+      <input id="isVIPInput" type="hidden" value="false">
+      <input type="submit" class="btn btn--black add-to-cart vip" value="{{ submit_value | t }}" disabled="true" />
+    
+    {% else %}
+      <input type="submit" class="btn btn--black add-to-cart vip" value="{{ submit_value | t }}" />
+      
+    {% endif %}
+      <span disabled data-fancybox data-src="#product-customization" href="javascript:;"class="dummy-atc btn btn--black ">
+        Add To Cart
+      </span>
+
+    
+  </div><!-- /.cta-holder -->
+
+  <div style="display:none;" id="product-customization">
+    <h1>Customize Product</h1>
+    <table id="customization-table">
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Type of Customization</th>
+          <th>Customization</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+    <span id="real-atc-span"></span>
+  </div>
+  <input type="hidden" name="properties[_productType]" value="{{ template.suffix }}">
+</form>
+
+{% render 'vip-modal' %}
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var decoded_query = window.location.href;
+    var customer = '{{ customer.email }}';
+    var vipBtnMsg = document.getElementById('vip-btn-msg');
+
+    if(decoded_query.includes('tag=CssInsider')) {
+      var ua = navigator.userAgent || navigator.vendor || window.opera;
+      if ((ua.indexOf("FBAN") > -1) || (ua.indexOf("FBAV") > -1)) {
+        localStorage.setItem('vip-visit', 'true');
+      } else if (document.referrer.indexOf('facebook') > -1) {
+        localStorage.setItem('vip-visit', 'true');
+      }
+    }
+
+    var isVIPInput = document.getElementById('isVIPInput');
+
+    if(customer) {
+      if(localStorage.getItem('vip-visit') === 'true') {
+        isVIPInput.value = 'true';
+        localStorage.setItem('isVIP', true)
+      }
+    }
+
+    if (localStorage.getItem('isVIP') === 'true') {
+      let realATC = document.getElementById('real-atc-span');
+      realATC.classList.add("real-atc");
+      realATC.classList.add("btn");
+      realATC.classList.add("btn--black");
+      realATC.innerHTML = 'Add To Cart';
+
+      isVIPInput.value = 'true';
+
+    } else {
+      vipBtnMsg.classList.add('vip-btn-msg');
+      vipBtnMsg.classList.add('hide-countdown-view');
+      vipBtnMsg.innerHTML = '{{ settings.countdown_below_button_msg }}';
+      isVIPInput.value = 'false';
+    }
+  });
+    
+</script>

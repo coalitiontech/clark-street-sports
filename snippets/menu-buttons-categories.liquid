@@ -1,0 +1,16 @@
+{% if linklists[btn.menu_categories].links != empty %}
+  <div class="menu-swatch__categories" data-category="{{ btn.title | handleize }}">
+    <h3>{{ btn.title }}</h3>
+    <span class="category-close-btn">&times;</span>
+    <ul>
+      {% for link in linklists[btn.menu_categories].links %}
+        <li>
+          <a href="{{ link.url }}">{{ link.title }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+    <div class="category-view-all">
+      <a href="{{ btn.url }}">{{ 'mobile_nav.view_category' | t }}</a>
+    </div>
+  </div>
+{% endif %}

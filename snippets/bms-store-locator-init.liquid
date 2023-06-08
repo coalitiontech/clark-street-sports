@@ -1,0 +1,12 @@
+{{ 'bms.store-locator.bundle.css' | asset_url | stylesheet_tag }}
+<script type="text/javascript" src="{{ 'bms.store-locator.bundle.js' | asset_url }}" defer></script>
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    var BOLD = window.BOLD || {};
+    BOLD.BMS = BOLD.BMS || {};
+    BOLD.BMS.BUILDS = BOLD.BMS.BUILDS || {};
+    BOLD.BMS.BUILDS.StoreLocator.init();
+  });
+</script>

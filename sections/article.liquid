@@ -1,0 +1,55 @@
+<div class="main">
+  <div class="container">
+    <div class="article article--single">
+      <h2 class="page-title">
+        {{ article.title }}
+      </h2><!-- /.page-title -->
+
+      {%- include 'share' -%}
+
+      <div class="article__image">
+        <img src="{{ article.image | img_url: '2048x' }}" alt="" width="835" height="470" />
+      </div><!-- /.article__image -->
+
+      <div class="article__content">
+        {% include 'shortcode' content: article.content, shortcodes: 'button' %}
+      </div><!-- /.article__content -->
+    </div><!-- /.article -->
+  </div><!-- /.container -->
+
+  <div class="related related--row">
+    <div class="container">
+      <h3>
+        {{ 'general.blog_posts.related' | t }}
+      </h3>
+
+      <div class="related__inner">
+        {%- assign index = 0 -%}
+
+        {%- for related_article in blog.articles -%}  
+          {%- if related_article.id != article.id -%}
+            <div class="related__box">
+              <a href="{{ related_article.url }}" class="related__image" style="background-image: url({{ related_article.image | img_url: '330x' }});"></a>
+
+              <h5>
+                <a href="{{ related_article.url }}">
+                  {{ related_article.title }}
+                </a>
+              </h5>
+
+              <p>
+                {{ related_article.excerpt }}
+              </p>
+            </div><!-- /.related-box -->
+
+            {%- assign index = index | plus: 1 -%}
+          {%- endif -%}
+
+          {%- if index > 3 -%}
+            {%- break -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </div><!-- /.related__inner -->
+    </div><!-- /.container -->
+  </div><!-- /.related-row -->
+</div><!-- /.main -->

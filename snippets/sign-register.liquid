@@ -1,0 +1,173 @@
+{% capture recover_customer_password %}
+  {% form 'recover_customer_password', class: 'form form-recover-password form-forgotten' %}
+    {% capture error_recover_email %}{% if form.errors %}error{% endif %}{% endcapture %}
+
+    <h2>{{ 'customer.recover_password.submit' | t }}</h2>
+
+    {% if form.posted_successfully? %}
+      {% assign recover_password = true %}
+    {% endif %}
+
+    {% if form.posted_successfully? %}
+      {% assign reset_success = true %}
+    {% endif %}
+
+    {% if form.errors %}
+      {% assign recover_password_checked = true %}
+      <div class="form-notice error">
+        {{ form.errors | default_errors }}
+      </div><!-- /.form-notice -->
+    {% endif %}
+
+    <div class="form-row">
+      <input type="email" value="" name="email" id="RecoverEmail" class="input-full" autocorrect="off" autocapitalize="off" placeholder="{{ 'customer.recover_password.email' | t }}">
+    </div><!-- /.form-row -->
+
+    <input type="submit" class="btn btn--black" value="{{ 'customer.recover_password.submit' | t }}">
+
+    <div class="cta-link">
+      <a href="#" class="back-login">{{ 'customer.recover_password.back_to_login' | t }}</a>
+    </div><!-- /.cta-link -->
+  {% endform %}
+{% endcapture %}
+
+{% capture customer_login %}
+  {% form 'customer_login', class: 'form form-login' %}
+    {% capture error_login_email %}{% if form.errors contains "password" %}error{% endif %}{% endcapture %}
+    {% capture error_login_password %}{% if form.errors contains "email" %}error{% endif %}{% endcapture %}
+
+    <h2>{{ 'customer.login.title' | t }}</h2>
+
+    <div class="social-login"></div><!-- /.social-login -->
+
+    <h5>{{ 'customer.login.with_email' | t }}</h5>
+
+    {% if form.errors %}
+      <div class="form-notice error">
+        {{ form.errors | default_errors }}
+      </div><!-- /.form-notice -->
+    {% endif %}
+
+    {% if reset_success %}
+      <div class="form-notice success">
+        {{ 'customer.recover_password.success' | t }}
+      </div><!-- /.form-notice -->
+    {% endif %}
+
+    <div class="form-body">
+      <div class="form-row">
+        <input type="text" name="customer[email]" placeholder="{{ 'customer.login.email' | t }}" />
+      </div><!-- /.form-row -->
+
+      <div class="form-row">
+        <input type="password" name="customer[password]" placeholder="{{ 'customer.login.password' | t }}" />
+      </div><!-- /.form-row -->
+    </div><!-- /.form-body -->
+
+    <div class="cta-link forgotten-pass">
+      <a href="#">{{ 'customer.login.forgot_password' | t }}</a>
+    </div><!-- /.form-row -->
+
+    <input type="submit" class="btn btn--black" value="{{ 'customer.login.submit' | t }}" />
+  {% endform %}
+
+  {% if shop.checkout.guest_login %}
+    {% form 'guest_login', class: 'form form-guest-login'  %}
+      <div class="form-head">
+        <h1>{{ 'customer.login.guest_title' | t }}</h1>
+      </div><!-- /.form-head -->
+
+      <div class="form-action clear">
+        <input type="submit" class="form-btn" value="{{ 'customer.login.guest_continue' | t }}">
+      </div><!-- /.form-action -->
+    {% endform %}
+  {% endif %}
+{% endcapture %}
+
+{%- capture form_register -%}
+  {% form 'create_customer', class: 'form form-register' %}
+    {% capture error_first_name %}{% if form.errors contains "first_name" %}error{% endif %}{% endcapture %}
+    {% capture error_last_name %}{% if form.errors contains "last_name" %}error{% endif %}{% endcapture %}
+    {% capture error_email %}{% if form.errors contains "email" %}error{% endif %}{% endcapture %}
+    {% capture error_password %}{% if form.errors contains "password" %}error{% endif %}{% endcapture %}
+
+    {% if form.errors %}
+      <div class="form-notice error">
+        {{ form.errors | default_errors }}
+      </div><!-- /.form-notice -->
+    {% endif %}
+
+    {%- assign query_string = '' -%}
+
+    <!-- query_string capture -->
+    {% capture query_string %}{% render 'vip-tag-url-filter' %}{% endcapture %}
+    <!-- end query_string capture --> 
+
+    <div class="form-row">
+      <input type="email" name="customer[email]" placeholder="{{ 'customer.register.email' | t }}" required autocorrect="off" autocapitalize="off">
+    </div><!-- /.form-row -->
+
+    <div class="form-row from-row--cols">
+      <input type="text" name="customer[first_name]" placeholder="{{ 'customer.register.first_name' | t }}">
+      <input type="text" name="customer[last_name]" placeholder="{{ 'customer.register.last_name' | t }}">
+    </div><!-- /.form-row -->
+
+    <div class="form-row">
+      <input type="password" name="customer[password]" placeholder="{{ 'customer.register.password' | t }}" required class="pass">
+    </div><!-- /.form-row -->   
+
+    <div class="form-row">
+      <input type="password" placeholder="{{ 'customer.register.confirm_password' | t }}" required class="confirm-pass" />
+    </div><!-- /.form-row -->
+    
+    <div class="form-row">
+      <label class="check-label">
+        <input type="checkbox" name="newsletter" />
+        <span class="check-box"></span> {{ 'customer.register.receive_newsletters' | t }}
+      </label>
+    </div><!-- /.form-row -->
+    
+    {% assign newVIP = false %}
+    {% assign decoded_query = query_string | url_decode %}
+
+    {% if decoded_query contains 'tag=CssInsider' %}
+      {% assign newVIP = true %}
+    {% endif %} 
+
+    <script>
+
+      if(localStorage.getItem('vip-visit') === true) {
+        var vipTag = document.querySelector("#CssTempTag");
+        vipTag.value = "CssInsider";
+      }
+    </script>
+    
+    <input id="CssTempTag" type="hidden" name="customer[tags]" {% if newVIP %}value="CssInsider"{% else %}value=""{% endif %} />
+
+
+    <input type="submit" value="{{ 'customer.register.submit' | t }}" class="btn btn--black"> 
+    
+  {% endform %}
+{%- endcapture -%}
+
+<div class="main">
+  <div class="container">
+    <div class="account-forms">
+      <div class="login-form">
+        
+
+        {{ customer_login }}
+
+        {{ recover_customer_password }}
+      </div><!-- /.login-form -->
+
+      <div class="register-form">
+        <h2>{{ 'customer.register.title' | t }}</h2>
+
+        <h5>{{ 'customer.register.create_account' | t }}</h5>
+
+        {{ form_register }}
+      </div><!-- /.register-form -->
+    </div><!-- /.account-forms -->
+  </div><!-- /.container -->
+</div><!-- /.main -->

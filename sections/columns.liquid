@@ -1,0 +1,51 @@
+<div class="columns">
+	<div class="columns__row">
+		<a href="#" class="columns__box" style="background-image: url(assets/images/temp/column-img.jpg)">
+			<span class="columns__text">
+				Section One with Title
+			</span>
+		</a><!-- /.columns__box -->
+		<a href="#" class="columns__box" style="background-image: url(assets/images/temp/column-img.jpg)">
+			<span class="columns__text">
+				Section One with Title
+			</span>
+		</a><!-- /.columns__box -->
+		<a href="#" class="columns__box" style="background-image: url(assets/images/temp/column-img.jpg)">
+			<span class="columns__text">
+				Section One with Title
+			</span>
+		</a><!-- /.columns__box -->
+	</div><!-- /.columns__row -->
+</div><!-- /.columns -->
+
+{% schema %}
+{
+	"name": "Columns",
+	"settings": [
+		{
+			"type": "text",
+			"id": "text",
+			"label": "text"
+		}
+	],
+	"blocks": [
+		{
+			"type": "SAMPLE-TYPE",
+			"name": "SAMPLE-NAME",
+			"settings": [
+				{
+					"type": "text",
+					"id": "text",
+					"label": "text"
+				}
+			]
+		}
+	],
+	"presets": [
+		{
+			"name": "Columns",
+			"category": "Misc"
+		}
+	]
+}
+{% endschema %}

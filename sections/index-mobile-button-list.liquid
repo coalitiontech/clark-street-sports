@@ -1,0 +1,95 @@
+{%- unless section.blocks == blank -%}
+<div class="wrapper">
+  <div class="btn-list">
+    {%- include 'menu-buttons', menu_title: section.settings.menu_button_title, buttons: section.blocks -%}
+  </div>
+</div>
+{%- endunless -%}
+
+{% schema %}
+{
+  "name": "Swatch/Button List",
+  "settings": [
+  {
+    "type": "text",
+    "id": "menu_button_title",
+    "label": "Heading for Button Navigation"
+  },
+  {
+    "type": "text",
+    "id": "cta_text",
+    "label": "Call-to-Action (CTA)",
+    "placeholder": "See All..."
+  },
+  {
+    "type": "url",
+    "label": "CTA Link",
+    "id": "cta_url"
+  }
+  ],
+  "blocks": [
+  {
+    "type": "btn_swatch",
+    "name": "Swatch/Button Nav",
+    "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Label",
+      "placeholder": "White Sox"
+    },
+    {
+      "type": "checkbox",
+      "label": "Show label text?",
+      "id": "show_label"
+    },
+    {
+      "type": "color",
+      "label": "Label text color",
+      "id": "label_color",
+      "default": "#000033"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "url",
+      "id": "url",
+      "label": "Link"
+    },
+    {
+      "type": "select",
+      "label": "Button Width",
+      "id": "width_class",
+      "options": [
+      { "value": "menu-swatch__half", "label": "Single" },
+      { "value": "menu-swatch__full", "label": "Double" }
+      ],
+      "default": "menu-swatch__half"
+    },
+    {
+      "type": "select",
+      "id": "visibility",
+      "label": "Device Visibility",
+      "options": [
+        { "value": "all-sizes", "label": "All sizes" },
+        { "value": "desktop-only", "label": "Desktop Only" },
+        { "value": "mobile-only", "label": "Moblie Only" }
+      ],
+      "default": "all-sizes"
+    }
+    
+    
+    ]
+  }
+  ],
+  "presets":[
+    {
+      "name": "Mobile: Button/Swatch Navigation",
+      "category": "Misc"
+    }
+  ]
+}
+{% endschema %}

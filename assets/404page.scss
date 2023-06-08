@@ -1,0 +1,178 @@
+$tablet: 768px;
+$mobile: 500px;
+
+#snap {
+    .intro {
+    .slick-arrow .fa { display: none; }
+    .bms-intro__text {
+        position: absolute;
+        top: 50%;  
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+            -ms-flex-flow: column wrap;
+                flex-flow: column wrap;
+        -webkit-box-pack: center;
+            -ms-flex-pack: center;
+                justify-content: center;
+        -webkit-box-align: center;
+            -ms-flex-align: center;
+                align-items: center;
+        text-align: center;
+        line-height: 1;
+
+        @media screen and (max-width: $tablet) {
+        top: 65%;
+        -webkit-box-pack: start;
+            -ms-flex-pack: start;
+                justify-content: flex-start;
+        -webkit-box-align: center;
+            -ms-flex-align: center;
+                align-items: center;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+                flex-direction: column;
+        }
+        .intro__slide a {
+            display: block;
+            height: 50vw;
+            max-height: 50vw;
+            position: relative;
+            text-decoration: none;
+            background-size: cover;
+            background-position: center center;
+            background-position: center center; 
+        }
+        .intro__slide .intro__text {
+            position: absolute;
+            left: 126px;
+            top: 50%;
+            -webkit-transform: translateY(-50%);
+                    transform: translateY(-50%);
+            max-width: 370px; 
+        }
+        .intro__text-heading {
+        line-height: 0.75;
+        letter-spacing: 1px;
+        text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
+        margin: 8vw 0 10vw;
+        }
+        .intro__text-sub1 {
+            line-height: 1;
+            letter-spacing: 1px;
+            text-transform: none;
+            text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
+            margin-bottom: 1.5vw;
+        }
+        .intro__text-sub2 {
+            line-height: 1;
+            letter-spacing: 1px;
+            font-weight: 100;
+            text-transform: none;
+            text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
+            margin-bottom: 3.5vw;
+        }
+
+        @media screen and (max-width: $tablet) {
+        left: auto;
+        right: auto;
+        -webkit-box-pack: end;
+            -ms-flex-pack: end;
+                justify-content: center;
+        padding: 5%;
+        width: 100%;
+        -webkit-box-sizing: border-box;
+                box-sizing: border-box;
+
+        .intro__text-button {
+            max-width: 200px;
+            line-height: 1;
+            font-size: 16px;
+        }
+        .intro__text-heading {
+            margin: 20vw 0;
+            }
+        }
+    }
+
+    @media screen and (max-width: $tablet) {
+        .intro__slider .intro__slide {
+        a {
+            background-size: cover;
+        }
+        }
+    }
+    @media screen and (max-width: $mobile) {
+        .intro__slider .intro__slide {
+        a {
+            background-size: contain;
+        }
+        }
+    }
+    }
+
+}
+
+#error-search {
+    text-align: center;
+    padding: 2% 0 0;
+    h3 {
+        margin: 0.75vw 0;
+    }
+    .search-form {
+        transform: none;
+    }
+
+    button.header__icon-link {
+        width: 44px;
+    }
+}
+    .search__input {
+        height: 44px;
+        padding: 20px 0px 20px 0px;
+        width: 30vw;
+        font-size: 1rem;
+        line-height: 22px;
+        border: 0;
+        transition: ease-out 0.3s;
+        border: #0e2c52 2px solid;
+        border-right: 0px;
+        border-radius: 5px 0px 0px 5px;
+        padding: 0px 12px;
+        @media screen and (max-width: $tablet) {
+            width: 80%;
+        }
+    }
+
+    .search-form {
+            display: flex;
+            height: 66px;
+            align-items: center;
+            justify-content: center;
+            flex-direction: row-reverse;
+            width: auto;
+            transform: translateX(-4.5em);
+
+            button {
+                background-color: #EEEEEE;
+                border: none;
+                border-left: 0px;
+                height: 44px;
+                border-radius: 0px 4px 4px 0px;
+            }
+            input {
+                background: #EEEEEE;
+                border-radius: 4px 0px 0px 4px;
+                border: none;
+                @media screen and (max-width: 1100px) {transform: translateX(0);}
+
+                &::placeholder {
+                font-style: italic;
+                color: rgba($color: #000000, $alpha: .5);
+                }
+            }
+            }
+
