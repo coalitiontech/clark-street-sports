@@ -22,3 +22,4 @@ Thumbs.db
 *.tar
 *.css.map
 /node_modules
+project-assets
