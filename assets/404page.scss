@@ -38,8 +38,8 @@ $mobile: 500px;
         }
         .intro__slide a {
             display: block;
-            height: 50vw;
-            max-height: 50vw;
+            height: 40vw;
+            max-height: 40vw;
             position: relative;
             text-decoration: none;
             background-size: cover;
@@ -58,7 +58,7 @@ $mobile: 500px;
         line-height: 0.75;
         letter-spacing: 1px;
         text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
-        margin: 8vw 0 10vw;
+        margin: 0 0 3vw;
         }
         .intro__text-sub1 {
             line-height: 1;
@@ -79,10 +79,11 @@ $mobile: 500px;
         @media screen and (max-width: $tablet) {
         left: auto;
         right: auto;
+          top: 12%;
         -webkit-box-pack: end;
             -ms-flex-pack: end;
                 justify-content: center;
-        padding: 5%;
+        padding: 0;
         width: 100%;
         -webkit-box-sizing: border-box;
                 box-sizing: border-box;
@@ -93,7 +94,7 @@ $mobile: 500px;
             font-size: 16px;
         }
         .intro__text-heading {
-            margin: 20vw 0;
+            margin: 5vw 0;
             }
         }
     }

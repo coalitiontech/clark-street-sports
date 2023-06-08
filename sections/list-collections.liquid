@@ -6,7 +6,7 @@
           <li>
             <a href="{{ collection.url }}">
               {%- assign image = collection.image | default: collection.products[0].images[0] -%}
-              <img src="{{ image | img_url: '600x' }}" alt="" />
+              <img src="{{ image | img_url: '600x' }}" alt="{{ image.alt }}" width="{{ image.width }}" height="{{ image.height }}" />
               <h4>{{ collection.title }}</h4>
             </a>
           </li>

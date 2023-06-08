@@ -1,4 +1,4 @@
-Papa.parse("//cdn.shopify.com/s/files/1/2242/6395/t/251/assets/toronto-raptors.csv?v=129946840475526976001685117652", {
+Papa.parse("//cdn.shopify.com/s/files/1/2242/6395/t/253/assets/toronto-raptors.csv?v=129946840475526976001686100464", {
              download: true,
              header:true,
              complete: function(results) {
@@ -21,7 +21,7 @@ Papa.parse("//cdn.shopify.com/s/files/1/2242/6395/t/251/assets/toronto-raptors.c
         center: 'title',
         right: ''
       },
-      defaultDate: 'Tuesday May 30 2023',
+      defaultDate: 'Wednesday June 07 2023',
       navLinks: true, // can click day/week names to navigate views
       editable: true,
       eventLimit: true, // allow "more" link when too many events,

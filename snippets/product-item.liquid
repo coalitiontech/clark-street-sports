@@ -1,56 +1,61 @@
 {%- include 'bold-product' with product_item, hide_action: 'skip' -%}
 <li
-  class="product-item {% for tag in product_item.tags %}{{
-    tag | handle
-  }} {% endfor %}"
->
-  <a
-    class="d-flex flex-column"
-    href="{{ product_item.url | within: product_item.collections[0] }}"
-  >
-    {%- assign seconds_being_new_product = settings.new_product_days | times: 24 | times: 60 | times: 60 -%}
-    {%- assign product_publish_date = product_item.published_at | date: "%s" -%}
-    {%- assign date_when_product_stops_being_new = product_publish_date | plus: seconds_being_new_product | date: "%s" -%}
-    {%- assign now = "now" | date: "%s" -%}
-    {% assign is_new = false %}
+    class="product-item
+    {% for tag in product_item.tags %}
+        {{
+               tag | handle }}
+    {% endfor %}">
+    <a class="d-flex flex-column" href="{{ product_item.url | within: product_item.collections[0] }}">
+        {%- assign seconds_being_new_product = settings.new_product_days | times: 24 | times: 60 | times: 60 -%}
+        {%- assign product_publish_date = product_item.published_at | date: "%s" -%}
+        {%- assign date_when_product_stops_being_new = product_publish_date | plus: seconds_being_new_product | date: "%s" -%}
+        {%- assign now = "now" | date: "%s" -%}
+        {% assign is_new = false %}
 
-    <div class="tags-wrapper">
-      {%- if now < date_when_product_stops_being_new -%}
-        {% assign is_new = true %}
-      {% elsif product_item.tags contains 'new' %}
-        {% assign is_new = true %}
-      {%- endif -%}
-      
-      {% if is_new %}
-        <span class="new-tag">
-          {{ 'general.product.new_tag' | t }}
-        </span>
-      {% endif %}
+        <div class="tags-wrapper">
+            {%- if now < date_when_product_stops_being_new -%}
+                {% assign is_new = true %}
+            {% elsif product_item.tags contains 'new' %}
+                {% assign is_new = true %}
+            {%- endif -%}
 
-      {%- if product_item.selected_or_first_available_variant.price < product_item.compare_at_price_max -%}
-        <span class="sale-tag">
-          {{ 'general.product.sale_tag' | t }}
-        </span>
-      {%- endif -%}
-    </div><!-- /.tags-wrapper -->
+            {% if is_new %}
+                <span class="new-tag">
+                    {{ 'general.product.new_tag' | t }}
+                </span>
+            {% endif %}
 
-    <div class="product-image">
-      <img src="{{ product_item.images[0] | img_url: '800x' }}" />
-    </div>
-    <h4>
-      {{ product_item.title }}
-    </h4>
-    
-    <div class="price">
-      <span class="sale-price">
-        <span class="sale-price">
-          {{ bold_selected_or_first_available_variant.price | money }}
-        </span>
-        
-      </span>
-      {% if bold_compare_at_price_max > 0 %}
-        <span class="compare-price">{{ bold_compare_at_price_max | money }}</span>
-      {% endif %}
-    </div><!-- /.price -->
-  </a>
+            {%- if product_item.selected_or_first_available_variant.price < product_item.compare_at_price_max -%}
+                <span class="sale-tag">
+                    {{ 'general.product.sale_tag' | t }}
+                </span>
+            {%- endif -%}
+        </div>
+        <!-- /.tags-wrapper -->
+
+        <div class="product-image">
+            <img
+                src="{{ product_item.images[0] | img_url: '800x' }}"
+                alt="{{ product_item.images[0].alt }}"
+                width="{{ product_item.images[0].width }}"
+                height="{{ product_item.images[0].height }}"
+                loading="lazy" />
+        </div>
+        <h4>
+            {{ product_item.title }}
+        </h4>
+
+        <div class="price">
+            <span class="sale-price">
+                <span class="sale-price">
+                    {{ bold_selected_or_first_available_variant.price | money }}
+                </span>
+
+            </span>
+            {% if bold_compare_at_price_max > 0 %}
+                <span class="compare-price">{{ bold_compare_at_price_max | money }}</span>
+            {% endif %}
+        </div>
+        <!-- /.price -->
+    </a>
 </li>

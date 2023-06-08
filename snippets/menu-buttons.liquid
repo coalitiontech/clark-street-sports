@@ -38,7 +38,7 @@
           {%- if btn.show_label -%}
           <span class="menu-swatch__label" style="color: {{ btn.label_color }}">{{ btn.title }}</span>
           {%- endif -%}
-          <img class="menu-swatch__image" src="{{ btn.image | img_url: '400x' }}" alt="{{ btn.image.alt | default: btn.title }}"/>
+          <img class="menu-swatch__btn.image" src="{{ btn.image | img_url: '400x' }}" alt="{{ btn.image.alt | default: btn.title }}" width="{{ btn.image.width }}" height="{{ btn.image.height }}" loading="lazy"/>
         </a>
       </div>
     </div>

@@ -11,7 +11,7 @@
           <ul>
             {%- for image in product.images -%}
               <li class="zoom-image" data-zoom-src="{{ image | img_url: 'original' }}">
-                <img src="{{ image | img_url: '2048x' }}" alt="" />
+                <img src="{{ image | img_url: '2048x' }}" alt="{{ image.alt }}" width="{{ image.width }}" height="{{ image.height }}" loading="lazy" />
               </li>
             {%- endfor -%}
           </ul>
@@ -28,7 +28,7 @@
 
                 <li class="{{ li_class }}">
                   <a href="#">
-                    <img src="{{ image | img_url: '100x100' }}" alt="" />
+                    <img src="{{ image | img_url: '100x100' }}" alt="{{ image.alt }}" width="{{ image.width }}" height="{{ image.height }}" loading="lazy" />
                   </a>
                 </li>
               {%- endfor -%}

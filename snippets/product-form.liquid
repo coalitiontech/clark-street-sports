@@ -26,7 +26,7 @@
       </div><!-- /.size-row -->
 
       <div id="size-chart">
-        <img src="{{ size_guide | img_url: 'master' }}" style="max-width: 100%" />
+        <img src="{{ size_guide | img_url: 'master' }}" style="max-width: 100%" alt="{{ size_guide.alt }}" width="{{ size_guide.width }}" height="{{ size_guide.height }}" loading="lazy"/>
       </div><!-- /#size-chart -->
     {% endif %}
 

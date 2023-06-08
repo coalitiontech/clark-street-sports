@@ -53,7 +53,7 @@
   <div class="wrap">
 
     <header role="banner" id="header">
-      <a href="{{ shop.url }}" class="logo"><img src="{{ 'CSS-rect-logo_400x179.png' | asset_img_url: '240x108 }}" alt="CSS logoimage"></a>
+      <a href="{{ shop.url }}" class="logo"><img src="{{ 'CSS-rect-logo_400x179.png' | asset_img_url: '240x108 }}" loading="lazy" width="240" height="108" alt="CSS logoimage"></a>
       <a href="{{ shop.url }}" class="shop-url">{{ shop.url | remove: 'http://' }}</a>
     </header>
 
@@ -81,7 +81,7 @@
                 <div class="corner top-right"></div>
                 <div class="corner bottom-left"></div>
                 <div id="gift-card">
-                  <img src="{{ 'css-giftcard-image.png' | asset_img_url: '1024x1024' }}" alt="Gift card illustration">
+                  <img src="{{ 'css-giftcard-image.png' | asset_img_url: '1024x1024' }}" loading="lazy" width="1024" height="1024" alt="Gift card illustration">
                   {% assign initial_value_size = formatted_initial_value | size %}
                   <div id="gift-card-amount" class="{% if initial_value_size > 6 %}medium{% endif %}">
                     {% if gift_card.balance != gift_card.initial_value %}

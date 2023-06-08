@@ -5320,7 +5320,7 @@ h2.page-title {
         appearance: none;
         -webkit-appearance: none;
         -moz-appearance: none;
-        background: url(//cdn.shopify.com/s/files/1/2242/6395/t/251/assets/Down-Carrot-512.png?v=58550560239492304091685117652) no-repeat right center / contain; }
+        background: url(//cdn.shopify.com/s/files/1/2242/6395/t/252/assets/Down-Carrot-512.png?v=58550560239492304091685569297) no-repeat right center / contain; }
     .top-line .right-side .filters-toolbar__input {
       display: block;
       width: calc(100% + 20px);
@@ -6697,14 +6697,16 @@ h2.page-title {
   padding-bottom: 0; }
 
 .collection-row {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-      -ms-flex-pack: justify;
-          justify-content: space-between; }
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-pack: justify;
+  	-webkit-justify-content: space-between;
+    -ms-flex-pack: justify;
+    justify-content: space-between; 
+	min-height: 250px;
+}
 
   .collection-products {
     width: 78%;
@@ -6713,6 +6715,7 @@ h2.page-title {
   }
   .collection-products .products-row {
     padding-bottom: 0; 
+    min-height: 250px;
   }
   .collection-products .products-list {
     display: block;
