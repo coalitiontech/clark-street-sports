@@ -1,0 +1,6 @@
+development: 
+  password: shptka_eb3d1baf80375d90670aca727b2e6af6
+  theme_id: '123632091241'
+  store: clarkstreetsports1.myshopify.com
+  ignore_files:
+    - config/settings_data.json
