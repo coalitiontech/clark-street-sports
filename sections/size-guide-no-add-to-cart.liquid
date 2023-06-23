@@ -14,7 +14,7 @@
   </div>
 
   <div id="size-chart">
-    <img src="{{ size_guide | img_url: 'master' }}" style="max-width: 100%" />
+    <img src="{{ size_guide | img_url: 'master' }}" style="max-width: 100%" width="{{ size_guide.width }}" height="{{ size_guide.height }}" alt="{{ size_guide.alt }}" loading="lazy" />
   </div>
 {% endif %}
 

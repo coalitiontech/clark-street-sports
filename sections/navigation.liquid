@@ -1,199 +1,204 @@
-<nav id="teams-navigation" role="navigation" class="{{ section.settings.style }}">
-  <ul class="tn-nav">
-    {% for team in section.blocks %}
-      <li class="tn-nav__item  {% if section.settings.style == 'compact' and forloop.first %}active{% endif %}">
-        <a href="{{ team.settings.team_url }}" class="tn-nav__link">
-          {% unless team.settings.team_icon == blank %}
-          <img class="tn-nav__link-logo" src="{{ team.settings.team_icon | img_url: '32x' }}" alt="{{ team.settings.team_icon.alt }}" />
-          {% endunless %}
-          <span class="tn-nav__link-text">{{ team.settings.title }}</span>
-        </a>
-        <div class="tn-nav__content">
-          <div class="tn-nav__close"><span class="tn-nav__close-text">close</span><img class="tn-nav__close-icon" src="{{ 'close.svg' | asset_url }}" /></div>
+<nav
+    id="teams-navigation"
+    role="navigation"
+    class="{{ section.settings.style }}">
+    <ul class="tn-nav">
+        {% for team in section.blocks %}
+            <li class="tn-nav__item  {% if section.settings.style == 'compact' and forloop.first %}active{% endif %}">
+                <a href="{{ team.settings.team_url }}" class="tn-nav__link">
+                    {% unless team.settings.team_icon == blank %}
+                        <img
+                            class="tn-nav__link-logo"
+                            src="{{ team.settings.team_icon | img_url: '32x' }}"
+                            alt="{{ team.settings.team_icon.alt }}"
+                            width="{{ team.settings.team_icon.width }}"
+                            height="{{ team.settings.team_icon.height }}"
+                            loading="lazy" />
+                    {% endunless %}
+                    <span class="tn-nav__link-text">{{ team.settings.title }}</span>
+                </a>
+                <div class="tn-nav__content">
+                    <div class="tn-nav__close">
+                        <span class="tn-nav__close-text">close</span><img class="tn-nav__close-icon" src="{{ 'close.svg' | asset_url }}" width="auto" height="auto" loading="lazy"/></div>
 
-          {% if section.settings.style == 'compact' %}
-            <ul class="tn-nav__sublist">
-            {% for link in linklists[team.settings.categories].links %}
-              <li class="tn-nav__sublist-item">
-                <a class="tn-nav__sublist-link" href="{{ link.url }}">{{ link.title }}</a>
-              </li>
-            {% endfor %}
-            </ul>
+                    {% if section.settings.style == 'compact' %}
+                        <ul class="tn-nav__sublist">
+                            {% for link in linklists[team.settings.categories].links %}
+                                <li class="tn-nav__sublist-item">
+                                    <a class="tn-nav__sublist-link" href="{{ link.url }}">{{ link.title }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
 
-          {% elsif section.settings.style == 'megamenu' %}
-          <div class="tn-nav__columns">
-            <div class="tn-nav__column-2-5 categories">
-              <h3>{{ team.settings.categories_title }}</h3>
-              <ul class="tn-nav__sublist">
-              {% for link in linklists[team.settings.categories].links %}
-                <li class="tn-nav__sublist-item">
-                  <a href="{{ link.url }}">{{ link.title }}</a>
-                </li>
-              {% endfor %}
-              </ul>
-            </div>
+                    {% elsif section.settings.style == 'megamenu' %}
+                        <div class="tn-nav__columns">
+                            <div class="tn-nav__column-2-5 categories">
+                                <h3>{{ team.settings.categories_title }}</h3>
+                                <ul class="tn-nav__sublist">
+                                    {% for link in linklists[team.settings.categories].links %}
+                                        <li class="tn-nav__sublist-item">
+                                            <a href="{{ link.url }}">{{ link.title }}</a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
 
-            {% if section.settings.style == 'megamenu' %}
-            <div class="tn-nav__column-1-5 featured">
-              <h3>{{ team.settings.featured_title }}</h3>
-              <ul>
-              {% for link in linklists[team.settings.featured_links].links %}
-                <li>
-                  <a href="{{ link.url }}">
-                    <img src="{{ link.object.featured_image | img_url: 'small' }}" />
-                    <p>{{ link.title }} <span class="divider">|</span> <span class="money">{{ link.object.price | money | remove: '.00' }}</span></p>
-                  </a>
-                </li>
-              {% endfor %}
-              </ul>
-            </div>
+                            {% if section.settings.style == 'megamenu' %}
+                                <div class="tn-nav__column-1-5 featured">
+                                    <h3>{{ team.settings.featured_title }}</h3>
+                                    <ul>
+                                        {% for link in linklists[team.settings.featured_links].links %}
+                                            <li>
+                                                <a href="{{ link.url }}">
+                                                    <img src="{{ link.object.featured_image | img_url: 'small' }}" width="{{ link.object.featured_image.width }}" height="{{ link.object.featured_image.height }}" alt="{{ link.object.featured_image.alt }}" loading="lazy"/>
+                                                    <p>{{ link.title }}
+                                                        <span class="divider">|</span>
+                                                        <span class="money">{{ link.object.price | money | remove: '.00' }}</span>
+                                                    </p>
+                                                </a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
 
-            <div class="tn-nav__column-2-5 favorites">
-              <ul>
-                <li>
-                  <a href="{{ team.settings.favorite1_url }}">
-                    <img src="{{ team.settings.favorite1 | img_url: '364x364', crop: 'center' }} " alt=""/>
-                  </a>
-                  <h3>
-                    <a href="{{ team.settings.favorite1_url }}">
-                      {{ team.settings.favorite1_title }}
-                    </a>
-                  </h3>
-                </li>
-                <li>
-                  <a href="{{ team.settings.favorite2_url }}">
-                    <img src="{{ team.settings.favorite2 | img_url: '364x364', crop: 'center' }} " alt=""/>
-                  </a>
-                  <h3>
-                    <a href="{{ team.settings.favorite2_url }}">
-                      {{ team.settings.favorite2_title }}
-                    </a>
-                  </h3>
-                </li>
-              </ul>
-            </div>
-            {% endif %}
+                                <div class="tn-nav__column-2-5 favorites">
+                                    <ul>
+                                        <li>
+                                            <a href="{{ team.settings.favorite1_url }}">
+                                                <img src="{{ team.settings.favorite1 | img_url: '364x364', crop: 'center' }} " alt="{{ team.settings.favorite1.alt }}" width="{{ team.settings.favorite1.width }}" height="{{ team.settings.favorite1.height }}" loading="lazy" />
+                                            </a>
+                                            <h3>
+                                                <a href="{{ team.settings.favorite1_url }}">
+                                                    {{ team.settings.favorite1_title }}
+                                                </a>
+                                            </h3>
+                                        </li>
+                                        <li>
+                                            <a href="{{ team.settings.favorite2_url }}">
+                                                <img src="{{ team.settings.favorite2 | img_url: '364x364', crop: 'center' }} " alt="{{ team.settings.favorite2.alt }}" width="{{ team.settings.favorite2.width }}" height="{{ team.settings.favorite2.height }}" loading="lazy" />
+                                            </a>
+                                            <h3>
+                                                <a href="{{ team.settings.favorite2_url }}">
+                                                    {{ team.settings.favorite2_title }}
+                                                </a>
+                                            </h3>
+                                        </li>
+                                    </ul>
+                                </div>
+                            {% endif %}
 
-          </div>
-          {% endif %}
-        </div>
-      </li>
-    {% endfor %}
-  </ul>
+                        </div>
+                    {% endif %}
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
 </nav>
 
 {% schema %}
-  {
-    "name": "Navigation",
-    "class": "bms-navigation",
-    "settings": [
-        {
-          "type": "select",
-          "id": "style",
-          "label": "Navigation Style",
-          "options": [
-            { "value": "megamenu", "label": "Mega-Menu" },
-            { "value": "compact", "label": "Compact" }
-          ],
-          "default": "compact" 
-        }
-      ],
-      "blocks": [{
-      "type": "team",
-      "name": "Team",
-      "settings": [
-        {
-          "type": "header",
-          "content": "COMMON SETTINGS"
-        },
-        {
-          "type": "paragraph",
-          "content": "The following settings are used for the Compact and Mega-Menu navigation styles"
-        },
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Team Display Name"
-        },
-        {
-          "type" : "url",
-          "id" : "team_url",
-          "label" : "Add a link to the team page"
-        },
-        {
-          "type": "image_picker",
-          "id": "team_icon",
-          "label": "Team Icon for nav header"
-        },
-        {
-          "type": "link_list",
-          "id": "categories",
-          "label": "Select a navigation list for the categories"
-        },
-        {
-          "type": "header",
-          "content": "MEGAMENU SETTINGS"
-        },
-        {
-          "type": "paragraph",
-          "content": "The rest of the settings ONLY apply if the menu style is set to 'Mega-Menu'"
-        },
-        {
-          "type": "text",
-          "id": "categories_title",
-          "label": "Enter the title for the categories list",
-          "default": "Categories"
-        },
-        {
-          "type": "header",
-          "content": "Featured Section"
-        },
-        {
-          "type": "text",
-          "id": "featured_title",
-          "label": "Enter the title for the featured links list",
-          "default": "Featured"
-        },
-        {
-          "type": "link_list",
-          "id": "featured_links",
-          "label": "Select a navigation list for the featured links for this team"
-        },
-        {
-          "type": "header",
-          "content": "Image Section (Max of 2 Images)"
-        },
-        {
-          "type": "text",
-          "id": "favorite1_title",
-          "label": "Enter a title for the first favorite section"
-        },
-        {
-          "type": "image_picker",
-          "id": "favorite1",
-          "label": "Add an image for the first favorite section"
-        },
-        {
-          "type": "url",
-          "id": "favorite1_url",
-          "label": "Add a link for the first favorite section"
-        },
-        {
-          "type": "text",
-          "id": "favorite2_title",
-          "label": "Enter a title for the second favorite section"
-        },
-        {
-          "type": "image_picker",
-          "id": "favorite2",
-          "label": "Add an image for the second favorite section"
-        },
-        {
-          "type": "url",
-          "id": "favorite2_url",
-          "label": "Add a link for the second favorite section"
-        }
-      ]
-    }]
-  }
+    {
+        "name": "Navigation",
+        "class": "bms-navigation",
+        "settings": [
+            {
+                "type": "select",
+                "id": "style",
+                "label": "Navigation Style",
+                "options": [
+                    {
+                        "value": "megamenu",
+                        "label": "Mega-Menu"
+                    }, {
+                        "value": "compact",
+                        "label": "Compact"
+                    }
+                ],
+                "default": "compact"
+            }
+        ],
+        "blocks": [
+            {
+                "type": "team",
+                "name": "Team",
+                "settings": [
+                    {
+                        "type": "header",
+                        "content": "COMMON SETTINGS"
+                    },
+                    {
+                        "type": "paragraph",
+                        "content": "The following settings are used for the Compact and Mega-Menu navigation styles"
+                    },
+                    {
+                        "type": "text",
+                        "id": "title",
+                        "label": "Team Display Name"
+                    },
+                    {
+                        "type": "url",
+                        "id": "team_url",
+                        "label": "Add a link to the team page"
+                    }, {
+                        "type": "image_picker",
+                        "id": "team_icon",
+                        "label": "Team Icon for nav header"
+                    }, {
+                        "type": "link_list",
+                        "id": "categories",
+                        "label": "Select a navigation list for the categories"
+                    }, {
+                        "type": "header",
+                        "content": "MEGAMENU SETTINGS"
+                    }, {
+                        "type": "paragraph",
+                        "content": "The rest of the settings ONLY apply if the menu style is set to 'Mega-Menu'"
+                    }, {
+                        "type": "text",
+                        "id": "categories_title",
+                        "label": "Enter the title for the categories list",
+                        "default": "Categories"
+                    }, {
+                        "type": "header",
+                        "content": "Featured Section"
+                    }, {
+                        "type": "text",
+                        "id": "featured_title",
+                        "label": "Enter the title for the featured links list",
+                        "default": "Featured"
+                    }, {
+                        "type": "link_list",
+                        "id": "featured_links",
+                        "label": "Select a navigation list for the featured links for this team"
+                    }, {
+                        "type": "header",
+                        "content": "Image Section (Max of 2 Images)"
+                    }, {
+                        "type": "text",
+                        "id": "favorite1_title",
+                        "label": "Enter a title for the first favorite section"
+                    }, {
+                        "type": "image_picker",
+                        "id": "favorite1",
+                        "label": "Add an image for the first favorite section"
+                    }, {
+                        "type": "url",
+                        "id": "favorite1_url",
+                        "label": "Add a link for the first favorite section"
+                    }, {
+                        "type": "text",
+                        "id": "favorite2_title",
+                        "label": "Enter a title for the second favorite section"
+                    }, {
+                        "type": "image_picker",
+                        "id": "favorite2",
+                        "label": "Add an image for the second favorite section"
+                    }, {
+                        "type": "url",
+                        "id": "favorite2_url",
+                        "label": "Add a link for the second favorite section"
+                    }
+                ]
+            }
+        ]
+    }
 {% endschema %}

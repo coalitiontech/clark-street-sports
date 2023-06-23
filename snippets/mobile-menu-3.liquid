@@ -15,14 +15,14 @@
         {% if forloop.last == false %}
           <div class="shop-by-collection--item">
             <a href="{{block.settings.team_url}}">
-              <img src="{{ block.settings.logo | img_url: 'small' }}" />
+              <img src="{{ block.settings.logo | img_url: 'small' }}" alt="{{ block.settings.logo.alt }}" width="{{ block.settings.logo.width }}" height="{{ block.settings.logo.height }}" loading="lazy"/>
             </a>
           </div>
           {%  else %}
           <div class="shop-by-collection--item last--item">
             <a href="{{block.settings.featured_url}}">
-              {{ block.settings.featured_title}}
-              <img src="{{ block.settings.featured_logo | img_url: 'small' }}" />
+              {{ block.settings.featured_title }}
+              <img src="{{ block.settings.featured_logo | img_url: 'small' }}" alt="{{ block.settings.featured_logo.alt }}" width="{{ block.settings.featured_logo.width }}" height="{{ block.settings.featured_logo.height }}" loading="lazy"/>
             </a>
           </div>
           {% endif %}

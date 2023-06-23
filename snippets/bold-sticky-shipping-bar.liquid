@@ -7,7 +7,7 @@
         {{ 'general.product.shipping' | t | default: 'This Item Ships Free!' }}
       {%- endif -%}
     </span>
-    <img src="{{ 'shipping.svg' | asset_url }}" class="icon" alt="Picture of a Shipping Truck"/>
+    <img src="{{ 'shipping.svg' | asset_url }}" class="icon" width="auto" height="auto" loading="lazy" alt="Picture of a Shipping Truck"/>
   </div><!-- /.shipping-holder -->
   <script>
     //Please see bold-defered.js for event firing.

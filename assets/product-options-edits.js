@@ -141,12 +141,12 @@ BOLD.options.app.on('options_loaded', function (data) {
         pathname = pathname.slice((pathname.indexOf('/collections/') + 13), pathname.indexOf('/products'));
         //console.log(pathname);
 
-        var retiredUrl = '//cdn.shopify.com/s/files/1/2242/6395/t/251/assets/team_name%20-%20retired.txt?82208';
+        var retiredUrl = '//cdn.shopify.com/s/files/1/2242/6395/t/254/assets/team_name%20-%20retired.txt?82481';
         retiredUrl = retiredUrl.split('team_name');
         retiredUrl = retiredUrl[0] + pathname + retiredUrl[1];
         //console.log(retiredUrl);
 
-        var currentUrl = '//cdn.shopify.com/s/files/1/2242/6395/t/251/assets/team_name%20-%20current.txt?82208';
+        var currentUrl = '//cdn.shopify.com/s/files/1/2242/6395/t/254/assets/team_name%20-%20current.txt?82481';
         currentUrl = currentUrl.split('team_name');
         currentUrl = currentUrl[0] + pathname + currentUrl[1];
 

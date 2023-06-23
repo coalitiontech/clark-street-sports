@@ -46,10 +46,16 @@
                 height: {{ section.settings.mobile_height }}vw;
                 max-height: {{ section.settings.mobile_height }}vw; }
               @media screen and (min-width: 768px) {
+                {% comment %}
+                  #snap .intro .intro__slide a {
+                    height: {{ section.settings.desktop_height }}vw;
+                    max-height: {{ section.settings.desktop_height }}vw;
+                  }
+                {% endcomment %}
                 #snap .intro .intro__slide a {
-                  height: {{ section.settings.desktop_height }}vw;
-                  max-height: {{ section.settings.desktop_height }}vw;
-                }
+                    height: 704px;
+                    max-height: 704px;
+                  }
                 .intro .intro__slide.block-{{ _block.id }} {
                   background-color: {{ _settings.desktop_background_colour }};
                   background-image: url("{{ _settings.desktop_image | img_url: 'master' }}");
@@ -174,7 +180,7 @@
         "id": "mobile_height",
         "min": 50,
         "max": 200,
-        "step": 10,
+        "step": 2,
         "unit": "vw",
         "label": "Mobile Height",
         "default": 160

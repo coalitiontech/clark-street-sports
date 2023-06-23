@@ -205,6 +205,13 @@
 }
 </style>
 {% endif %}
+{% if passcode_case_sensitive == 0 %}
+  {% assign entered_password_up_case = entered_password | upcase%}
+  {% assign entered_password_down_case = entered_password | downcase%}
+{% else %}
+  {% assign entered_password_up_case = entered_password %}
+  {% assign entered_password_down_case = entered_password %}
+{% endif %}
 {%- if form_style_type == '0' -%}
 <div class="page-width bsscommerce-passcode-container bsscommerce-passcode-form-style-{{ form_style_type }}">
   <div class="bss-commerce-passcode-container-1" style="max-width: 420px;">
@@ -263,7 +270,8 @@
                       "
                   />
           </form>
-            {%- if entered_password != password and entered_password -%}
+          {% if entered_password %}
+            {%- if entered_password_up_case != password or entered_password_down_case != password -%}
               <div class="form-message form-message--error" style="text-align: left; font-size: 16px; color: red;">
                 <div style="display: flex; align-items: center">
                   {% capture snippet-error-icon %}{% render 'icon-error' %}{% endcapture %}
@@ -276,6 +284,7 @@
                 </div>
               </div>
             {%- endif -%}
+          {% endif %}
           {% if is_pc_request == "true" %}
             <div class="bss-passcode-request bss-btn">Request passcode</div>
           {% endif %}
@@ -290,11 +299,13 @@
         <div class="bss-commerce-passcode-container-2" style="width: 100%;">
             <div id="BsscommercePasswordForm">
                 <div class="form-vertical">
-                    {%- if entered_password != password and entered_password -%}
+                  {% if entered_password %}
+                    {%- if entered_password_up_case != password or entered_password_down_case != password -%}
                         <div class="form-message form-message--error" style="text-align: center">
                             {{ message_passcode_incorrect }}
                         </div>
                     {%- endif -%}
+                  {% endif %}
                     <div class="bsscommerce-password-message-container">
 
                         <div style="display: flex; flex-direction: column">{{ passcode_message }}
@@ -329,6 +340,8 @@
                 </div>
             </div>
         </div>
+      </div>
+    </div>
 {%- endif -%}
 
 {% if is_pc_request == "true" %}
@@ -574,14 +587,19 @@
 
     let passcodeElement = document.getElementById("bsscommerce-password");
 
+    let passcodeCaseSensitive = {{ passcode_case_sensitive }};
     const customerId = window.__st.hasOwnProperty('cid') ? window.__st.cid : ""; 
     {% if is_call_api == "true" %}
       // handle call API save passcode actions
       if(customerId) {
         let bssPw = "{{ password }}" || "";
+        if(passcodeCaseSensitive == 0){
+          bssPw = bssPw.toLowerCase()
+        }
         let bssPwList = bssPw.split("*bss*").filter(item => !!item);
-
-        if(bssPwList.includes(passcodeElement.value)) {
+        let passcodeValue = passcodeCaseSensitive == 0 ? passcodeElement.value.toLowerCase() : passcodeElement.value
+        
+        if(bssPwList.includes(passcodeValue)) {
           let url = "{{ save_action_api }}"
           let xmlHttp = new XMLHttpRequest();
 
@@ -604,10 +622,13 @@
     });
 
     const pageUrl = window.location.href;
-    let url = "{{ save_usage_history }}"
+    let url = "{{ save_usage_history }}";
     let password = "{{ password }}";
     let bssPwList = password.split("*bss*").filter(item => !!item);
-    let ruleId = "{{ rule_id }}"
+    if(passcodeCaseSensitive === 0){
+      bssPwList = bssPwList.toString().toLowerCase();
+    }
+    let ruleId = "{{ rule_id }}";
     if(ruleId.indexOf("-") !== -1){
       ruleId = ruleId.slice(0, ruleId.indexOf("-"))
     }
@@ -619,7 +640,7 @@
         pageUrl: pageUrl,
         customerId: customerId,
         ruleId: ruleId,
-        status: bssPwList.includes(passcodeElement.value) ? "Success" : "Fail"
+        status: bssPwList.includes(passcodeCaseSensitive === 0 ? passcodeElement.value.toLowerCase() : passcodeElement.value) ? "Success" : "Fail"
       });
   
       fetch(url, {
