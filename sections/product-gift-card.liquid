@@ -1,79 +1,107 @@
 {% include 'bold-pre-order' %}
 {% include 'bold-sticky-shipping-bar' %}
 <div class="main">
-  <div class="product-holder">
-    <div class="product-images">
-      {%- include 'breadcrumbs' -%}
+    <div class="product-holder">
+        <div class="product-images">
+            {%- include 'breadcrumbs' -%}
 
-      <div class="product-images-holder{%- if product.images.size <= 1 -%} single-image{% endif %}">
+                <div class="product-images-holder{%- if product.images.size <= 1 -%} single-image{% endif %}">
 
-        <div class="featured__images">
-          <ul>
-            {%- for image in product.images -%}
-              <li class="zoom-image" data-zoom-src="{{ image | img_url: 'original' }}">
-                <img src="{{ image | img_url: '2048x' }}" alt="{{ image.alt }}" width="{{ image.width }}" height="{{ image.height }}" loading="lazy" />
-              </li>
-            {%- endfor -%}
-          </ul>
-        </div><!-- /.featured__images -->
-        {%- if product.images.size > 1 -%}
-          <div class="product__thumbs">
-            <ul>
-              {%- for image in product.images -%}
-                {%- if forloop.index0 == 0 -%}
-                  {%- assign li_class = 'active' -%}
-                {%- else -%}
-                  {%- assign li_class = '' -%}
+                <div class="featured__images">
+                    <ul>
+                        {%- for image in product.images -%}
+                            <li class="zoom-image" data-zoom-src="{{ image | img_url: 'original' }}">
+                                <img
+                                    src="{{ image | img_url: '2048x' }}"
+                                    alt="{{ image.alt }}"
+                                    width="{{ image.width }}"
+                                    height="{{ image.height }}"
+                                    loading="lazy" />
+                            </li>
+                        {%- endfor -%}
+                    </ul>
+                </div>
+                <!-- /.featured__images -->
+                {%- if product.images.size > 1 -%}
+                    <div class="product__thumbs">
+                        <ul>
+                            {%- for image in product.images -%}
+                                {%- if forloop.index0 == 0 -%}
+                                    {%- assign li_class = 'active' -%}
+                                {%- else -%}
+                                    {%- assign li_class = '' -%}
+                                {%- endif -%}
+
+                                <li class="{{ li_class }}">
+                                    <a href="#">
+                                        <img
+                                            src="{{ image | img_url: '100x100' }}"
+                                            alt="{{ image.alt }}"
+                                            width="{{ image.width }}"
+                                            height="{{ image.height }}"
+                                            loading="lazy" />
+                                    </a>
+                                </li>
+                            {%- endfor -%}
+                        </ul>
+                    </div>
+                    <!-- /.product__thumbs -->
                 {%- endif -%}
+            </div>
+            <!-- /.product-images-holder -->
+        </div>
+        <!-- /.product-images -->
 
-                <li class="{{ li_class }}">
-                  <a href="#">
-                    <img src="{{ image | img_url: '100x100' }}" alt="{{ image.alt }}" width="{{ image.width }}" height="{{ image.height }}" loading="lazy" />
-                  </a>
-                </li>
-              {%- endfor -%}
-            </ul>
-          </div><!-- /.product__thumbs -->
-        {%- endif -%}
-      </div><!-- /.product-images-holder -->
-    </div><!-- /.product-images -->
+        <div class="product-description">
+            <div class="inner">
+                {% if preOrderText != blank %}
+                    <h5 class="availability">
+                        {{ preOrderText }}
+                    </h5>
+                {% endif %}
+                <h2>
+                    {{ product.title }}
+                </h2>
 
-    <div class="product-description">
-      <div class="inner">
-        {% if preOrderText != blank %}
-          <h5 class="availability">
-            {{ preOrderText }}
-          </h5>
-        {% endif %}
-        <h2>
-          {{ product.title }}
-        </h2>
+                <div class="price">
+                    <span class="sale-price">
+                        <span class="sale-price">
+                            {{ bold_selected_or_first_available_variant.price | money }}
+                        </span>
 
-        <div class="price">
-          <span class="sale-price">
-            <span class="sale-price">
-              {{ bold_selected_or_first_available_variant.price | money }}
-            </span>
-            
-          </span>
-          {%- if bold_compare_at_price_max > 0 -%}
-            <span class="compare-price">{{ bold_compare_at_price_max | money }}</span>
-          {%- endif -%}
-        </div><!-- /.price -->
+                    </span>
+                    {%- if bold_compare_at_price_max > 0 -%}
+                        <span class="compare-price">{{ bold_compare_at_price_max | money }}</span>
+                    {%- endif -%}
+                </div>
+                <!-- /.price -->
 
-        {%- include 'product-form' -%}
+                {%- include 'product-form' -%}
 
-        {%- include 'share' -%}
-      </div><!-- /.inner -->
+                {%- include 'share' -%}
+            </div>
+            <!-- /.inner -->
 
-    </div><!-- /.product-description -->
-  </div><!-- /.product-holder -->
+        </div>
+        <!-- /.product-description -->
+    </div>
+    <!-- /.product-holder -->
 
 
-  <div class="main-description">
-    <div class="container">
-      {{ product.content }}
-    </div><!-- /.container -->
-  </div><!-- /.main-description -->
-</div><!-- /.main -->
+    <div class="main-description">
+        <div class="container">
+            {{ product.content }}
+        </div>
+        <!-- /.container -->
+    </div>
+    <!-- /.main-description -->
+</div>
+<!-- /.main -->
 {% render 'product_infox' %}
+
+{% style %}
+    .product-images img {
+        width: 100%;
+        height: 100%;
+    }
+{% endstyle %}
