@@ -96,13 +96,20 @@
   const customerId = window.__st.hasOwnProperty('cid') ? window.__st.cid : "";
     const pageUrl = window.location.href;
     let url = "{{ save_usage_history }}";
-  let password = "{{ password }}";
-  let product = "{{ product.title }}";
-  let bssPwList = password.split("*bss*").filter(item => !!item);
+    
+    let product = "{{ product.title }}";
+    
     let ruleId = "{{ rule_id }}";
-  if(ruleId.indexOf("-") !== -1){
-        ruleId = ruleId.slice(0, ruleId.indexOf("-"));
+    if(ruleId.indexOf("-") !== -1){
+      ruleId = ruleId.slice(0, ruleId.indexOf("-"));
     }
+    let passcodeList = [];
+    {% assign bssPwList = password | split: "*bss*" %}
+    {% for password in bssPwList %}
+      {% if password != "" %}
+        passcodeList.push("{{ password | hmac_sha256: '19f28bb46fef8fa41bd7180b12628ee7' }}");
+      {% endif %}
+    {% endfor %}
     let dataUsage = JSON.stringify({
         domain: window.Shopify.shop,
         passcode: passcodeElement.value,
@@ -110,7 +117,7 @@
         customerId: customerId,
         ruleId: ruleId,
         product: product,
-        status: bssPwList.includes(passcodeElement.value) ? "Success" : "Fail"
+        passcodeList: passcodeList
     });
     fetch(url,{
       method:"POST",

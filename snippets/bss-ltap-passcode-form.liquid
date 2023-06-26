@@ -587,63 +587,56 @@
 
     let passcodeElement = document.getElementById("bsscommerce-password");
 
-    let passcodeCaseSensitive = {{ passcode_case_sensitive }};
     const customerId = window.__st.hasOwnProperty('cid') ? window.__st.cid : ""; 
+
+    let passcodeList = [];
+    {% if passcode_case_sensitive == 0 %}
+      {% assign bssPwList = password | downcase | split: "*bss*" %}
+    {% else %}
+      {% assign bssPwList = password | split: "*bss*" %}
+    {% endif %}
+    {% for password in bssPwList %}
+      {% if password != "" %}
+        passcodeList.push("{{ password | hmac_sha256: '19f28bb46fef8fa41bd7180b12628ee7' }}");
+      {% endif %}
+    {% endfor %}
     {% if is_call_api == "true" %}
       // handle call API save passcode actions
       if(customerId) {
-        let bssPw = "{{ password }}" || "";
-        if(passcodeCaseSensitive == 0){
-          bssPw = bssPw.toLowerCase()
-        }
-        let bssPwList = bssPw.split("*bss*").filter(item => !!item);
-        let passcodeValue = passcodeCaseSensitive == 0 ? passcodeElement.value.toLowerCase() : passcodeElement.value
-        
-        if(bssPwList.includes(passcodeValue)) {
-          let url = "{{ save_action_api }}"
-          let xmlHttp = new XMLHttpRequest();
+        let url = "{{ save_action_api }}"
+        let xmlHttp = new XMLHttpRequest();
 
-          let data = JSON.stringify({
-            domain: `${window.Shopify.shop}`,
-            customerId: customerId,
-            passcode: passcodeElement.value,
-            ruleId: "{{ rule_id }}",
-          });
+        let data = JSON.stringify({
+          domain: `${window.Shopify.shop}`,
+          customerId: customerId,
+          passcode: passcodeElement.value,
+          ruleId: "{{ origin_rule_id }}",
+          passcodeList: passcodeList,
+          caseSensitive: "{{ passcode_case_sensitive }}"
+        });
 
           xmlHttp.open("POST", url);
           xmlHttp.setRequestHeader("Content-Type", "application/json");
           xmlHttp.send(data);
         }
-      }
     {% endif %}
 
     passcodeElement.addEventListener("input", function() {
       passcodeElement.classList.remove("input--error");
     });
 
-    const pageUrl = window.location.href;
-    let url = "{{ save_usage_history }}";
-    let password = "{{ password }}";
-    let bssPwList = password.split("*bss*").filter(item => !!item);
-    if(passcodeCaseSensitive === 0){
-      bssPwList = bssPwList.toString().toLowerCase();
-    }
-    let ruleId = "{{ rule_id }}";
-    if(ruleId.indexOf("-") !== -1){
-      ruleId = ruleId.slice(0, ruleId.indexOf("-"))
-    }
-
     if (passcodeElement.value && passcodeElement.value !== "") {
       let dataUsage = JSON.stringify({
-        domain: window.Shopify.shop,
+        domain: "{{ shop.permanent_domain }}",
         passcode: passcodeElement.value,
-        pageUrl: pageUrl,
+        pageUrl: window.location.href,
         customerId: customerId,
-        ruleId: ruleId,
-        status: bssPwList.includes(passcodeCaseSensitive === 0 ? passcodeElement.value.toLowerCase() : passcodeElement.value) ? "Success" : "Fail"
+        ruleId: "{{ origin_rule_id }}",
+        passcodeList: passcodeList,
+        caseSensitive: "{{ passcode_case_sensitive }}"
       });
   
-      fetch(url, {
+      fetch("{{ save_usage_history }}", {
         method:"POST",
         headers: {
           "Content-Type": "application/json",
