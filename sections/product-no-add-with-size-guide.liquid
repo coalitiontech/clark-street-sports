@@ -3,264 +3,313 @@
 {%- include 'bold-product' with product, hide_action: 'break', output: 'none' -%}
 {% include 'bold-sticky-shipping-bar' %}
 <div class="main">
-  <div class="product-holder">
-    <div class="product-images">
-      {%- include 'breadcrumbs' -%}
+    <div class="product-holder">
+        <div class="product-images">
+            {%- include 'breadcrumbs' -%}
 
-      <div class="product-images-holder{%- if product.images.size <= 1 -%} single-image{% endif %}">
+                <div class="product-images-holder{%- if product.images.size <= 1 -%} single-image{% endif %}">
 
-        <div class="featured__images">
-          <ul>
-            {%- for image in product.images -%}
-              <li class="zoom-image" data-zoom-src="{{ image | img_url: 'original' }}">
-                <img src="{{ image | img_url: '2048x' }}" alt="{{ image.alt }}" width="{{ image.width }}" height="{{ image.height }}" loading="lazy" />
-              </li>
-            {%- endfor -%}
-          </ul>
-        </div><!-- /.featured__images -->
-        {%- if product.images.size > 1 -%}
-          <div class="product__thumbs">
-            <ul>
-              {%- for image in product.images -%}
-                {%- if forloop.index0 == 0 -%}
-                  {%- assign li_class = 'active' -%}
-                {%- else -%}
-                  {%- assign li_class = '' -%}
+                <div class="featured__images">
+                    <ul>
+                        {%- for image in product.images -%}
+                            <li class="zoom-image" data-zoom-src="{{ image | img_url: 'original' }}">
+                                <img
+                                    src="{{ image | img_url: '2048x' }}"
+                                    alt="{{ image.alt }}"
+                                    width="{{ image.width }}"
+                                    height="{{ image.height }}"
+                                    loading="lazy" />
+                            </li>
+                        {%- endfor -%}
+                    </ul>
+                </div>
+                <!-- /.featured__images -->
+                {%- if product.images.size > 1 -%}
+                    <div class="product__thumbs">
+                        <ul>
+                            {%- for image in product.images -%}
+                                {%- if forloop.index0 == 0 -%}
+                                    {%- assign li_class = 'active' -%}
+                                {%- else -%}
+                                    {%- assign li_class = '' -%}
+                                {%- endif -%}
+
+                                <li class="{{ li_class }}">
+                                    <a href="#">
+                                        <img
+                                            src="{{ image | img_url: '100x100' }}"
+                                            alt="{{ image.alt }}"
+                                            width="{{ image.width }}"
+                                            height="{{ image.height }}"
+                                            loading="lazy" />
+                                    </a>
+                                </li>
+                            {%- endfor -%}
+                        </ul>
+                    </div>
+                    <!-- /.product__thumbs -->
                 {%- endif -%}
-
-                <li class="{{ li_class }}">
-                  <a href="#">
-                    <img src="{{ image | img_url: '100x100' }}" alt="{{ image.alt }}" width="{{ image.width }}" height="{{ image.height }}" loading="lazy" />
-                  </a>
-                </li>
-              {%- endfor -%}
-            </ul>
-          </div><!-- /.product__thumbs -->
-        {%- endif -%}
-      </div><!-- /.product-images-holder -->
-    </div><!-- /.product-images -->
-
-    <div class="product-description">
-      <div class="inner">
-        {%- assign low_quantity = settings.low_quantity_number | times: 1 -%}
-        {%- assign totalQuantity = 0 -%}
-
-        {% assign secondsCreated = product.published_at | date: '%s' %}
-        {% assign secondsNow = 'now' | date: '%s' %}
-        {% assign daysNew = settings.new_product_days %}
-        {% assign secondsNew = daysNew | times: 86400 %}
-        {% assign secondsBetween = secondsNow | minus: secondsCreated %}
-        {% assign current_variant = bold_selected_or_first_available_variant %}
-        {%- include 'bold-variant' with current_variant, output: 'none' -%}
-
-        <div class="variant-sku">
-          {{ current_variant.sku }}
-        </div>
-
-        {% for variant in product.variants %}
-          {%- include 'bold-variant' with variant, hide_action: 'skip' -%}
-          {%- assign totalQuantity = totalQuantity | plus: variant.inventory_quantity -%}
-        {% endfor %}
-        {% if low_quantity >= totalQuantity %}
-          <h5 class="availability" data-low_quantity="{{ low_quantity }}">{{ 'general.product.low_quantity' | t }}
-            {{ preOrderText }}
-          </h5><!-- /.availability -->
-          {% elsif secondsBetween < secondsNew %}
-          <h5 class="availability">{{ 'general.product.new_tag' | t }}
-            {{ preOrderText }}
-          </h5>
-
-          {% elsif preOrderText != blank %}
-          <h5 class="availability">
-            {{ preOrderText }}
-          </h5>
-        {% endif %}
-        <h2>
-          {{ product.title }}
-        </h2>
-        {% render 'okendo-reviews-product-rating-summary', product: product %}
-        <div class="price">
-          <span class="sale-price">
-            <span class="sale-price">
-              {{ bold_selected_or_first_available_variant.price | money }}
-            </span>
-          </span>
-          {% if bold_compare_at_price_max > 0 %}
-            <span class="compare-price">{{ bold_compare_at_price_max | money }}</span>
-          {% endif %}
-        </div><!-- /.price -->
-
-        <div class="form-row">
-          {% for block in section.blocks %}
-            {% unless block.type == 'size_guide' %}{% continue %}{% endunless %}
-            {% assign guideTitle = block.settings.title | handleize %}
-            {% unless product.tags contains guideTitle %}{% continue %}{% endunless %}
-            {% assign size_guide = block.settings.size_guide_img %}
-            {% break %}
-          {% endfor %}
-
-          {% if size_guide != blank %} 
-            <div class="size-row">
-              <a href="#size-chart" class="view-size">
-                {{ 'general.product.size' | t }}
-              </a>
             </div>
+            <!-- /.product-images-holder -->
+        </div>
+        <!-- /.product-images -->
 
-            <div id="size-chart">
-              <img src="{{ size_guide | img_url: 'master' }}" style="max-width: 100%" alt="{{ size_guide.alt }}" width="{{ size_guide.width }}" height="{{ size_guide.height }}" loading="lazy"/>
+        <div class="product-description">
+            <div class="inner">
+                {%- assign low_quantity = settings.low_quantity_number | times: 1 -%}
+                {%- assign totalQuantity = 0 -%}
+
+                {% assign secondsCreated = product.published_at | date: '%s' %}
+                {% assign secondsNow = 'now' | date: '%s' %}
+                {% assign daysNew = settings.new_product_days %}
+                {% assign secondsNew = daysNew | times: 86400 %}
+                {% assign secondsBetween = secondsNow | minus: secondsCreated %}
+                {% assign current_variant = bold_selected_or_first_available_variant %}
+                {%- include 'bold-variant' with current_variant, output: 'none' -%}
+
+                <div class="variant-sku">
+                    {{ current_variant.sku }}
+                </div>
+
+                {% for variant in product.variants %}
+                    {%- include 'bold-variant' with variant, hide_action: 'skip' -%}
+                    {%- assign totalQuantity = totalQuantity | plus: variant.inventory_quantity -%}
+                {% endfor %}
+                {% if low_quantity >= totalQuantity %}
+                    <h5 class="availability" data-low_quantity="{{ low_quantity }}">{{ 'general.product.low_quantity' | t }}
+                        {{ preOrderText }}
+                    </h5>
+                    <!-- /.availability -->
+                {% elsif secondsBetween < secondsNew %}
+                    <h5 class="availability">{{ 'general.product.new_tag' | t }}
+                        {{ preOrderText }}
+                    </h5>
+
+                {% elsif preOrderText != blank %}
+                    <h5 class="availability">
+                        {{ preOrderText }}
+                    </h5>
+                {% endif %}
+                <h2>
+                    {{ product.title }}
+                </h2>
+                {% render 'okendo-reviews-product-rating-summary', product: product %}
+                <div class="price">
+                    <span class="sale-price">
+                        <span class="sale-price">
+                            {{ bold_selected_or_first_available_variant.price | money }}
+                        </span>
+                    </span>
+                    {% if bold_compare_at_price_max > 0 %}
+                        <span class="compare-price">{{ bold_compare_at_price_max | money }}</span>
+                    {% endif %}
+                </div>
+                <!-- /.price -->
+
+                <div class="form-row">
+                    {% for block in section.blocks %}
+                        {% unless block.type == 'size_guide' %}
+                            {% continue %}{% endunless %}
+                        {% assign guideTitle = block.settings.title | handleize %}
+                        {% unless product.tags contains guideTitle %}
+                            {% continue %}{% endunless %}
+                        {% assign size_guide = block.settings.size_guide_img %}
+                        {% break %}
+                    {% endfor %}
+
+                    {% if size_guide != blank %}
+                        <div class="size-row">
+                            <a href="#size-chart" class="view-size">
+                                {{ 'general.product.size' | t }}
+                            </a>
+                        </div>
+
+                        <div id="size-chart">
+                            <img
+                                src="{{ size_guide | img_url: 'master' }}"
+                                style="max-width: 100%"
+                                alt="{{ size_guide.alt }}"
+                                width="{{ size_guide.width }}"
+                                height="{{ size_guide.height }}"
+                                loading="lazy" />
+                        </div>
+                    {% endif %}
+
+                    {% if bold_variants_size > 1 %}
+                        {%- assign options_with_values = product.options_with_values -%}
+                        {%- assign selected_variant = bold_selected_or_first_available_variant -%}
+                        {%- include 'bold-variant' with selected_variant, output: 'none' -%}
+
+                        {% for option in options_with_values %}
+                            {% assign option_index = forloop.index %}
+                            {%- assign option_name = option.name | handle -%}
+                            {%- assign optName = 'options' | append: forloop.index -%}
+                            {%- assign option_values = [optName] | default: option.values -%}
+
+                            <label for="{{ option.name | escape }}">{{ option.name | escape }}</label>
+                            {%- render 'variant-selector', variants: product, first_variant_available: bold_selected_or_first_available_variant -%}
+
+                        {% endfor %}
+                    {% endif %}
+
+                    <!-- Always render the variant selector for the product, regardless of the variant count -->
+                    <select
+                        id="product-select"
+                        name="id"
+                        style="display: none;">
+                        {% for variant in product.variants %}
+                            {%- include 'bold-variant' with variant, hide_action: 'skip' -%}
+                            <option
+                                value="{{ variant.id }}"
+                                data-price="{{ bold_variant_price | money }}"
+                                data-quantity="{{ variant.inventory_quantity }}"
+                                data-inventory-management="{{ variant.inventory_management }}"
+                                data-inventory-policy="{{ variant.inventory_policy }}"
+                                {% for option in options_with_values %}
+                                data-option-{{forloop.index}}="{{ variant.options[forloop.index0] | handle }}"{% endfor %}
+                                {% if bold_selected_or_first_available_variant.id == variant.id %}
+                                selected="selected"
+                                {% endif %}>
+                                {{ variant.title }}
+                            </option>
+                        {% endfor %}
+                    </select>
+
+                </div>
+                <div class="NFL_note">
+                    We can only take orders for Nike NFL Jerseys by phone.
+                    We realize it is inconvenient for you to call in to place an order BUT the Nike and the NFL have set strict restrictions on most retailers, and how they can sell certain merchandise online.
+                              Our phone hours are Mon-Fri 9:00am - 5:00pm CST.
+                              Phone: 773-389-2505
+                </div>
+                <div class="cta-holder d-flex flex-wrap">
+                    <a href="tel:17738314030" class="btn btn--black form-fake-btns">PHONE OUR TEAM</a>
+                    <span id="product_contact_form" class="btn btn--black form-fake-btns">EMAIL OUR TEAM</span>
+                </div>
+                <!-- /.cta-holder -->
+
+                <div
+                    class="hidden"
+                    id="product_JotForm"
+                    hidden>
+                    {% render 'product-jotform' %}
+                </div>
+
+                <div style="display:none;" id="product-customization">
+                    <h1>Customize Product</h1>
+                    <table id="customization-table">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Type of Customization</th>
+                                <th>Customization</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+
+                {% include 'share' %}
             </div>
-          {% endif %}
-
-          {% if bold_variants_size > 1 %}
-            {%- assign options_with_values = product.options_with_values -%}
-            {%- assign selected_variant = bold_selected_or_first_available_variant -%}
-            {%- include 'bold-variant' with selected_variant, output: 'none' -%}
-
-            {% for option in options_with_values %}
-              {% assign option_index = forloop.index %}
-              {%- assign option_name = option.name | handle  -%}
-              {%- assign optName = 'options' | append: forloop.index -%}
-              {%- assign option_values = [optName] | default: option.values -%}
-
-              <label for="{{ option.name | escape }}">{{ option.name | escape }}</label>
-              {%- render 'variant-selector', variants: product, first_variant_available: bold_selected_or_first_available_variant -%} 
-
-            {% endfor %}    
-          {% endif %}
-
-          <!-- Always render the variant selector for the product, regardless of the variant count -->
-          <select id="product-select" name="id" style="display: none;">
-            {% for variant in product.variants %}
-            {%- include 'bold-variant' with variant, hide_action: 'skip' -%}
-              <option value="{{ variant.id }}"
-                      data-price="{{ bold_variant_price | money }}"
-                      data-quantity="{{ variant.inventory_quantity }}"
-                      data-inventory-management="{{ variant.inventory_management }}"
-                      data-inventory-policy="{{ variant.inventory_policy }}"
-                      {% for option in options_with_values %} data-option-{{forloop.index}}="{{ variant.options[forloop.index0] | handle }}"{% endfor %}
-                      {% if bold_selected_or_first_available_variant.id == variant.id %} selected="selected" {% endif %}>
-                {{ variant.title }}
-              </option>
-            {% endfor %}
-          </select>
-
+            <!-- /.inner -->
         </div>
-        <div class="NFL_note">
-          We can only take orders for Nike NFL Jerseys by phone.
-          We realize it is inconvenient for you to call in to place an order BUT the Nike and the NFL have set strict restrictions on most retailers, and how they can sell certain merchandise online.
-          Our phone hours are Mon-Fri 9:00am - 5:00pm CST.
-          Phone: 773-389-2505
-        </div>
-        <div class="cta-holder d-flex flex-wrap">
-          <a href="tel:17738314030" class="btn btn--black form-fake-btns">PHONE OUR TEAM</a>
-          <span id="product_contact_form" class="btn btn--black form-fake-btns">EMAIL OUR TEAM</span>
-        </div><!-- /.cta-holder -->
-
-        <div class="hidden" id="product_JotForm" hidden>
-          {% render 'product-jotform' %}
-        </div>
-
-        <div style="display:none;" id="product-customization">
-          <h1>Customize Product</h1>
-          <table id="customization-table">
-            <thead>
-            <tr>
-              <th>Product</th>
-              <th>Type of Customization</th>
-              <th>Customization</th>
-            </tr>
-            </thead>
-            <tbody>
-            </tbody>
-          </table>
-        </div>
-
-        {% include 'share' %}
-      </div><!-- /.inner -->
-    </div><!-- /.product-description -->
-  </div><!-- /.product-holder -->
-
-
-  <div class="main-description">
-    <div class="container">
-      <p>
-      {{ product.content }}
-      </p>
-    </div><!-- /.container -->
-  </div><!-- /.main-description -->
-
-  <section class="product-video">
-    <div class="container d-flex flex-column align-items-center">
-      <h2 class="title">
-        {{ 'general.product.video' | t }}
-      </h2>
-      <div id="ytplayer"></div>
+        <!-- /.product-description -->
     </div>
-  </section>
-	{% render 'okendo-reviews-widget', product: product %}
-  <div class="related-products">
-    <div class="container">
-      <h2>
-        {{ 'general.product.related' | t }}
-      </h2>
+    <!-- /.product-holder -->
 
-      {%- assign _collection = product.collections[0] -%}
 
-      <div class="products-row">
-        <ul class="products-list">
-          {%- assign index = 0 -%}
-          {%- for related_product in _collection.products -%}
-            {%- if related_product.id != product.id -%}
-              {% include "product-item", product_item: related_product %}
-              {%- assign index = index | plus: 1 -%}
-            {%- endif -%}
+    <div class="main-description">
+        <div class="container">
+            <p>
+                {{ product.content }}
+            </p>
+        </div>
+        <!-- /.container -->
+    </div>
+    <!-- /.main-description -->
 
-            {%- if index > 3 -%}
-              {%- break -%}
-            {%- endif -%}
-          {%- endfor -%}
-        </ul>
-      </div><!-- /.products-row -->
-    </div><!-- /.container -->
-  </div><!-- /.related-products -->
-</div><!-- /.main -->
-{{ 'product-options-edits.js'  | asset_url | script_tag  }}
+    <section class="product-video">
+        <div class="container d-flex flex-column align-items-center">
+            <h2 class="title">
+                {{ 'general.product.video' | t }}
+            </h2>
+            <div id="ytplayer"></div>
+        </div>
+    </section>
+    {% render 'okendo-reviews-widget', product: product %}
+    <div class="related-products">
+        <div class="container">
+            <h2>
+                {{ 'general.product.related' | t }}
+            </h2>
+
+            {%- assign _collection = product.collections[0] -%}
+
+            <div class="products-row">
+                <ul class="products-list">
+                    {%- assign index = 0 -%}
+                    {%- for related_product in _collection.products -%}
+                        {%- if related_product.id != product.id -%}
+                            {% include "product-item", product_item: related_product %}
+                            {%- assign index = index | plus: 1 -%}
+                        {%- endif -%}
+
+                        {%- if index > 3 -%}
+                            {%- break -%}
+                        {%- endif -%}
+                    {%- endfor -%}
+                </ul>
+            </div>
+            <!-- /.products-row -->
+        </div>
+        <!-- /.container -->
+    </div>
+    <!-- /.related-products -->
+</div>
+<!-- /.main -->
+{{ 'product-options-edits.js' | asset_url | script_tag }}
 
 {% render 'url-product-name' %}
 
 <script>
-  document.getElementById("product_contact_form").onclick = function() {
-    if(document.getElementById("product_JotForm").style.display == 'block') {
-      document.getElementById("product_JotForm").style.display = 'none';
-      
-    } else {
-      document.getElementById("product_JotForm").style.display = 'block';      
-    }
-  };
+    document.getElementById("product_contact_form").onclick = function() {
+        if (document.getElementById("product_JotForm").style.display == 'block') {
+            document.getElementById("product_JotForm").style.display = 'none';
+
+        } else {
+            document.getElementById("product_JotForm").style.display = 'block';
+        }
+    };
 </script>
 {% render 'product_infox' %}
 
+{% style %}
+    .product-images img {
+        width: 100%;
+        height: 100%;
+    }
+{% endstyle %}
 
 
 {% schema %}
-  {
-    "name": "Size Guide",
-    "blocks": [
     {
-      "type": "size_guide",
-      "name": "Size Guide",
-      "settings": [
-        {
-          "id": "title",
-          "label": "Product Type",
-          "type": "text"
-        },
-        {
-          "id": "size_guide_img",
-          "label": "Size Guide Image",
-          "type": "image_picker"
-        }
-      ]
-    }]
-  }
+        "name": "Size Guide",
+        "blocks": [
+            {
+                "type": "size_guide",
+                "name": "Size Guide",
+                "settings": [
+                    {
+                        "id": "title",
+                        "label": "Product Type",
+                        "type": "text"
+                    }, {
+                        "id": "size_guide_img",
+                        "label": "Size Guide Image",
+                        "type": "image_picker"
+                    }
+                ]
+            }
+        ]
+    }
 {% endschema %}
