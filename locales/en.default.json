@@ -1,1 +1,246 @@
-{"general":{"search":{"no_results_html":"Your search for \"{{ terms }}\" did not yield any results.","label":"Search","results_with_count":{"one":"{{ count }} result for \"{{ terms }}\"","other":"{{ count }} results for \"{{ terms }}\""},"title":"Search our site","placeholder":"Search jerseys, hats, accessories...","submit":"Submit","close":"Close search"},"pagination":{"first":"First","last":"Last","previous":"Previous","next":"Next","label":"{{ current_page }} of {{ pages }}"},"blog_posts":{"related":"Related Blog Posts"},"product":{"related":"Related Products","size":"Not sure about your size?","shipping":"This Item Ships Free!","low_quantity":"Low in Stock","sold_out":"Sold Out","pre_order":"Pre-order","add_to_cart":"Add to cart","found":" products found","new_tag":"NEW","sale_tag":"SALE","video":"Promotional Video","available":"Available","quantity_available":"{{quantity}} Available","out_of_stock":"Out of Stock","unlock_the_drop_buton":"Unlock the drop"},"system_messages":{"not_enough_products":"Not enough products in stock.","updating_quantity":"Updating quantity to {{quantity}}.","error_adding_product_to_cart":"An error occurred while adding the product to the cart.","not_valid_quantity":"Not a valid quantity."},"password_page":{"login_form_message":"Enter store using password:","login_form_password_label":"Password","login_form_password_placeholder":"Your password","login_form_submit":"Enter","signup_form_email_label":"Email","signup_form_success":"We will send you an email right before we open!","password_link":"Enter using password"}},"cart":{"remove":"Remove","update":"Update","title":"YOUR CART","quantity":"QTY","subtotal":"Subtotal","checkout":"Checkout","shipping_calculate":"Shipping Calculated at Checkout","empty_cart_message":"Your cart is currently empty.","limiter":{"violation":{"min":"{title} requires a minimum purchase of {min} items but currently has a quantity of {quantity} items.","max":"{title} has a limit of {max} items but currently has a quantity of {quantity} items."}}},"customer":{"account":{"label":"Account","my_account":"My Account","order_history":"Order History","no_orders":"We don't see any orders associated with your account.","greeting":"Hi","sign_out":"Sign Out","info":"My Info"},"activate_account":{"title":"Activate Account","subtext":"Create your password to activate your account.","password":"Password","password_confirm":"Confirm Password","submit":"Activate Account","cancel":"Decline Invitation"},"login":{"title":"Sign In","with_email":"Sign in with email","email":"Enter your email","password":"Enter your password","forgot_password":"Forgot password","submit":"Sign in","guest_title":"Continue as a guest","guest_continue":"Continue"},"recover_password":{"title":"Reset your password","submit":"Recover Password","back_to_login":"Back to login","email":"Enter your email","success":"We've sent you an email with a link to update your password."},"register":{"title":"New to Clark street sports?","create_account":"Create an account for faster checkout.","email":"Enter your email","first_name":"First Name","last_name":"Last Name","password":"Password","confirm_password":"Re-enter your password","receive_newsletters":"Sign up to receive CLARK STREET SPORTS newsletters","submit":"Create Your Account"},"orders":{"title":"Order History","order_number":"Order","date":"Date","payment_status":"Payment Status","fulfillment_status":"Fulfillment Status","total":"Total","none":"You haven't placed any orders yet."},"order":{"title":"Order {{ name }}","date":"Placed on {{ date }}","cancelled":"Order Cancelled on {{ date }}","cancelled_reason":"Reason: {{ reason }}","billing_address":"Billing Address","payment_status":"Payment Status","shipping_address":"Shipping Address","fulfillment_status":"Fulfillment Status","discount":"Discount","shipping":"Shipping","tax":"Tax","product":"Product","sku":"SKU","price":"Price","quantity":"Quantity","total":"Total","fulfilled_at":"Fulfilled {{ date }}","subtotal":"Subtotal"},"addresses":{"title":"Your Addresses","default":"Default","add_new":"Add a New Address","edit_address":"Edit address","first_name":"First Name","last_name":"Last Name","company":"Company","address1":"Address1","address2":"Address2","city":"City","country":"Country","province":"Province","zip":"Postal\/Zip Code","phone":"Phone","set_default":"Set as default address","add":"Add Address","update":"Update Address","cancel":"Cancel","edit":"Edit","delete":"Delete","delete_confirm":"Are you sure you wish to delete this address?"},"reset_password":{"title":"Reset account password","subtext":"Enter a new password for {{ email }}","password":"Password","password_confirm":"Confirm Password","submit":"Reset Password"}},"collection":{"view":"VIEW:","sort_price":"Sort by Price"},"contact":{"form":{"first_name":"First Name *","last_name":"Last Name *","email":"Enter your email address *","subject":"Subject","message":"Write your message here. *","send":"Submit","post_success":"Thanks for contacting us. We'll get back to you as soon as possible."},"misc":{"contact_us":"Contact Us"}},"store_locator":{"general":{"hours":"Store Hours","view":"View on Map","directions":"Get Directions"},"form_placeholders":{"address_field":"Enter zip code or full address","submit":"Locate your nearest store"}},"date_formats":{"month_day_year":"%B %d, %Y"},"corporate_sales":{"step_1":{"title":"Step 1: Choose Your Team"},"step_2":{"title":"Step 2: Choose Your Game"},"step_3":{"title":"Step 3: Choose Your Package"}},"products":{"invalid_form":"Please fill in the required fields before adding the product to the cart.","limiter":{"this_item":"this product","remove_min_confirmation":"This product requires a minimum quantity to be purchased and removing it will disable the checkout until its minimum quantity is reached or all products were removed from the cart. Proceed?","variant":{"violation":{"min":"You need to buy at least {min} of {variant}.","max":"The maximum quantity for {variant} is {max}."}},"alert":{"content":"Please adjust your order quantity to add this item to your cart!"}},"product_options":{"title":"Product Options #{position}","delete_confirmation":"Would you like to delete {quantity} Product Option(s)?"}},"mobile_nav":{"view_category":"View all"},"shopify":{"checkout":{"order_summary":{"gift_card_and_discount_placeholder":"School donation code, Gift card or discount code"}}}}
+{
+  "general": {
+    "search": {
+      "no_results_html": "Your search for \"{{ terms }}\" did not yield any results.",
+      "label": "Search",
+      "results_with_count": {
+        "one": "{{ count }} result for \"{{ terms }}\"",
+        "other": "{{ count }} results for \"{{ terms }}\""
+      },
+      "title": "Search our site",
+      "placeholder": "Search jerseys, hats, accessories...",
+      "submit": "Submit",
+      "close": "Close search"
+    },
+    "pagination": {
+      "first": "First",
+      "last": "Last",
+      "previous": "Previous",
+      "next": "Next",
+      "label": "{{ current_page }} of {{ pages }}"
+    },
+    "blog_posts": {
+      "related": "Related Blog Posts"
+    },
+    "product": {
+      "related": "Related Products",
+      "size": "Not sure about your size?",
+      "shipping": "This Item Ships Free!",
+      "low_quantity": "Low in Stock",
+      "sold_out": "Sold Out",
+      "pre_order": "Pre-order",
+      "add_to_cart": "Add to cart",
+      "found": " products found",
+      "new_tag": "NEW",
+      "sale_tag": "SALE",
+      "video": "Promotional Video",
+      "available": "Available",
+      "quantity_available": "{{quantity}} Available",
+      "out_of_stock": "Out of Stock",
+      "unlock_the_drop_buton": "Unlock the drop"
+    },
+    "system_messages": {
+      "not_enough_products": "Not enough products in stock.",
+      "updating_quantity": "Updating quantity to {{quantity}}.",
+      "error_adding_product_to_cart": "An error occurred while adding the product to the cart.",
+      "not_valid_quantity": "Not a valid quantity."
+    },
+    "password_page": {
+      "login_form_message": "Enter store using password:",
+      "login_form_password_label": "Password",
+      "login_form_password_placeholder": "Your password",
+      "login_form_submit": "Enter",
+      "signup_form_email_label": "Email",
+      "signup_form_success": "We will send you an email right before we open!",
+      "password_link": "Enter using password"
+    }
+  },
+  "cart": {
+    "remove": "Remove",
+    "update": "Update",
+    "title": "YOUR CART",
+    "quantity": "QTY",
+    "subtotal": "Subtotal",
+    "checkout": "Checkout",
+    "shipping_calculate": "Shipping Calculated at Checkout",
+    "empty_cart_message": "Your cart is currently empty.",
+    "limiter": {
+      "violation": {
+        "min": "{title} requires a minimum purchase of {min} items but currently has a quantity of {quantity} items.",
+        "max": "{title} has a limit of {max} items but currently has a quantity of {quantity} items."
+      }
+    }
+  },
+  "customer": {
+    "account": {
+      "label": "Account",
+      "my_account": "My Account",
+      "order_history": "Order History",
+      "no_orders": "We don't see any orders associated with your account.",
+      "greeting": "Hi",
+      "sign_out": "Sign Out",
+      "info": "My Info"
+    },
+    "activate_account": {
+      "title": "Activate Account",
+      "subtext": "Create your password to activate your account.",
+      "password": "Password",
+      "password_confirm": "Confirm Password",
+      "submit": "Activate Account",
+      "cancel": "Decline Invitation"
+    },
+    "login": {
+      "title": "Sign In",
+      "with_email": "Sign in with email",
+      "email": "Enter your email",
+      "password": "Enter your password",
+      "forgot_password": "Forgot password",
+      "submit": "Sign in",
+      "guest_title": "Continue as a guest",
+      "guest_continue": "Continue"
+    },
+    "recover_password": {
+      "title": "Reset your password",
+      "submit": "Recover Password",
+      "back_to_login": "Back to login",
+      "email": "Enter your email",
+      "success": "We've sent you an email with a link to update your password."
+    },
+    "register": {
+      "title": "New to Clark street sports?",
+      "create_account": "Create an account for faster checkout.",
+      "email": "Enter your email",
+      "first_name": "First Name",
+      "last_name": "Last Name",
+      "password": "Password",
+      "confirm_password": "Re-enter your password",
+      "receive_newsletters": "Sign up to receive CLARK STREET SPORTS newsletters",
+      "submit": "Create Your Account"
+    },
+    "orders": {
+      "title": "Order History",
+      "order_number": "Order",
+      "date": "Date",
+      "payment_status": "Payment Status",
+      "fulfillment_status": "Fulfillment Status",
+      "total": "Total",
+      "none": "You haven't placed any orders yet."
+    },
+    "order": {
+      "title": "Order {{ name }}",
+      "date": "Placed on {{ date }}",
+      "cancelled": "Order Cancelled on {{ date }}",
+      "cancelled_reason": "Reason: {{ reason }}",
+      "billing_address": "Billing Address",
+      "payment_status": "Payment Status",
+      "shipping_address": "Shipping Address",
+      "fulfillment_status": "Fulfillment Status",
+      "discount": "Discount",
+      "shipping": "Shipping",
+      "tax": "Tax",
+      "product": "Product",
+      "sku": "SKU",
+      "price": "Price",
+      "quantity": "Quantity",
+      "total": "Total",
+      "fulfilled_at": "Fulfilled {{ date }}",
+      "subtotal": "Subtotal"
+    },
+    "addresses": {
+      "title": "Your Addresses",
+      "default": "Default",
+      "add_new": "Add a New Address",
+      "edit_address": "Edit address",
+      "first_name": "First Name",
+      "last_name": "Last Name",
+      "company": "Company",
+      "address1": "Address1",
+      "address2": "Address2",
+      "city": "City",
+      "country": "Country",
+      "province": "Province",
+      "zip": "Postal\/Zip Code",
+      "phone": "Phone",
+      "set_default": "Set as default address",
+      "add": "Add Address",
+      "update": "Update Address",
+      "cancel": "Cancel",
+      "edit": "Edit",
+      "delete": "Delete",
+      "delete_confirm": "Are you sure you wish to delete this address?"
+    },
+    "reset_password": {
+      "title": "Reset account password",
+      "subtext": "Enter a new password for {{ email }}",
+      "password": "Password",
+      "password_confirm": "Confirm Password",
+      "submit": "Reset Password"
+    }
+  },
+  "collection": {
+    "view": "VIEW:",
+    "sort_price": "Sort by Price"
+  },
+  "contact": {
+    "form": {
+      "first_name": "First Name *",
+      "last_name": "Last Name *",
+      "email": "Enter your email address *",
+      "subject": "Subject",
+      "message": "Write your message here. *",
+      "send": "Submit",
+      "post_success": "Thanks for contacting us. We'll get back to you as soon as possible."
+    },
+    "misc": {
+      "contact_us": "Contact Us"
+    }
+  },
+  "store_locator": {
+    "general": {
+      "hours": "Store Hours",
+      "view": "View on Map",
+      "directions": "Get Directions"
+    },
+    "form_placeholders": {
+      "address_field": "Enter zip code or full address",
+      "submit": "Locate your nearest store"
+    }
+  },
+  "date_formats": {
+    "month_day_year": "%B %d, %Y"
+  },
+  "corporate_sales": {
+    "step_1": {
+      "title": "Step 1: Choose Your Team"
+    },
+    "step_2": {
+      "title": "Step 2: Choose Your Game"
+    },
+    "step_3": {
+      "title": "Step 3: Choose Your Package"
+    }
+  },
+  "products": {
+    "invalid_form": "Please fill in the required fields before adding the product to the cart.",
+    "limiter": {
+      "this_item": "this product",
+      "remove_min_confirmation": "This product requires a minimum quantity to be purchased and removing it will disable the checkout until its minimum quantity is reached or all products were removed from the cart. Proceed?",
+      "variant": {
+        "violation": {
+          "min": "You need to buy at least {min} of {variant}.",
+          "max": "The maximum quantity for {variant} is {max}."
+        }
+      },
+      "alert": {
+        "content": "Please adjust your order quantity to add this item to your cart!"
+      }
+    },
+    "product_options": {
+      "title": "Product Options #{position}",
+      "delete_confirmation": "Would you like to delete {quantity} Product Option(s)?"
+    }
+  },
+  "mobile_nav": {
+    "view_category": "View all"
+  }
+}
