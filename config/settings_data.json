@@ -1403,11 +1403,21 @@
         ],
         "settings": {
         }
+      },
+      "4c0d3653-ec41-44c5-b049-006e5f3a3136": {
+        "type": "fillwidth",
+        "settings": {
+          "image": "shopify:\/\/shop_images\/BEDARD_-_Web_Banner_Desktop_v3.jpg",
+          "content": "",
+          "top_button_label": "Shop Now",
+          "top_button_link": "shopify:\/\/collections\/connor-bedard-chicago-blackhawks"
+        }
       }
     },
     "content_for_index": [
       "1538661059712",
       "1659909539acd87cfc",
+      "4c0d3653-ec41-44c5-b049-006e5f3a3136",
       "1512551589285",
       "160201057872733757",
       "16020134847880dea3",
