@@ -51,7 +51,7 @@
 
     "tags": {{- product.tags | join: ',' | append: shop_for | append: sizes | split: ',' | json -}},
     "handle": "{{- product.handle-}}",
-    "image": "{{- product.featured_image.src | img_url: 'x125' | remove: '_x125' | remove: '//cdn2.shopify.com/s/files/' | remove: '//cdn.shopify.com/s/files/' | remove: '//cdn.shopify.com/s/files//' -}}",
+    "image": "{{- product.featured_image.src | img_url: 'x125' | remove: '_x125' | remove: '//cdn2.shopify.com/s/files/' | remove: '//cdn.shopify.com/s/files//' -}}",
     "created_at": "{{- product.created_at -}}",
     "published_at": "{{- product.published_at -}}",
     "image_aspect_ratio": "{{- product.featured_image.aspect_ratio | default: 1 -}}",
