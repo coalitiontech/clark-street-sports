@@ -31,6 +31,7 @@
     {% endif %}
 
    {%# if bold_variants_size > 1 %}
+   {% if product.variants.size > 1 %}
       {%- assign options_with_values = product.options_with_values -%}
       {%- assign selected_variant = bold_selected_or_first_available_variant -%}
       {%- include 'bold-variant' with selected_variant, output: 'none' -%}
@@ -49,7 +50,7 @@
 
 
       {% endfor %}    
-    {%# endif %}
+    {% endif %}
 
     <!-- Always render the variant selector for the product, regardless of the variant count -->
     <select id="product-select" name="id" style="display: none;">
