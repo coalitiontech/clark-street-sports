@@ -1,0 +1,42 @@
+<!--ECI: START: UET Tag for Product Audiences -->
+<script type="text/javascript">
+    var productIds = new Array();
+    {% if template contains 'collection' %}
+    window.uetq = window.uetq || [];
+    window.uetq.push('event', '', { 
+    'ecomm_pagetype': 'category'
+         });
+    {% elsif template == 'index' %}
+    window.uetq = window.uetq || [];
+    window.uetq.push('event', '', { 
+    'ecomm_pagetype': 'home'
+    });
+    {% elsif template == 'cart' %}
+    {% for lineItem in cart.items %}
+         productIds.push({{lineItem.product.id}});
+         {% endfor %}
+     
+         window.uetq = window.uetq || [];
+         window.uetq.push('event', '', { 
+         'ecomm_pagetype': 'cart',
+         'ecomm_prodid': productIds
+         });
+    {% elsif template == 'product' %}
+         window.uetq = window.uetq || [];
+         window.uetq.push('event', '', { 
+         'ecomm_pagetype': 'product',
+         'ecomm_prodid': '{{ product.id }}'
+    });
+    {% elsif template == 'search' %}
+    window.uetq = window.uetq || [];
+    window.uetq.push('event', '', { 
+    'ecomm_pagetype': 'searchresults'
+    });
+    {% else %}
+    window.uetq = window.uetq || [];
+    window.uetq.push('event', '', { 
+    'ecomm_pagetype': 'other'
+    });
+    {% endif %}
+    </script>
+    <!--ECI: END: UET Tag for Product Audiences -->
