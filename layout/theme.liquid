@@ -73,7 +73,7 @@
 
   <body class="page-{{ body_class }}">
     {% include "bms.theme-init" %}
-
+    {% include 'eci-uet-product-audiences' %}
     {% if request.path == "/apps/store-locator" %}
       {% include "bms-store-locator-init" %}
     {% endif %}
