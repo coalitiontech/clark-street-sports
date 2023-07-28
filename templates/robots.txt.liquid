@@ -8,7 +8,11 @@
   {% for rule in group.rules %}
     {{- rule -}}
   {% endfor %}
-
+  
+{%- if group.user_agent.value == '*' -%}
+{{ 'Disallow: /collections/vendors*' }}
+{%- endif -%}
+  
   {%- if group.sitemap != blank -%}
     {{ group.sitemap }}
   {%- endif -%}
