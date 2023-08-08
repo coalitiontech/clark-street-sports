@@ -100,12 +100,14 @@
      <!--Advanced Preorder custom work -->
     {% endif %}
 
-    {% comment %}when product is sold out{% endcomment %}
-    {% liquid
-      assign is_sold_out = false
-      if bold_selected_or_first_available_variant.inventory_quantity == 0 or bold_selected_or_first_available_variant.available == false
+    {% comment %}when product is sold out
+  if bold_selected_or_first_available_variant.inventory_quantity == 0 or bold_selected_or_first_available_variant.available == false
         assign is_sold_out = true
       endif
+  {% endcomment %}
+    {% liquid
+      assign is_sold_out = false
+      
       
       assign sold_out_text = 'general.product.out_of_stock' | t
       assign add_to_cart_text = submit_value | t
