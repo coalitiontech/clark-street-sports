@@ -1421,21 +1421,21 @@
           "show_preview_data": false
         }
       },
-      "9942305003020345738": {
-        "type": "shopify:\/\/apps\/advanced-preorder-partial-pay\/blocks\/app-embed\/1e2e5cca-bfda-4196-a3b1-7faf2b23c326",
+      "11724500921838622758": {
+        "type": "shopify:\/\/apps\/frequently-bought-together\/blocks\/app-embed-block\/b1a8cbea-c844-4842-9529-7c62dbab1b1f",
         "disabled": false,
         "settings": {
         }
       },
       "5439026248262864547": {
         "type": "shopify:\/\/apps\/preorder-globo-back-in-stock\/blocks\/app-embed\/e547a0ad-8212-4bcc-b02f-761faa9b8af2",
-        "disabled": true,
+        "disabled": false,
         "settings": {
         }
       },
-      "11724500921838622758": {
-        "type": "shopify:\/\/apps\/frequently-bought-together\/blocks\/app-embed-block\/b1a8cbea-c844-4842-9529-7c62dbab1b1f",
-        "disabled": false,
+      "9942305003020345738": {
+        "type": "shopify:\/\/apps\/advanced-preorder-partial-pay\/blocks\/app-embed\/1e2e5cca-bfda-4196-a3b1-7faf2b23c326",
+        "disabled": true,
         "settings": {
         }
       }
