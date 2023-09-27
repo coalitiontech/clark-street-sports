@@ -1,0 +1,54 @@
+{
+  "sections": {
+    "productScripts": {
+      "type": "product-template-scripts",
+      "settings": {
+      }
+    },
+    "main": {
+      "type": "product-item",
+      "blocks": {
+        "4e7b6332-767e-4fa4-849d-25651fa2b375": {
+          "type": "size_guide",
+          "settings": {
+            "title": "New Era Fitted Cap",
+            "size_guide_img": "shopify:\/\/shop_images\/New_Era_Fitted_Cap_Sizing.JPG"
+          }
+        },
+        "9b1ade11-92fa-47b6-bb2f-c8979656d9df": {
+          "type": "size_guide",
+          "settings": {
+            "title": "New Era Stretch Fit",
+            "size_guide_img": "shopify:\/\/shop_images\/New_Era_Stretch_Cap_Sizing.JPG"
+          }
+        },
+        "6485d008-e116-4ecc-9bbe-1332bfa4caf1": {
+          "type": "size_guide",
+          "settings": {
+            "title": "GIII Women's Outerwear",
+            "size_guide_img": "shopify:\/\/shop_images\/GIII_-_Women_s_Outerwear_Size_Chart.JPG"
+          }
+        },
+        "b57847d0-7463-4bb0-9d54-cca0314fbe40": {
+          "type": "size_guide",
+          "settings": {
+            "title": "Nike NFL Youth Jersey Size",
+            "size_guide_img": "shopify:\/\/shop_images\/Nike-Youth-NFL-Jersey-Size-Chart.jpg"
+          }
+        }
+      },
+      "block_order": [
+        "4e7b6332-767e-4fa4-849d-25651fa2b375",
+        "9b1ade11-92fa-47b6-bb2f-c8979656d9df",
+        "6485d008-e116-4ecc-9bbe-1332bfa4caf1",
+        "b57847d0-7463-4bb0-9d54-cca0314fbe40"
+      ],
+      "settings": {
+      }
+    }
+  },
+  "order": [
+    "productScripts",
+    "main"
+  ]
+}
