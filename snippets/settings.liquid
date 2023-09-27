@@ -3,7 +3,7 @@
   {% endunless %}
 {% endcapture %}
 
-
+{% capture theme_styles %}
     {{ 'fonts.css' | asset_url | stylesheet_tag }}
     {{ 'vendor.css' | asset_url | stylesheet_tag }}
     {{ 'main.css' | asset_url | stylesheet_tag }}
@@ -14,7 +14,7 @@
         {{ 'collection-filters.css' | asset_url | stylesheet_tag }}
     {% endif %}
     {{ 'bold-custom-styles.scss.css' | asset_url | stylesheet_tag }}
-
+{% endcapture %}
 
 {% capture theme_scripts %}
     <script type="text/javascript" src="{{ 'bms.common.js' | asset_url }}"></script>
