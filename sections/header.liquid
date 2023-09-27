@@ -19,6 +19,11 @@
       
   
   <div class="header__item search">
+<form class="search" action="/search">
+    <input type="text" placeholder="Search" name="q" value="{{ search.terms | escape }}"  />
+    <input type="submit" value="Search" />
+</form>
+    
     <form action="/search" method="get" class="search-header search-form" role="search">
         <button  name="search_submit" class="header__icon-link">
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
