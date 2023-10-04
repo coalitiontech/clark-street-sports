@@ -646,30 +646,30 @@
           "d9d0d93c-7258-466d-886d-c002ed969dab": {
             "type": "Slider",
             "settings": {
-              "desktop_image": "shopify:\/\/shop_images\/New_Womens_Baseball_collection.jpg",
+              "desktop_image": "shopify:\/\/shop_images\/Bears_desktop_banner_1920_x_712.jpg",
               "desktop_image_size": "cover",
               "desktop_image_position": "center center",
               "desktop_text_section_size": "small",
-              "desktop_text_position": "middle center",
+              "desktop_text_position": "bottom center",
               "desktop_text_align": "center",
               "desktop_background_colour": "#737475",
               "desktop_text_colour": "#f42020",
               "desktop_text_background_colour": "rgba(0,0,0,0)",
-              "mobile_image": "shopify:\/\/shop_images\/New_Womens_Apparel_mobile.jpg",
+              "mobile_image": "shopify:\/\/shop_images\/Bears_mobile_banner_1080_x_1208.jpg",
               "mobile_image_size": "cover",
               "mobile_image_position": "center center",
-              "mobile_vert_text_align": "middle",
-              "mobile_text_align": "flex-start",
+              "mobile_vert_text_align": "bottom",
+              "mobile_text_align": "center",
               "mobile_background_colour": "#737475",
               "mobile_text_colour": "#f42020",
               "mobile_text_background_colour": "rgba(0,0,0,0)",
-              "title": "New Women's Apparel",
+              "title": "",
               "title_size": 3.4,
               "title_size_mobile": 7.2,
               "button_label": "Shop Now",
-              "button_link": "shopify:\/\/collections\/women",
+              "button_link": "shopify:\/\/collections\/chicago-bears",
               "button_color": "#ffffff",
-              "button_background_color": "#1b59b2"
+              "button_background_color": "#e66716"
             }
           }
         },
