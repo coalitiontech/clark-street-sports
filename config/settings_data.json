@@ -1444,7 +1444,7 @@
         "disabled": true,
         "settings": {
           "path": "\/pages\/search-results",
-          "new_jquery": false
+          "new_jquery": true
         }
       }
     }
