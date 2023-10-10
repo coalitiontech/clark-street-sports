@@ -188,6 +188,7 @@
         </div>
     </section>
     {% render 'okendo-reviews-media-grid-product' %}
+    {% render 'okendo-reviews-widget', product: product %}
     {% unless product.type == 'corporate-sales' %}
         <div class="related-products">
             <div class="container">
